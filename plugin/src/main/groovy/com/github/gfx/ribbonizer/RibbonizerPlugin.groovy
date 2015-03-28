@@ -24,16 +24,23 @@ public class RibbonizerPlugin implements Plugin<Project> {
             def tasks = new ArrayList<Task>();
 
             android.applicationVariants.all { ApplicationVariant variant ->
+                if (!variant.buildType.debuggable) {
+                    project.logger.info("[ribbonizer] skip ${variant.name} because it is not debuggable.")
+                    return;
+                }
+
+                def generatedResDir = new File(project.buildDir, "generated/ribbonizer/res/${variant.name}")
+                android.sourceSets.findByName(variant.name).res.srcDir(generatedResDir)
+
                 def name = "${RibbonizerTask.NAME}${capitalize(variant.name)}"
                 def task = project.task(name, type: RibbonizerTask) as RibbonizerTask
                 task.variant = variant
+                task.outputDir = generatedResDir
                 tasks.add(task)
 
-                project.getTasksByName("process${capitalize(variant.name)}Resources", false).forEach {
-                    Task t ->
-                        t << {
-                            task.run()
-                        }
+                def generateResources = project.getTasksByName("generate${capitalize(variant.name)}Resources", false)
+                generateResources.forEach { Task t ->
+                    t.dependsOn(task)
                 }
             }
 

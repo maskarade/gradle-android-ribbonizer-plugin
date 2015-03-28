@@ -20,7 +20,9 @@ android {
 
     buildTypes {
         debug {}
-        beta {}
+        beta {
+            debuggable true
+        }
         release {}
     }
 
