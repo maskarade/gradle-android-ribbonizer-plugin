@@ -6,4 +6,8 @@ import groovy.transform.CompileStatic
 class RibbonizerExtension {
     public static String NAME = "ribbonize"
     def message = "default message"
+
+    public void makeGrayScale(String iconName) {
+
+    }
 }

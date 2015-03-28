@@ -30,7 +30,7 @@ public class Ribbonizer {
         ImageIO.write(outputImage, "png", outputFile)
     }
 
-    int toGray(int color) {
+    static int toGray(int color) {
         def a = (color & 0xFF000000)
         def r = (color & 0x00FF0000) >> 16
         def g = (color & 0x0000FF00) >> 8
@@ -50,10 +50,12 @@ public class Ribbonizer {
                 outputImage.setRGB(x, y, toGray(color))
             }
         }
+
+        return this;
     }
 
 
-    void addRibbon() {
-
+    public Ribbonizer addRibbon() {
+        throw new UnsupportedOperationException();
     }
 }
