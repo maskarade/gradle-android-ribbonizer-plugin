@@ -10,6 +10,9 @@ import org.gradle.api.Task
 
 @CompileStatic
 public class RibbonizerPlugin implements Plugin<Project> {
+    static {
+        System.setProperty("java.awt.headless", "true")
+    }
 
     @Override
     void apply(Project project) {
@@ -25,6 +28,13 @@ public class RibbonizerPlugin implements Plugin<Project> {
                 def task = project.task(name, type: RibbonizerTask) as RibbonizerTask
                 task.variant = variant
                 tasks.add(task)
+
+                project.getTasksByName("process${capitalize(variant.name)}Resources", false).forEach {
+                    Task t ->
+                        t << {
+                            task.run()
+                        }
+                }
             }
 
             project.task(RibbonizerTask.NAME, dependsOn: tasks);

@@ -5,9 +5,11 @@ import groovy.transform.CompileStatic
 @CompileStatic
 class RibbonizerExtension {
     public static String NAME = "ribbonize"
-    def message = "default message"
 
-    public void makeGrayScale(String iconName) {
+    // TODO: get names from AndroidManifest.xml
+    Set<String> iconNames = new HashSet<>(["ic_launcher"])
 
+    public void setIconNames(List<String> iconNames) {
+        this.iconNames = new HashSet<>(iconNames)
     }
 }

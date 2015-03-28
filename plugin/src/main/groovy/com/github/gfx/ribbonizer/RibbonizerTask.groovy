@@ -1,5 +1,4 @@
 package com.github.gfx.ribbonizer
-
 import com.android.build.gradle.api.ApplicationVariant
 import groovy.transform.CompileStatic
 import org.gradle.api.DefaultTask
@@ -11,12 +10,27 @@ class RibbonizerTask extends DefaultTask {
 
     ApplicationVariant variant
 
+    List<Ribbonizer.Filter> filters = [new GrayScaleFilter() as Ribbonizer.Filter]
+
     @TaskAction
     public void run() {
-        System.out.println(variant.name)
-
         def extension = project.extensions.getByType(RibbonizerExtension)
-        System.out.println(extension.message)
+
+        extension.iconNames.forEach { String name ->
+            // e.g. example/build/intermediates/res/local/debug/drawable-hdpi-v4/ic_launcher.png
+            project.fileTree(
+                    dir: project.buildDir,
+                    includes: [
+                            "intermediates/res/${variant.flavorName}/${variant.buildType.name}/drawable*/${name}.png",
+                            "intermediates/res/${variant.flavorName}/${variant.buildType.name}/mipmap*/${name}.png",
+                    ]
+            ).forEach { File file ->
+                def ribbonizer = new Ribbonizer(file, file)
+                ribbonizer.process(filters)
+                ribbonizer.save()
+            }
+        }
     }
+
 
 }

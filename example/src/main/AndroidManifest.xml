@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.github.gfx.gradle_plugin_template.example">
+    package="com.github.gfx.ribbonizer.example">
 
     <application
         android:allowBackup="true"

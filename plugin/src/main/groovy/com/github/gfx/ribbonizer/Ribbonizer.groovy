@@ -30,32 +30,13 @@ public class Ribbonizer {
         ImageIO.write(outputImage, "png", outputFile)
     }
 
-    static int toGray(int color) {
-        def a = (color & 0xFF000000)
-        def r = (color & 0x00FF0000) >> 16
-        def g = (color & 0x0000FF00) >> 8
-        def b = (color & 0x000000FF)
-
-        def c = (int) ((2.0 * r + 4.0 * g + b) / 7.0)
-        return a | (c << 16) | (c << 8) | c
-    }
-
-    public Ribbonizer makeGrayScale() {
-        def width = inputImage.width
-        def height = inputImage.height
-
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                def color = inputImage.getRGB(x, y)
-                outputImage.setRGB(x, y, toGray(color))
-            }
+    public void process(List<Filter> filters) {
+        filters.forEach { Filter filter ->
+            filter.process(inputImage, outputImage);
         }
-
-        return this;
     }
 
-
-    public Ribbonizer addRibbon() {
-        throw new UnsupportedOperationException();
+    public interface Filter {
+        void process(BufferedImage inputImage, BufferedImage outputImage);
     }
 }
