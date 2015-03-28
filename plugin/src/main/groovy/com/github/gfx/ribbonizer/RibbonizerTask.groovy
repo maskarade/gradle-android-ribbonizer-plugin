@@ -3,6 +3,7 @@ import com.android.build.gradle.api.ApplicationVariant
 import com.android.builder.model.SourceProvider
 import groovy.transform.CompileStatic
 import org.gradle.api.DefaultTask
+import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 
 @CompileStatic
@@ -10,6 +11,8 @@ class RibbonizerTask extends DefaultTask {
     static final String NAME = "ribbonize"
 
     ApplicationVariant variant
+
+    @OutputDirectory
     File outputDir
 
     List<Ribbonizer.Filter> filters = [new GrayScaleFilter() as Ribbonizer.Filter]
@@ -44,6 +47,7 @@ class RibbonizerTask extends DefaultTask {
                         def resType = inputFile.parentFile.name
                         def outputFile = new File(outputDir, "${resType}/${basename}")
                         outputFile.parentFile.mkdirs()
+
                         def ribbonizer = new Ribbonizer(inputFile, outputFile)
                         ribbonizer.process(filters)
                         ribbonizer.save()
