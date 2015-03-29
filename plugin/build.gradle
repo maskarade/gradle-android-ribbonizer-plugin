@@ -1,8 +1,8 @@
 final REPOSITORY_URL = 'https://github.com/gfx/gradle-plugin-template'
 
 final GROUP_ID = 'com.github.gfx.ribbonizer'
-final ARTIFACT_ID = 'android-plugin'
-final VERSION = '0.0.0'
+final ARTIFACT_ID = 'plugin'
+final VERSION = '0.1.0'
 
 buildscript {
     repositories {
@@ -72,8 +72,8 @@ uploadArchives {
 
 modifyPom {
     project {
-        name 'Android Gradle Plugin for Ribbonizer'
-        description 'Adds ribbons to icons'
+        name 'Gradle Plugin for Ribbonizer'
+        description 'Overlays ribbons to launcher icons for Android applications'
         url REPOSITORY_URL
         inceptionYear '2015'
 
