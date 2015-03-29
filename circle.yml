@@ -1,0 +1,11 @@
+machine:
+    services:
+        - docker
+
+dependencies:
+    override:
+        - docker build -t android_helium .
+
+test:
+    override:
+        - docker run android_helium
