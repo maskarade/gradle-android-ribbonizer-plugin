@@ -2,7 +2,7 @@ final REPOSITORY_URL = 'https://github.com/gfx/gradle-android-ribbonizer-plugin'
 
 final GROUP_ID = 'com.github.gfx.ribbonizer'
 final ARTIFACT_ID = 'plugin'
-final ARTIFACT_VERSION = '0.1.0'
+final VERSION = '0.1.0'
 
 buildscript {
     repositories {
@@ -59,7 +59,7 @@ uploadArchives {
     repositories.mavenDeployer {
         pom.groupId = GROUP_ID
         pom.artifactId = ARTIFACT_ID
-        pom.version = ARTIFACT_VERSION
+        pom.version = VERSION
     }
 }
 
