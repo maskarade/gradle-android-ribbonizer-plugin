@@ -36,6 +36,8 @@ public class RibbonizerPlugin implements Plugin<Project> {
                 def task = project.task(name, type: RibbonizerTask) as RibbonizerTask
                 task.variant = variant
                 task.outputDir = generatedResDir
+                task.filters.add(new ColorRibbonFilter(variant))
+                //task.filters.add(new GrayScaleFilter())
                 tasks.add(task)
 
                 def generateResources = project.getTasksByName("generate${capitalize(variant.name)}Resources", false)

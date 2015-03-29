@@ -1,6 +1,7 @@
 package com.github.gfx.ribbonizer
 
 import groovy.transform.CompileStatic
+import org.gradle.api.Action
 
 import javax.imageio.ImageIO
 import java.awt.image.BufferedImage
@@ -8,35 +9,27 @@ import java.awt.image.BufferedImage
 @CompileStatic
 public class Ribbonizer {
 
-    final File inputFile;
+    final File inputFile
 
-    final File outputFile;
+    final File outputFile
 
-    final BufferedImage inputImage;
-
-    final BufferedImage outputImage;
+    final BufferedImage image
 
     public Ribbonizer(File inputFile, File outputFile) {
         this.inputFile = inputFile;
         this.outputFile = outputFile;
 
-        inputImage = ImageIO.read(inputFile)
-        outputImage =
-                new BufferedImage(inputImage.width, inputImage.height, BufferedImage.TYPE_INT_ARGB);
+        image = ImageIO.read(inputFile)
     }
 
     public void save() {
         outputFile.getParentFile().mkdirs()
-        ImageIO.write(outputImage, "png", outputFile)
+        ImageIO.write(image, "png", outputFile)
     }
 
-    public void process(List<Filter> filters) {
-        filters.forEach { Filter filter ->
-            filter.process(inputImage, outputImage);
+    public void process(List<Action<BufferedImage>> filters) {
+        filters.forEach { Action<BufferedImage> filter ->
+            filter.execute(image)
         }
-    }
-
-    public interface Filter {
-        void process(BufferedImage inputImage, BufferedImage outputImage);
     }
 }
