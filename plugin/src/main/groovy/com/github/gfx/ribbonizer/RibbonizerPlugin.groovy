@@ -5,11 +5,11 @@ import groovy.transform.CompileStatic
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
-
 // see http://www.gradle.org/docs/current/userguide/custom_plugins.html
 
 @CompileStatic
 public class RibbonizerPlugin implements Plugin<Project> {
+
     static {
         System.setProperty("java.awt.headless", "true")
     }
@@ -20,27 +20,34 @@ public class RibbonizerPlugin implements Plugin<Project> {
 
         project.afterEvaluate {
             def android = project.extensions.findByType(AppExtension)
+            if (!android) {
+                throw new Exception("Not an Android application; you forget `apply plugin: 'com.android.application`?")
+            }
+            def extension = project.extensions.findByType(RibbonizerExtension)
 
             def tasks = new ArrayList<Task>();
 
             android.applicationVariants.all { ApplicationVariant variant ->
                 if (!variant.buildType.debuggable) {
-                    project.logger.info("[ribbonizer] skip ${variant.name} because it is not debuggable.")
+                    project.logger.
+                            info("[ribbonizer] skip ${variant.name} because it is not debuggable.")
                     return;
                 }
-
-                def generatedResDir = new File(project.buildDir, "generated/ribbonizer/res/${variant.name}")
+                def generatedResDir = new File(project.buildDir,
+                        "generated/ribbonizer/res/${variant.name}")
                 android.sourceSets.findByName(variant.name).res.srcDir(generatedResDir)
 
                 def name = "${RibbonizerTask.NAME}${capitalize(variant.name)}"
                 def task = project.task(name, type: RibbonizerTask) as RibbonizerTask
                 task.variant = variant
                 task.outputDir = generatedResDir
-                task.filters.add(new ColorRibbonFilter(variant))
-                //task.filters.add(new GrayScaleFilter())
+                for (FilterBuilder builder : extension.filterBuilders) {
+                    task.filters.add(builder.apply(variant))
+                }
                 tasks.add(task)
 
-                def generateResources = project.getTasksByName("generate${capitalize(variant.name)}Resources", false)
+                def generateResources = project.
+                        getTasksByName("generate${capitalize(variant.name)}Resources", false)
                 generateResources.forEach { Task t ->
                     t.dependsOn(task)
                 }

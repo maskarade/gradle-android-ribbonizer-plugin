@@ -1,5 +1,4 @@
 package com.github.gfx.ribbonizer
-
 import groovy.transform.CompileStatic
 
 @CompileStatic
@@ -9,7 +8,15 @@ class RibbonizerExtension {
     // TODO: get names from AndroidManifest.xml
     Set<String> iconNames = new HashSet<>(["ic_launcher"])
 
-    public void setIconNames(List<String> iconNames) {
+    List<FilterBuilder> filterBuilders = [
+        new GreenRibbonFilterBuilder() as FilterBuilder
+    ]
+
+    public void iconNames(List<String> iconNames) {
         this.iconNames = new HashSet<>(iconNames)
+    }
+
+    public void filterBuilders(List<FilterBuilder> filterBuilders) {
+        this.filterBuilders = filterBuilders
     }
 }

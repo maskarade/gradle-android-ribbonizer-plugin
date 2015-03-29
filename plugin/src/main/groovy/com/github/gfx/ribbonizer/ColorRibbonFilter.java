@@ -13,15 +13,27 @@ import java.awt.image.BufferedImage;
 public class ColorRibbonFilter implements Action<BufferedImage> {
     boolean debug = false;
 
-    final ApplicationVariant variant;
+    final Color ribbonColor;
+    final Color labelColor;
+
     String label;
     String fontName = "Default";
     int fontStyle = Font.PLAIN;
 
-    public ColorRibbonFilter(ApplicationVariant variant) {
-        this.variant = variant;
-        this.label = variant.getBuildType().getName();
+    public ColorRibbonFilter(String label, Color ribbonColor, Color labelColor) {
+        this.label = label;
+        this.ribbonColor = ribbonColor;
+        this.labelColor = labelColor;
     }
+
+    public ColorRibbonFilter(ApplicationVariant variant, Color ribbonColor, Color labelColor) {
+        this(variant.getBuildType().getName(), ribbonColor, labelColor);
+    }
+
+    public ColorRibbonFilter(ApplicationVariant variant, Color ribbonColor) {
+        this(variant, ribbonColor, Color.WHITE);
+    }
+
 
     @Override
     public void execute(BufferedImage image) {
@@ -35,13 +47,13 @@ public class ColorRibbonFilter implements Action<BufferedImage> {
         int y = height / 4;
 
         // ribbon
-        g.setColor(new Color(0, 0x72, 0, 0xaa));
+        g.setColor(ribbonColor);
         g.fillRect(-width, y, width * 2, height / 5);
 
         // label
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setColor(Color.WHITE);
+        g.setColor(labelColor);
 
         int maxLabelWidth = calculateMaxLabelWidth(y);
         g.setFont(getFont(maxLabelWidth, g.getTransform()));
@@ -53,6 +65,8 @@ public class ColorRibbonFilter implements Action<BufferedImage> {
         if (debug) {
             g.drawRect((int)(-labelBounds.getWidth() / 2), y, maxLabelWidth, (int)labelBounds.getHeight());
         }
+
+        g.dispose();
     }
 
     static int calculateMaxLabelWidth(int y) {
