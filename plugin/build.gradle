@@ -1,31 +1,30 @@
-final REPOSITORY_URL = 'https://github.com/gfx/gradle-plugin-template'
+final REPOSITORY_URL = 'https://github.com/gfx/gradle-android-ribbonizer-plugin'
 
 final GROUP_ID = 'com.github.gfx.ribbonizer'
 final ARTIFACT_ID = 'plugin'
-final VERSION = '0.1.0'
+final ARTIFACT_VERSION = '0.1.0'
 
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
     }
     dependencies {
-        classpath 'org.gradle.api.plugins:gradle-nexus-plugin:0.+'
+        classpath 'com.bmuschko:gradle-nexus-plugin:2.3'
     }
 }
-
-apply plugin: 'java'
-apply plugin: 'groovy'
-apply plugin: 'maven'
-apply plugin: 'nexus'
-
 repositories {
-    mavenCentral()
+    jcenter()
 }
+
+apply plugin: 'groovy'
+
+apply plugin: 'maven'
+apply plugin: 'com.bmuschko.nexus'
 
 dependencies {
     compile gradleApi()
     compile localGroovy()
-    compile 'com.android.tools.build:gradle:+'
+    compile 'com.android.tools.build:gradle:1.1.3'
 }
 
 // artifact settings
@@ -56,24 +55,23 @@ configurations {
     mavenDeployer
 }
 
-artifacts {
-    archives jar
-    archives javadocJar
-    archives sourcesJar
-}
-
 uploadArchives {
     repositories.mavenDeployer {
         pom.groupId = GROUP_ID
         pom.artifactId = ARTIFACT_ID
-        pom.version = VERSION
+        pom.version = ARTIFACT_VERSION
     }
+}
+
+extraArchive {
+    sources = true
+    javadoc = true
 }
 
 modifyPom {
     project {
-        name 'Gradle Plugin for Ribbonizer'
-        description 'Overlays ribbons to launcher icons for Android applications'
+        name 'Ribbonizer plugin for Android'
+        description 'Adds ribbons to launcher icons for Android applications'
         url REPOSITORY_URL
         inceptionYear '2015'
 
