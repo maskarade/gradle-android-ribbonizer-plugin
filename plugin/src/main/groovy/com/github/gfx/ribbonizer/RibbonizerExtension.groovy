@@ -3,7 +3,7 @@ import groovy.transform.CompileStatic
 
 @CompileStatic
 class RibbonizerExtension {
-    public static String NAME = "ribbonize"
+    public static String NAME = "ribbonizer"
 
     // TODO: get names from AndroidManifest.xml
     Set<String> iconNames = new HashSet<>(["ic_launcher"])
