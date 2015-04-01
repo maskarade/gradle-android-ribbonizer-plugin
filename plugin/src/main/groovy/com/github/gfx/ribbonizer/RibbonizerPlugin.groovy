@@ -12,6 +12,20 @@ public class RibbonizerPlugin implements Plugin<Project> {
 
     static {
         System.setProperty("java.awt.headless", "true")
+
+        // workaround for an Android Studio issue
+        try {
+            Class.forName(System.getProperty("java.awt.graphicsenv"))
+        } catch (ClassNotFoundException e) {
+            System.err.println("[WARN] java.awt.graphicsenv: " + e)
+            System.setProperty("java.awt.graphicsenv", "sun.awt.CGraphicsEnvironment")
+        }
+        try {
+            Class.forName(System.getProperty("awt.toolkit"))
+        } catch (ClassNotFoundException e) {
+            System.err.println("[WARN] awt.toolkit: " + e)
+            System.setProperty("awt.toolkit", "sun.lwawt.macosx.LWCToolkit")
+        }
     }
 
     @Override
