@@ -21,6 +21,9 @@ apply plugin: 'groovy'
 apply plugin: 'maven'
 apply plugin: 'com.bmuschko.nexus'
 
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
 dependencies {
     compile gradleApi()
     compile localGroovy()
