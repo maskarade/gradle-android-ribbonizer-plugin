@@ -2,7 +2,7 @@ final REPOSITORY_URL = 'https://github.com/gfx/gradle-android-ribbonizer-plugin'
 
 final GROUP_ID = 'com.github.gfx.ribbonizer'
 final ARTIFACT_ID = 'plugin'
-final VERSION = '0.1.0'
+final VERSION = '0.1.1'
 
 buildscript {
     repositories {

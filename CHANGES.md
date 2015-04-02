@@ -1,5 +1,9 @@
-# The revision history of XXX
+# The revision history of android-ribbonizer-plugin
 
-## v0.0.0 - 2014-05-10 12:00:00+0900
+## v0.1.1 - 2015-04-03
+
+* Fix a crash caused by an Android Studio issue
+
+## v0.1.0 - 2015-03-29
 
 * Initial Release
