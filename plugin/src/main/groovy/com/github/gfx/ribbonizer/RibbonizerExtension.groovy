@@ -9,7 +9,7 @@ class RibbonizerExtension {
     Set<String> iconNames = new HashSet<>(["ic_launcher"])
 
     List<FilterBuilder> filterBuilders = [
-        new GreenRibbonFilterBuilder() as FilterBuilder
+        new GreenRibbonBuilder() as FilterBuilder
     ]
 
     public void iconNames(List<String> iconNames) {
