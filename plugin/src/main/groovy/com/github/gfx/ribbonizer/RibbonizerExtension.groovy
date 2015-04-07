@@ -8,7 +8,7 @@ class RibbonizerExtension {
     // TODO: get names from AndroidManifest.xml
     Set<String> iconNames = new HashSet<>(["ic_launcher"])
 
-    List<FilterBuilder> filterBuilders = [
+    List<? extends FilterBuilder> filterBuilders = [
         new GreenRibbonBuilder() as FilterBuilder
     ]
 
@@ -16,7 +16,11 @@ class RibbonizerExtension {
         this.iconNames = new HashSet<>(iconNames)
     }
 
-    public void filterBuilders(List<FilterBuilder> filterBuilders) {
-        this.filterBuilders = filterBuilders
+    public void filterBuilders(Collection<? extends FilterBuilder> filterBuilders) {
+        this.filterBuilders = new ArrayList<>(filterBuilders)
+    }
+
+    public void builder(Class<? extends FilterBuilder> builderClass) {
+        this.filterBuilders = [ builderClass.newInstance() as FilterBuilder ]
     }
 }

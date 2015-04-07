@@ -17,8 +17,25 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
+
+    buildTypes {
+        debug {}
+        beta {
+            debuggable true
+        }
+        release {}
+    }
+
+    productFlavors {
+        local {}
+        staging {}
+        production {}
+    }
 }
 
+ribbonizer {
+    builder com.github.gfx.ribbonizer.YellowRibbonBuilder
+}
 
 dependencies {
     compile 'com.jakewharton:butterknife:6.1.0'
