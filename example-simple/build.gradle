@@ -17,20 +17,6 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
-
-    buildTypes {
-        debug {}
-        beta {
-            debuggable true
-        }
-        release {}
-    }
-
-    productFlavors {
-        local {}
-        staging {}
-        production {}
-    }
 }
 
 
