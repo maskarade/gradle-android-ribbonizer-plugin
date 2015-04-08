@@ -38,6 +38,10 @@ public class RibbonizerPlugin implements Plugin<Project> {
                 throw new Exception("Not an Android application; you forget `apply plugin: 'com.android.application`?")
             }
             def extension = project.extensions.findByType(RibbonizerExtension)
+            if (extension.filterBuilders.size() == 0) {
+                // set the default filer builder
+                extension.builder(GreenRibbonBuilder)
+            }
 
             def tasks = new ArrayList<Task>();
 
