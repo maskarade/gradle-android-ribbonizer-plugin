@@ -2,7 +2,7 @@
 
 This is a ribbonizer as a Gradle plugin for Android, which adds a ribbon to launcher icons.
 
-![](ic_launcher.png)
+![](ic-beta.png) ![](ic-debug.png)
 
 ## Usage
 
