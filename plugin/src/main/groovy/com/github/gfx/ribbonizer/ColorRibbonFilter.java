@@ -11,7 +11,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 public class ColorRibbonFilter implements Action<BufferedImage> {
-    boolean debug = false;
+    static final boolean debug = Boolean.parseBoolean(System.getenv("RIBBONIZER_DEBUG"));
 
     final Color ribbonColor;
     final Color labelColor;
@@ -46,25 +46,23 @@ public class ColorRibbonFilter implements Action<BufferedImage> {
 
         int y = height / 4;
 
-        // ribbon
-        g.setColor(ribbonColor);
-        g.fillRect(-width, y, width * 2, height / 5);
+        // calculate the rectangle where the label is rendered
+        FontRenderContext frc = new FontRenderContext(g.getTransform(), true, true);
+        int maxLabelWidth = calculateMaxLabelWidth(y);
+        g.setFont(getFont(maxLabelWidth, frc));
+        Rectangle2D labelBounds = g.getFont().getStringBounds(label, frc);
 
-        // label
+        // draw the ribbon
+        g.setColor(ribbonColor);
+        g.fillRect(-width, y, width * 2, (int)(labelBounds.getHeight() * 1.2));
+
+        // draw the label
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
         g.setColor(labelColor);
 
-        int maxLabelWidth = calculateMaxLabelWidth(y);
-        g.setFont(getFont(maxLabelWidth, g.getTransform()));
-        Rectangle2D labelBounds = g.getFont().getStringBounds(label,
-                new FontRenderContext(g.getTransform(), true, true));
-
-        g.drawString(label, (int)(-labelBounds.getWidth() / 2), (int)(y + labelBounds.getHeight()));
-
-        if (debug) {
-            g.drawRect((int)(-labelBounds.getWidth() / 2), y, maxLabelWidth, (int)labelBounds.getHeight());
-        }
+        drawString(g, label, (int) (-labelBounds.getWidth() / 2),
+                (int) (y + labelBounds.getHeight()));
 
         g.dispose();
     }
@@ -73,11 +71,10 @@ public class ColorRibbonFilter implements Action<BufferedImage> {
         return (int)Math.sqrt(Math.pow(y, 2) * 2);
     }
 
-    Font getFont(int maxLabelWidth, AffineTransform transform) {
+    Font getFont(int maxLabelWidth, FontRenderContext frc) {
         int max = 32;
         int min = 0;
         int x = max;
-        FontRenderContext frc = new FontRenderContext(transform, true, true);
 
         for (int i = 0; i < 10; i++) {
             int m = ((max + min) / 2);
@@ -97,5 +94,16 @@ public class ColorRibbonFilter implements Action<BufferedImage> {
             x = m;
         }
         return new Font(fontName, fontStyle, x);
+    }
+
+    static void drawString(Graphics2D g, String str, int x, int y) {
+        g.drawString(str, x, y);
+
+        if (debug) {
+            Rectangle2D bounds = g.getFont().getStringBounds(str,
+                    new FontRenderContext(g.getTransform(), true, true));
+
+            g.drawRect(x, y - (int)bounds.getHeight(), (int)bounds.getWidth(), (int)bounds.getHeight());
+        }
     }
 }
