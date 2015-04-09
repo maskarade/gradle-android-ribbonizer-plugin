@@ -1,6 +1,4 @@
-package com.github.gfx.ribbonizer;
-
-import com.android.build.gradle.api.ApplicationVariant;
+package com.github.gfx.ribbonizer.filter;
 
 import org.gradle.api.Action;
 
@@ -26,12 +24,8 @@ public class ColorRibbonFilter implements Action<BufferedImage> {
         this.labelColor = labelColor;
     }
 
-    public ColorRibbonFilter(ApplicationVariant variant, Color ribbonColor, Color labelColor) {
-        this(variant.getBuildType().getName(), ribbonColor, labelColor);
-    }
-
-    public ColorRibbonFilter(ApplicationVariant variant, Color ribbonColor) {
-        this(variant, ribbonColor, Color.WHITE);
+    public ColorRibbonFilter(String label, Color ribbonColor) {
+        this(label, ribbonColor, Color.WHITE);
     }
 
 

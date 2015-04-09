@@ -1,4 +1,6 @@
-package com.github.gfx.ribbonizer;
+package com.github.gfx.ribbonizer.plugin;
+
+import com.github.gfx.ribbonizer.FilterBuilder;
 
 import java.util.ArrayList;
 import java.util.Collection;

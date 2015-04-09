@@ -1,4 +1,4 @@
-package com.github.gfx.ribbonizer;
+package com.github.gfx.ribbonizer.filter;
 
 import org.gradle.api.Action;
 

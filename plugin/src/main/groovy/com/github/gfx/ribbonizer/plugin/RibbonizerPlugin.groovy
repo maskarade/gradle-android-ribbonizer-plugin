@@ -1,6 +1,8 @@
-package com.github.gfx.ribbonizer
+package com.github.gfx.ribbonizer.plugin
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.api.ApplicationVariant
+import com.github.gfx.ribbonizer.FilterBuilder
+import com.github.gfx.ribbonizer.GreenRibbonBuilder
 import groovy.transform.CompileStatic
 import org.gradle.api.Plugin
 import org.gradle.api.Project

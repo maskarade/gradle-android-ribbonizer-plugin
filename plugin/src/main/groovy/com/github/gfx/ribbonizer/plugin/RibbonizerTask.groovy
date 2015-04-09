@@ -1,4 +1,4 @@
-package com.github.gfx.ribbonizer
+package com.github.gfx.ribbonizer.plugin
 import com.android.build.gradle.api.ApplicationVariant
 import com.android.builder.model.SourceProvider
 import groovy.transform.CompileStatic
