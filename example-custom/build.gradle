@@ -1,5 +1,4 @@
 import com.android.build.gradle.api.ApplicationVariant
-import java.awt.image.BufferedImage
 
 apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
@@ -38,10 +37,12 @@ android {
 
 ribbonizer {
     builder { ApplicationVariant variant, File iconFile ->
-        if (variant.flavorName == "debug") {
-            return new com.github.gfx.ribbonizer.GrayRibbonBuilder().apply(variant, iconFile)
+        if (variant.flavorName == "local") {
+            return grayRibbonFilter(variant, iconFile)
+        } else if (variant.flavorName == "staging") {
+            return yellowRibbonFilter(variant, iconFile)
         } else {
-            return new com.github.gfx.ribbonizer.YellowRibbonBuilder().apply(variant, iconFile)
+            return greenRibbonFilter(variant, iconFile)
         }
     }
 }

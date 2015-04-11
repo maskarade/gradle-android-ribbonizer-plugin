@@ -1,12 +1,19 @@
 package com.github.gfx.ribbonizer.plugin;
 
+import com.android.build.gradle.api.ApplicationVariant;
 import com.github.gfx.ribbonizer.FilterBuilder;
+import com.github.gfx.ribbonizer.GrayRibbonBuilder;
+import com.github.gfx.ribbonizer.GreenRibbonBuilder;
+import com.github.gfx.ribbonizer.YellowRibbonBuilder;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
 class RibbonizerExtension {
     public static String NAME = "ribbonizer";
@@ -41,5 +48,19 @@ class RibbonizerExtension {
             throws IllegalAccessException, InstantiationException {
         this.filterBuilders.clear();
         this.filterBuilders.add(filterBuilder);
+    }
+
+    // utilities
+
+    public Consumer<BufferedImage> grayRibbonFilter(ApplicationVariant variant, File iconFile) {
+        return new GrayRibbonBuilder().apply(variant, iconFile);
+    }
+
+    public Consumer<BufferedImage> yellowRibbonFilter(ApplicationVariant variant, File iconFile) {
+        return new YellowRibbonBuilder().apply(variant, iconFile);
+    }
+
+    public Consumer<BufferedImage> greenRibbonFilter(ApplicationVariant variant, File iconFile) {
+        return new GreenRibbonBuilder().apply(variant, iconFile);
     }
 }
