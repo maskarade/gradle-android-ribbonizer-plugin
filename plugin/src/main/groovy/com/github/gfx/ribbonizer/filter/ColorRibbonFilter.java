@@ -47,15 +47,18 @@ public class ColorRibbonFilter implements Consumer<BufferedImage> {
 
         // draw the ribbon
         g.setColor(ribbonColor);
-        g.fillRect(-width, y, width * 2, (int)(labelBounds.getHeight() * 1.2));
+        g.fillRect(-width, y, width * 2, (int) (labelBounds.getHeight()));
 
         // draw the label
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
         g.setColor(labelColor);
 
-        drawString(g, label, (int) (-labelBounds.getWidth() / 2),
-                (int) (y + labelBounds.getHeight()));
+        FontMetrics fm = g.getFontMetrics();
+
+        drawString(g, label,
+                (int) -labelBounds.getWidth() / 2,
+                y + fm.getAscent());
 
         g.dispose();
     }
@@ -93,10 +96,11 @@ public class ColorRibbonFilter implements Consumer<BufferedImage> {
         g.drawString(str, x, y);
 
         if (debug) {
+            FontMetrics fm = g.getFontMetrics();
             Rectangle2D bounds = g.getFont().getStringBounds(str,
                     new FontRenderContext(g.getTransform(), true, true));
 
-            g.drawRect(x, y - (int)bounds.getHeight(), (int)bounds.getWidth(), (int)bounds.getHeight());
+            g.drawRect(x, y - fm.getAscent(), (int)bounds.getWidth(), fm.getAscent());
         }
     }
 }
