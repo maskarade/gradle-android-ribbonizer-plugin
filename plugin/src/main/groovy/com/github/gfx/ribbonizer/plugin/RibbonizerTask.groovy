@@ -2,6 +2,7 @@ package com.github.gfx.ribbonizer.plugin
 
 import com.android.build.gradle.api.ApplicationVariant
 import com.android.builder.model.SourceProvider
+import com.github.gfx.ribbonizer.FilterBuilder
 import groovy.transform.CompileStatic
 import groovy.util.slurpersupport.GPathResult
 import org.gradle.api.DefaultTask
@@ -9,6 +10,7 @@ import org.gradle.api.tasks.TaskAction
 
 import java.awt.image.BufferedImage
 import java.util.function.Consumer
+import java.util.function.Function
 
 @CompileStatic
 class RibbonizerTask extends DefaultTask {
@@ -21,11 +23,11 @@ class RibbonizerTask extends DefaultTask {
 
     Set<String> iconNames
 
-    List<Consumer<BufferedImage>> filters = []
+    List<FilterBuilder> filterBuilders = []
 
     @TaskAction
     public void run() {
-        if (filters.size() == 0) {
+        if (filterBuilders.size() == 0) {
             return;
         }
 
@@ -56,7 +58,13 @@ class RibbonizerTask extends DefaultTask {
                         outputFile.parentFile.mkdirs()
 
                         def ribbonizer = new Ribbonizer(inputFile, outputFile)
-                        ribbonizer.process(filters)
+                        ribbonizer.process(filterBuilders.stream()
+                                .map(new Function<FilterBuilder, Consumer<BufferedImage>>() {
+                            @Override
+                            Consumer<BufferedImage> apply(FilterBuilder filterBuilder) {
+                                return filterBuilder.apply(variant, inputFile)
+                            }
+                        }))
                         ribbonizer.save()
                     }
                 }
@@ -67,7 +75,6 @@ class RibbonizerTask extends DefaultTask {
     }
 
     public void info(String message) {
-        System.out.println("[$name] $message")
         project.logger.info("[$name] $message")
     }
 

@@ -37,9 +37,9 @@ class RibbonizerExtension {
         this.filterBuilders = new ArrayList<>(filterBuilders);
     }
 
-    public void builder(Class<? extends FilterBuilder> builderClass)
+    public void builder(FilterBuilder filterBuilder)
             throws IllegalAccessException, InstantiationException {
         this.filterBuilders.clear();
-        this.filterBuilders.add(builderClass.newInstance());
+        this.filterBuilders.add(filterBuilder);
     }
 }

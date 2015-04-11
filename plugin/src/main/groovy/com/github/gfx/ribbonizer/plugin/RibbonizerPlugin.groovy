@@ -63,9 +63,7 @@ public class RibbonizerPlugin implements Plugin<Project> {
                 task.variant = variant
                 task.outputDir = generatedResDir
                 task.iconNames = new HashSet<String>(extension.iconNames)
-                for (FilterBuilder builder : filterBuilders) {
-                    task.filters.add(builder.apply(variant))
-                }
+                task.filterBuilders = filterBuilders
                 tasks.add(task)
 
                 def generateResources = project.

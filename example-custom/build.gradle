@@ -1,3 +1,6 @@
+import com.android.build.gradle.api.ApplicationVariant
+import java.awt.image.BufferedImage
+
 apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'com.github.gfx.ribbonizer'
@@ -34,7 +37,13 @@ android {
 }
 
 ribbonizer {
-    builder com.github.gfx.ribbonizer.YellowRibbonBuilder
+    builder { ApplicationVariant variant, File iconFile ->
+        if (variant.flavorName == "debug") {
+            return new com.github.gfx.ribbonizer.GrayRibbonBuilder().apply(variant, iconFile)
+        } else {
+            return new com.github.gfx.ribbonizer.YellowRibbonBuilder().apply(variant, iconFile)
+        }
+    }
 }
 
 dependencies {
