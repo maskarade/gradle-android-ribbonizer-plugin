@@ -11,6 +11,6 @@ public class YellowRibbonBuilder implements FilterBuilder {
 
     @Override
     public Consumer<BufferedImage> apply(ApplicationVariant variant) {
-        return new ColorRibbonFilter(variant.getBuildType().getName(), new Color(0xff, 0x76, 0, 0xaa));
+        return new ColorRibbonFilter(variant.getBuildType().getName(), new Color(0xff, 0x76, 0, 0x99));
     }
 }
