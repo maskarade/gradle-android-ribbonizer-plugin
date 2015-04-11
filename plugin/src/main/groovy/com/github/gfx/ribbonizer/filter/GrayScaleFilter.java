@@ -1,12 +1,11 @@
 package com.github.gfx.ribbonizer.filter;
 
-import org.gradle.api.Action;
-
 import java.awt.image.BufferedImage;
+import java.util.function.Consumer;
 
-public class GrayScaleFilter implements Action<BufferedImage> {
+public class GrayScaleFilter implements Consumer<BufferedImage> {
     @Override
-    public void execute(BufferedImage image) {
+    public void accept(BufferedImage image) {
         int width = image.getWidth();
         int height = image.getHeight();
 

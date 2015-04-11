@@ -1,11 +1,10 @@
 package com.github.gfx.ribbonizer.plugin;
 
-import org.gradle.api.Action;
-
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.function.Consumer;
 
 import javax.imageio.ImageIO;
 
@@ -29,9 +28,12 @@ public class Ribbonizer {
         ImageIO.write(image, "png", outputFile);
     }
 
-    public void process(List<Action<BufferedImage>> filters) {
-        filters.forEach((Action<BufferedImage> filter) -> {
-                filter.execute(image);
+    public void process(List<Consumer<BufferedImage>> filters) {
+        filters.forEach(new Consumer<Consumer<BufferedImage>>() {
+            @Override
+            public void accept(Consumer<BufferedImage> filter) {
+                filter.accept(image);
+            }
         });
     }
 }

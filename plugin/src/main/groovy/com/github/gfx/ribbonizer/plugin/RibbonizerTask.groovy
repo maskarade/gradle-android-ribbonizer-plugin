@@ -7,6 +7,7 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 
 import java.awt.image.BufferedImage
+import java.util.function.Consumer
 
 @CompileStatic
 class RibbonizerTask extends DefaultTask {
@@ -17,7 +18,7 @@ class RibbonizerTask extends DefaultTask {
     //@OutputDirectory
     File outputDir
 
-    List<Action<BufferedImage>> filters = []
+    List<Consumer<BufferedImage>> filters = []
 
     @TaskAction
     public void run() {

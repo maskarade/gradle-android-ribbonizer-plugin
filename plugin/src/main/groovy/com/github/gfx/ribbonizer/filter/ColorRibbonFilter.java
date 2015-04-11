@@ -1,14 +1,13 @@
 package com.github.gfx.ribbonizer.filter;
 
-import org.gradle.api.Action;
-
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.function.Consumer;
 
-public class ColorRibbonFilter implements Action<BufferedImage> {
+public class ColorRibbonFilter implements Consumer<BufferedImage> {
     static final boolean debug = Boolean.parseBoolean(System.getenv("RIBBONIZER_DEBUG"));
 
     final Color ribbonColor;
@@ -30,7 +29,7 @@ public class ColorRibbonFilter implements Action<BufferedImage> {
 
 
     @Override
-    public void execute(BufferedImage image) {
+    public void accept(BufferedImage image) {
         int width = image.getWidth();
         int height = image.getHeight();
 
