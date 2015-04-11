@@ -22,6 +22,38 @@ buildscript {
 ```groovy
 // in app/build.gradle
 apply plugin: 'com.github.gfx.ribbonizer'
+
+android {
+    // ...
+
+    buildTypes {
+        debug {}
+        beta {
+            debuggable true
+        }
+        release {}
+    }
+
+    productFlavors {
+        local {}
+        staging {}
+        production {}
+    }
+}
+
+ribbonizer {
+    builder { ApplicationVariant variant, File iconFile ->
+        // change ribbon colors by product flavors
+        if (variant.flavorName == "local") {
+            return grayRibbonFilter(variant, iconFile)
+        } else if (variant.flavorName == "staging") {
+            return yellowRibbonFilter(variant, iconFile)
+        } else {
+            return greenRibbonFilter(variant, iconFile)
+        }
+    }
+}
+
 ```
 
 
