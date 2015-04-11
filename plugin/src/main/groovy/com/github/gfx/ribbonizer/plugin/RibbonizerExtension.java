@@ -15,7 +15,6 @@ class RibbonizerExtension {
     List<FilterBuilder> filterBuilders = new ArrayList<>();
 
     public RibbonizerExtension() {
-        iconNames.add("ic_launcher"); // TODO: extract names from AndroidManifest.xml
     }
 
     public Set<String> getIconNames() {

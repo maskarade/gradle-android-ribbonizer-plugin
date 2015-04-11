@@ -1,8 +1,9 @@
 package com.github.gfx.ribbonizer.plugin
+
 import com.android.build.gradle.api.ApplicationVariant
 import com.android.builder.model.SourceProvider
 import groovy.transform.CompileStatic
-import org.gradle.api.Action
+import groovy.util.slurpersupport.GPathResult
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 
@@ -18,6 +19,8 @@ class RibbonizerTask extends DefaultTask {
     //@OutputDirectory
     File outputDir
 
+    Set<String> iconNames
+
     List<Consumer<BufferedImage>> filters = []
 
     @TaskAction
@@ -28,7 +31,8 @@ class RibbonizerTask extends DefaultTask {
 
         def t0 = System.currentTimeMillis()
 
-        def extension = project.extensions.getByType(RibbonizerExtension)
+        def names = new HashSet<String>(iconNames)
+        names.add(launcherIconName)
 
         variant.sourceSets.forEach { SourceProvider sourceSet ->
             sourceSet.resDirectories.forEach { File resDir ->
@@ -36,9 +40,7 @@ class RibbonizerTask extends DefaultTask {
                     return
                 }
 
-                extension.iconNames.forEach { String name ->
-                    info "process $name in $resDir"
-
+                names.forEach { String name ->
                     project.fileTree(
                             dir: resDir,
                             includes: [
@@ -46,6 +48,8 @@ class RibbonizerTask extends DefaultTask {
                                     "mipmap*/${name}.png",
                             ]
                     ).forEach { File inputFile ->
+                        info "process $inputFile"
+
                         def basename = inputFile.name
                         def resType = inputFile.parentFile.name
                         def outputFile = new File(outputDir, "${resType}/${basename}")
@@ -63,6 +67,19 @@ class RibbonizerTask extends DefaultTask {
     }
 
     public void info(String message) {
+        System.out.println("[$name] $message")
         project.logger.info("[$name] $message")
+    }
+
+    String getLauncherIconName() {
+         def manifestXml = new XmlSlurper().parse(androidManifestFile)
+         def applicationNode = manifestXml.getProperty('application') as GPathResult
+         def iconDrawable = applicationNode.getProperty('@android:icon') as String // "@drawable/ic_launcher"
+        return iconDrawable.split('/')[1]
+    }
+
+     File getAndroidManifestFile() {
+        return new File(project.buildDir,
+                "intermediates/manifests/full/${variant.flavorName}/${variant.buildType.name}/AndroidManifest.xml");
     }
 }

@@ -40,10 +40,6 @@ public class RibbonizerPlugin implements Plugin<Project> {
                 throw new Exception("Not an Android application; you forget `apply plugin: 'com.android.application`?")
             }
             def extension = project.extensions.findByType(RibbonizerExtension)
-            if (extension.filterBuilders.size() == 0) {
-                // set the default filer builder
-                extension.builder(GreenRibbonBuilder)
-            }
 
             def tasks = new ArrayList<Task>();
 
@@ -53,15 +49,21 @@ public class RibbonizerPlugin implements Plugin<Project> {
                             info("[ribbonizer] skip ${variant.name} because it is not debuggable.")
                     return;
                 }
-                def generatedResDir = new File(project.buildDir,
-                        "generated/ribbonizer/res/${variant.name}")
+
+                List<FilterBuilder> filterBuilders = extension.filterBuilders
+                if (filterBuilders.size() == 0) {
+                    filterBuilders = [new GreenRibbonBuilder() as FilterBuilder]
+                }
+
+                def generatedResDir = getGeneratedResDir(project, variant)
                 android.sourceSets.findByName(variant.name).res.srcDir(generatedResDir)
 
                 def name = "${RibbonizerTask.NAME}${capitalize(variant.name)}"
                 def task = project.task(name, type: RibbonizerTask) as RibbonizerTask
                 task.variant = variant
                 task.outputDir = generatedResDir
-                for (FilterBuilder builder : extension.filterBuilders) {
+                task.iconNames = new HashSet<String>(extension.iconNames)
+                for (FilterBuilder builder : filterBuilders) {
                     task.filters.add(builder.apply(variant))
                 }
                 tasks.add(task)
@@ -79,5 +81,10 @@ public class RibbonizerPlugin implements Plugin<Project> {
 
     static String capitalize(String str) {
         return str.substring(0, 1).toUpperCase() + str.substring(1);
+    }
+
+    static File getGeneratedResDir(Project project, ApplicationVariant variant) {
+        return new File(project.buildDir,
+                "generated/ribbonizer/res/${variant.name}")
     }
 }
