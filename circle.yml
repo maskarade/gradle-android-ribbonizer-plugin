@@ -4,8 +4,8 @@ machine:
 
 dependencies:
     override:
-        - docker build -t android_helium .
+        - docker build -t test .
 
 test:
     override:
-        - docker run android_helium
+        - docker run test 
