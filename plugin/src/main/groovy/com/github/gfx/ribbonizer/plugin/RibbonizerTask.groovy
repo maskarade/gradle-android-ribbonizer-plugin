@@ -1,19 +1,21 @@
 package com.github.gfx.ribbonizer.plugin
 
+import com.android.build.gradle.AppExtension
 import com.android.build.gradle.api.ApplicationVariant
 import com.android.builder.model.SourceProvider
 import com.github.gfx.ribbonizer.FilterBuilder
-import groovy.transform.CompileStatic
 import groovy.util.slurpersupport.GPathResult
 import org.gradle.api.DefaultTask
+import org.gradle.api.GradleException
 import org.gradle.api.tasks.TaskAction
 
 import java.awt.image.BufferedImage
 import java.util.function.Consumer
 import java.util.function.Function
+import java.util.stream.Stream
 
-@CompileStatic
 class RibbonizerTask extends DefaultTask {
+
     static final String NAME = "ribbonize"
 
     ApplicationVariant variant
@@ -21,6 +23,7 @@ class RibbonizerTask extends DefaultTask {
     //@OutputDirectory
     File outputDir
 
+    // `iconNames` includes: "drawable/icon", "mipmap/ic_launcher", etc.
     Set<String> iconNames
 
     List<FilterBuilder> filterBuilders = []
@@ -34,7 +37,7 @@ class RibbonizerTask extends DefaultTask {
         def t0 = System.currentTimeMillis()
 
         def names = new HashSet<String>(iconNames)
-        names.add(launcherIconName)
+        names.addAll(launcherIconNames)
 
         variant.sourceSets.forEach { SourceProvider sourceSet ->
             sourceSet.resDirectories.forEach { File resDir ->
@@ -45,10 +48,7 @@ class RibbonizerTask extends DefaultTask {
                 names.forEach { String name ->
                     project.fileTree(
                             dir: resDir,
-                            includes: [
-                                    "drawable*/${name}.png",
-                                    "mipmap*/${name}.png",
-                            ]
+                            include: resourceFilePattern(name),
                     ).forEach { File inputFile ->
                         info "process $inputFile"
 
@@ -60,6 +60,7 @@ class RibbonizerTask extends DefaultTask {
                         def ribbonizer = new Ribbonizer(inputFile, outputFile)
                         ribbonizer.process(filterBuilders.stream()
                                 .map(new Function<FilterBuilder, Consumer<BufferedImage>>() {
+
                             @Override
                             Consumer<BufferedImage> apply(FilterBuilder filterBuilder) {
                                 return filterBuilder.apply(variant, inputFile)
@@ -71,22 +72,46 @@ class RibbonizerTask extends DefaultTask {
             }
         }
 
-        info("${this.name} ${System.currentTimeMillis() - t0}ms")
+        info("task finished in ${System.currentTimeMillis() - t0}ms")
     }
 
     public void info(String message) {
+        //System.out.println("[$name] $message")
         project.logger.info("[$name] $message")
     }
 
-    String getLauncherIconName() {
-         def manifestXml = new XmlSlurper().parse(androidManifestFile)
-         def applicationNode = manifestXml.getProperty('application') as GPathResult
-         def iconDrawable = applicationNode.getProperty('@android:icon') as String // "@drawable/ic_launcher"
-        return iconDrawable.split('/')[1]
+    static String resourceFilePattern(String name) {
+        if (name.startsWith("@")) {
+            def (baseResType, fileName) = name.substring(1).split('/', 2)
+            if (!fileName) {
+                throw new GradleException(
+                        "Icon names does include resource types (e.g. drawable/ic_launcher): $name")
+            }
+            return "${baseResType}*/${fileName}.*"
+        } else {
+            return name;
+        }
     }
 
-     File getAndroidManifestFile() {
-        return new File(project.buildDir,
-                "intermediates/manifests/full/${variant.flavorName}/${variant.buildType.name}/AndroidManifest.xml");
+    Set<String> getLauncherIconNames() {
+        def iconNames = new HashSet<String>()
+
+        androidManifestFiles.forEach { File manifestFile ->
+            def manifestXml = new XmlSlurper().parse(manifestFile)
+            def applicationNode = manifestXml.getProperty('application') as GPathResult
+            iconNames.add(applicationNode.getProperty('@android:icon') as String)
+        }
+
+        return iconNames;
+    }
+
+    Stream<File> getAndroidManifestFiles() {
+        AppExtension android = project.extensions.findByType(AppExtension)
+
+        return ["main", variant.name, variant.buildType.name, variant.flavorName].stream()
+                .filter({ name -> !name.empty })
+                .distinct()
+                .map({ name -> project.file(android.sourceSets[name].manifest.srcFile) })
+                .filter({ manifestFile ->info("$manifestFile ${manifestFile.exists()}"); manifestFile.exists() })
     }
 }
