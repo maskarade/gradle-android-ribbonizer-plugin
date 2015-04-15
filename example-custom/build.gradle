@@ -49,4 +49,5 @@ ribbonizer {
 
 dependencies {
     compile 'com.jakewharton:butterknife:6.1.0'
+    compile 'com.android.support:appcompat-v7:22.0.0'
 }
