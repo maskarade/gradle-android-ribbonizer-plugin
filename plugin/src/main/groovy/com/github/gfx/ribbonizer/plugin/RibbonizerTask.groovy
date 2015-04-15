@@ -23,7 +23,7 @@ class RibbonizerTask extends DefaultTask {
     //@OutputDirectory
     File outputDir
 
-    // `iconNames` includes: "drawable/icon", "mipmap/ic_launcher", etc.
+    // `iconNames` includes: "@drawable/icon", "@mipmap/ic_launcher", etc.
     Set<String> iconNames
 
     List<FilterBuilder> filterBuilders = []
@@ -80,7 +80,7 @@ class RibbonizerTask extends DefaultTask {
         info("task finished in ${System.currentTimeMillis() - t0}ms")
     }
 
-    public void info(String message) {
+    void info(String message) {
         //System.out.println("[$name] $message")
         project.logger.info("[$name] $message")
     }

@@ -28,12 +28,25 @@ class RibbonizerExtension {
         return iconNames;
     }
 
-    public void setIconNames(List<String> iconNames) {
-        this.iconNames = new HashSet<>(iconNames);
+    /**
+     * @param resNames Names of icons. For example "@drawable/ic_launcher", "@mipmap/icon"
+     */
+    public void setIconNames(Collection<String> resNames) {
+        iconNames = new HashSet<>(resNames);
     }
 
-    public void addIconName(String name) {
-        iconNames.add(name);
+    /**
+     * @param resNames Names of icons. For example "@drawable/ic_launcher", "@mipmap/icon"
+     */
+    public void iconNames(Collection<String> resNames) {
+        setIconNames(resNames);
+    }
+
+    /**
+     * @param resName A name of icons. For example "@drawable/ic_launcher", "@mipmap/icon"
+     */
+    public void iconName(String resName) {
+        iconNames.add(resName);
     }
 
     public List<FilterBuilder> getFilterBuilders() {
