@@ -9,6 +9,7 @@ import com.github.gfx.ribbonizer.YellowRibbonBuilder;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -40,6 +41,13 @@ class RibbonizerExtension {
      */
     public void iconNames(Collection<String> resNames) {
         setIconNames(resNames);
+    }
+
+    /**
+     * @param resNames Names of icons. For example "@drawable/ic_launcher", "@mipmap/icon"
+     */
+    public void iconNames(String ... resNames) {
+        setIconNames(Arrays.asList(resNames));
     }
 
     /**

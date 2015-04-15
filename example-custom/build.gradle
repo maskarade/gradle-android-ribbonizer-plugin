@@ -36,7 +36,7 @@ android {
 }
 
 ribbonizer {
-    iconNames ["@drawable/abc_btn_check_to_on_mtrl_000"]
+    iconNames "@drawable/abc_btn_check_to_on_mtrl_000", "@drawable/abc_btn_radio_to_on_mtrl_000"
 
     builder { ApplicationVariant variant, File iconFile ->
         if (variant.flavorName == "local") {
