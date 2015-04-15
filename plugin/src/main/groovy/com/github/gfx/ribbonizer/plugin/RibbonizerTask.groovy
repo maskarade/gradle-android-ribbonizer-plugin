@@ -39,35 +39,40 @@ class RibbonizerTask extends DefaultTask {
         def names = new HashSet<String>(iconNames)
         names.addAll(launcherIconNames)
 
-        variant.sourceSets.forEach { SourceProvider sourceSet ->
-            sourceSet.resDirectories.forEach { File resDir ->
-                if (resDir == outputDir) {
-                    return
-                }
+        variant.sourceSets.stream()
+            .flatMap(new Function<SourceProvider, Stream>() {
 
-                names.forEach { String name ->
-                    project.fileTree(
-                            dir: resDir,
-                            include: resourceFilePattern(name),
-                    ).forEach { File inputFile ->
-                        info "process $inputFile"
+            @Override
+            Stream apply(SourceProvider sourceProvider) {
+                return sourceProvider.resDirectories.stream()
+            }
+        }).forEach { File resDir ->
+            if (resDir == outputDir) {
+                return
+            }
 
-                        def basename = inputFile.name
-                        def resType = inputFile.parentFile.name
-                        def outputFile = new File(outputDir, "${resType}/${basename}")
-                        outputFile.parentFile.mkdirs()
+            names.forEach { String name ->
+                project.fileTree(
+                        dir: resDir,
+                        include: resourceFilePattern(name),
+                ).forEach { File inputFile ->
+                    info "process $inputFile"
 
-                        def ribbonizer = new Ribbonizer(inputFile, outputFile)
-                        ribbonizer.process(filterBuilders.stream()
-                                .map(new Function<FilterBuilder, Consumer<BufferedImage>>() {
+                    def basename = inputFile.name
+                    def resType = inputFile.parentFile.name
+                    def outputFile = new File(outputDir, "${resType}/${basename}")
+                    outputFile.parentFile.mkdirs()
 
-                            @Override
-                            Consumer<BufferedImage> apply(FilterBuilder filterBuilder) {
-                                return filterBuilder.apply(variant, inputFile)
-                            }
-                        }))
-                        ribbonizer.save()
-                    }
+                    def ribbonizer = new Ribbonizer(inputFile, outputFile)
+                    ribbonizer.process(filterBuilders.stream()
+                            .map(new Function<FilterBuilder, Consumer<BufferedImage>>() {
+
+                        @Override
+                        Consumer<BufferedImage> apply(FilterBuilder filterBuilder) {
+                            return filterBuilder.apply(variant, inputFile)
+                        }
+                    }))
+                    ribbonizer.save()
                 }
             }
         }
