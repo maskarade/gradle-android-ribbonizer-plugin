@@ -4,10 +4,7 @@ import com.android.build.gradle.AppExtension
 import com.android.build.gradle.api.ApplicationVariant
 import com.android.builder.model.SourceProvider
 import com.github.gfx.ribbonizer.FilterBuilder
-import groovy.util.slurpersupport.GPathResult
 import org.gradle.api.DefaultTask
-import org.gradle.api.GradleException
-import org.gradle.api.file.FileTree
 import org.gradle.api.tasks.TaskAction
 
 import java.awt.image.BufferedImage
@@ -41,7 +38,7 @@ class RibbonizerTask extends DefaultTask {
         names.addAll(launcherIconNames)
 
         variant.sourceSets.stream()
-            .flatMap(new Function<SourceProvider, Stream>() {
+                .flatMap(new Function<SourceProvider, Stream>() {
 
             @Override
             Stream apply(SourceProvider sourceProvider) {
@@ -88,7 +85,7 @@ class RibbonizerTask extends DefaultTask {
 
     Set<String> getLauncherIconNames() {
         def names = new HashSet<String>()
-         androidManifestFiles.forEach { File manifestFile ->
+        androidManifestFiles.forEach { File manifestFile ->
             names.add(Resources.getLauncherIcon(manifestFile))
         }
         return names

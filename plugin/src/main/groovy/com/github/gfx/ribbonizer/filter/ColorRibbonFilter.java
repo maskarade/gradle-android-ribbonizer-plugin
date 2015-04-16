@@ -8,13 +8,17 @@ import java.awt.image.BufferedImage;
 import java.util.function.Consumer;
 
 public class ColorRibbonFilter implements Consumer<BufferedImage> {
+
     static final boolean debug = Boolean.parseBoolean(System.getenv("RIBBONIZER_DEBUG"));
 
     final Color ribbonColor;
+
     final Color labelColor;
 
     String label;
+
     String fontName = "Default";
+
     int fontStyle = Font.PLAIN;
 
     public ColorRibbonFilter(String label, Color ribbonColor, Color labelColor) {
@@ -27,13 +31,28 @@ public class ColorRibbonFilter implements Consumer<BufferedImage> {
         this(label, ribbonColor, Color.WHITE);
     }
 
+    static int calculateMaxLabelWidth(int y) {
+        return (int) Math.sqrt(Math.pow(y, 2) * 2);
+    }
+
+    static void drawString(Graphics2D g, String str, int x, int y) {
+        g.drawString(str, x, y);
+
+        if (debug) {
+            FontMetrics fm = g.getFontMetrics();
+            Rectangle2D bounds = g.getFont().getStringBounds(str,
+                    new FontRenderContext(g.getTransform(), true, true));
+
+            g.drawRect(x, y - fm.getAscent(), (int) bounds.getWidth(), fm.getAscent());
+        }
+    }
 
     @Override
     public void accept(BufferedImage image) {
         int width = image.getWidth();
         int height = image.getHeight();
 
-        Graphics2D g = (Graphics2D)image.getGraphics();
+        Graphics2D g = (Graphics2D) image.getGraphics();
 
         g.setTransform(AffineTransform.getRotateInstance(Math.toRadians(-45)));
 
@@ -63,10 +82,6 @@ public class ColorRibbonFilter implements Consumer<BufferedImage> {
         g.dispose();
     }
 
-    static int calculateMaxLabelWidth(int y) {
-        return (int)Math.sqrt(Math.pow(y, 2) * 2);
-    }
-
     Font getFont(int maxLabelWidth, FontRenderContext frc) {
         int max = 32;
         int min = 0;
@@ -80,7 +95,7 @@ public class ColorRibbonFilter implements Consumer<BufferedImage> {
 
             Font font = new Font(fontName, fontStyle, m);
             Rectangle2D labelBounds = font.getStringBounds(label, frc);
-            int px = (int)labelBounds.getWidth();
+            int px = (int) labelBounds.getWidth();
 
             if (px > maxLabelWidth) {
                 max = m;
@@ -90,17 +105,5 @@ public class ColorRibbonFilter implements Consumer<BufferedImage> {
             x = m;
         }
         return new Font(fontName, fontStyle, x);
-    }
-
-    static void drawString(Graphics2D g, String str, int x, int y) {
-        g.drawString(str, x, y);
-
-        if (debug) {
-            FontMetrics fm = g.getFontMetrics();
-            Rectangle2D bounds = g.getFont().getStringBounds(str,
-                    new FontRenderContext(g.getTransform(), true, true));
-
-            g.drawRect(x, y - fm.getAscent(), (int)bounds.getWidth(), fm.getAscent());
-        }
     }
 }

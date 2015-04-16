@@ -31,7 +31,7 @@ public class Resources {
     public static String getLauncherIcon(File manifestFile)
             throws SAXException, ParserConfigurationException, IOException {
         GPathResult manifestXml = new XmlSlurper().parse(manifestFile);
-        GPathResult applicationNode = (GPathResult)manifestXml.getProperty("application");
+        GPathResult applicationNode = (GPathResult) manifestXml.getProperty("application");
         return String.valueOf(applicationNode.getProperty("@android:icon"));
     }
 }

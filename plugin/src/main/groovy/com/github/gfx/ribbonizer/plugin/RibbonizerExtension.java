@@ -17,9 +17,11 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 class RibbonizerExtension {
+
     public static String NAME = "ribbonizer";
 
     Set<String> iconNames = new HashSet<>();
+
     List<FilterBuilder> filterBuilders = new ArrayList<>();
 
     public RibbonizerExtension() {
@@ -46,7 +48,7 @@ class RibbonizerExtension {
     /**
      * @param resNames Names of icons. For example "@drawable/ic_launcher", "@mipmap/icon"
      */
-    public void iconNames(String ... resNames) {
+    public void iconNames(String... resNames) {
         setIconNames(Arrays.asList(resNames));
     }
 

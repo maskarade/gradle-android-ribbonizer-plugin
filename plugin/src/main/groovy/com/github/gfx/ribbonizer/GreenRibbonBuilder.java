@@ -9,6 +9,7 @@ import java.io.File;
 import java.util.function.Consumer;
 
 public class GreenRibbonBuilder implements FilterBuilder {
+
     public static Color COLOR = new Color(0, 0x72, 0, 0x99);
 
     @Override
