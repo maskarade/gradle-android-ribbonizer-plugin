@@ -28,6 +28,10 @@ dependencies {
     compile gradleApi()
     compile localGroovy()
     compile 'com.android.tools.build:gradle:1.1.3'
+
+    testCompile('org.spockframework:spock-core:1.0-groovy-2.3') {
+        exclude group:'org.codehaus.groovy'
+    }
 }
 
 // artifact settings
