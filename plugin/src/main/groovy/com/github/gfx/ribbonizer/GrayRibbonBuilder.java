@@ -9,7 +9,7 @@ import java.io.File;
 import java.util.function.Consumer;
 
 public class GrayRibbonBuilder implements FilterBuilder {
-    public static final Color COLOR = new Color(0x6d, 0x6d, 0x6d, 0x99);
+    public static final Color COLOR = new Color(0x60, 0x60, 0x60, 0x99);
 
     @Override
     public Consumer<BufferedImage> apply(ApplicationVariant variant, File iconFile) {
