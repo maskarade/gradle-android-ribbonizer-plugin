@@ -14,7 +14,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:1.1.3'
-        classpath 'com.github.gfx.ribbonizer:plugin:0.2.0'
+        classpath 'com.github.gfx.ribbonizer:plugin:0.3.0'
     }
 }
 ```
@@ -42,6 +42,9 @@ android {
 }
 
 ribbonizer {
+    // "manifest application[android:icon]" is automatically added to the list
+    iconNames "@drawable/ic_notification", "@drawable/widget_preview"
+
     builder { ApplicationVariant variant, File iconFile ->
         // change ribbon colors by product flavors
         if (variant.flavorName == "local") {
