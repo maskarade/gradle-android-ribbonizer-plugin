@@ -7,6 +7,7 @@ import com.github.gfx.ribbonizer.FilterBuilder
 import groovy.util.slurpersupport.GPathResult
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
+import org.gradle.api.file.FileTree
 import org.gradle.api.tasks.TaskAction
 
 import java.awt.image.BufferedImage
@@ -54,7 +55,7 @@ class RibbonizerTask extends DefaultTask {
             names.forEach { String name ->
                 project.fileTree(
                         dir: resDir,
-                        include: resourceFilePattern(name),
+                        include: Resources.resourceFilePattern(name),
                 ).forEach { File inputFile ->
                     info "process $inputFile"
 
@@ -85,29 +86,12 @@ class RibbonizerTask extends DefaultTask {
         project.logger.info("[$name] $message")
     }
 
-    static String resourceFilePattern(String name) {
-        if (name.startsWith("@")) {
-            def (baseResType, fileName) = name.substring(1).split('/', 2)
-            if (!fileName) {
-                throw new GradleException(
-                        "Icon names does include resource types (e.g. drawable/ic_launcher): $name")
-            }
-            return "${baseResType}*/${fileName}.*"
-        } else {
-            return name;
-        }
-    }
-
     Set<String> getLauncherIconNames() {
-        def iconNames = new HashSet<String>()
-
-        androidManifestFiles.forEach { File manifestFile ->
-            def manifestXml = new XmlSlurper().parse(manifestFile)
-            def applicationNode = manifestXml.getProperty('application') as GPathResult
-            iconNames.add(applicationNode.getProperty('@android:icon') as String)
+        def names = new HashSet<String>()
+         androidManifestFiles.forEach { File manifestFile ->
+            names.add(Resources.getLauncherIcon(manifestFile))
         }
-
-        return iconNames;
+        return names
     }
 
     Stream<File> getAndroidManifestFiles() {
@@ -117,6 +101,6 @@ class RibbonizerTask extends DefaultTask {
                 .filter({ name -> !name.empty })
                 .distinct()
                 .map({ name -> project.file(android.sourceSets[name].manifest.srcFile) })
-                .filter({ manifestFile ->info("$manifestFile ${manifestFile.exists()}"); manifestFile.exists() })
+                .filter({ manifestFile -> manifestFile.exists() })
     }
 }
