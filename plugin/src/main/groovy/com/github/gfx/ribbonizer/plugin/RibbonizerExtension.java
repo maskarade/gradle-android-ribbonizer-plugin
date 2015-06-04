@@ -75,6 +75,10 @@ class RibbonizerExtension {
 
     // utilities
 
+    public Consumer<BufferedImage> grayScaleFilter(ApplicationVariant variant, File iconFile) {
+        return new GrayScaleBuilder().apply(variant, iconFile);
+    }
+
     public Consumer<BufferedImage> grayRibbonFilter(ApplicationVariant variant, File iconFile) {
         return new GrayRibbonBuilder().apply(variant, iconFile);
     }
