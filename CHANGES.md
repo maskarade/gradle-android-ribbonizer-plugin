@@ -1,7 +1,8 @@
 # The revision history of android-ribbonizer-plugin
 
-## NEXT
+## v0.4.0 - 2015-06-05
 
+* [Add RibbonizerExtension#grayScaleFilter by kazy1991 · Pull Request #4 · gfx/gradle-android-ribbonizer-plugin](https://github.com/gfx/gradle-android-ribbonizer-plugin/pull/4)
 * Add ways to add icon names (see `example-custom/build.gradle` for example)
 
 ## v0.3.0 - 2015-04-15
