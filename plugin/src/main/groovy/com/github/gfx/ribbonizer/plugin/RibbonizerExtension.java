@@ -2,6 +2,7 @@ package com.github.gfx.ribbonizer.plugin;
 
 import com.android.build.gradle.api.ApplicationVariant;
 import com.github.gfx.ribbonizer.FilterBuilder;
+import com.github.gfx.ribbonizer.GrayScaleBuilder;
 import com.github.gfx.ribbonizer.GrayRibbonBuilder;
 import com.github.gfx.ribbonizer.GreenRibbonBuilder;
 import com.github.gfx.ribbonizer.YellowRibbonBuilder;
