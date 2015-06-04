@@ -68,6 +68,8 @@ example/  - An example android application that uses this plugin
 buildSrc/ - A helper module to use this plugin in example modules
 ```
 
+You can test this project with `./gradlew check`.
+
 ## Author And License
 
 The MIT License (MIT)
