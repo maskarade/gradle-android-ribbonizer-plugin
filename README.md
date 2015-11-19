@@ -13,8 +13,8 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.3'
-        classpath 'com.github.gfx.ribbonizer:plugin:0.4.0'
+        classpath 'com.android.tools.build:gradle:1.5.0'
+        classpath 'com.github.gfx.ribbonizer:plugin:0.5.0'
     }
 }
 ```

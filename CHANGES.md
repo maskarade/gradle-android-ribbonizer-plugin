@@ -1,5 +1,9 @@
 # The revision history of android-ribbonizer-plugin
 
+## v0.5.0
+
+* Build with Android Gradle plugin v1.5.0
+
 ## v0.4.0 - 2015-06-05
 
 * [Add RibbonizerExtension#grayScaleFilter by kazy1991 · Pull Request #4 · gfx/gradle-android-ribbonizer-plugin](https://github.com/gfx/gradle-android-ribbonizer-plugin/pull/4)
