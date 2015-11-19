@@ -27,7 +27,7 @@ public class ResourcesTest extends Specification {
     android:versionName="1.0" >
     <uses-sdk
         android:minSdkVersion="15"
-        android:targetSdkVersion="22" />
+        android:targetSdkVersion="23" />
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
