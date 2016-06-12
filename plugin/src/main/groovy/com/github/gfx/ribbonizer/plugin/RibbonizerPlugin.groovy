@@ -47,9 +47,8 @@ public class RibbonizerPlugin implements Plugin<Project> {
             def tasks = new ArrayList<Task>();
 
             android.applicationVariants.all { ApplicationVariant variant ->
-                if (!variant.buildType.debuggable) {
-                    project.logger.
-                            info("[ribbonizer] skip ${variant.name} because it is not debuggable.")
+                if ((!variant.buildType.debuggable) && (!extension.forcedVariantsNames.contains(variant.name))) {
+                    project.logger.info("[ribbonizer] skip ${variant.name} because it is not debuggable and not forced.")
                     return;
                 }
 
