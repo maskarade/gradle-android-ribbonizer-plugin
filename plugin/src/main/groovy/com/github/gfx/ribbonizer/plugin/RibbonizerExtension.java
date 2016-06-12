@@ -21,6 +21,8 @@ class RibbonizerExtension {
 
     public static String NAME = "ribbonizer";
 
+    Set<String> forcedVariantsNames = new HashSet<>();
+
     Set<String> iconNames = new HashSet<>();
 
     List<FilterBuilder> filterBuilders = new ArrayList<>();
@@ -58,6 +60,14 @@ class RibbonizerExtension {
      */
     public void iconName(String resName) {
         iconNames.add(resName);
+    }
+
+    public Set<String> getForcedVariantsNames() {
+        return forcedVariantsNames;
+    }
+
+    public void forcedVariantsNames(String... variantsNames) {
+        forcedVariantsNames = new HashSet<>(Arrays.asList(variantsNames));
     }
 
     public List<FilterBuilder> getFilterBuilders() {
