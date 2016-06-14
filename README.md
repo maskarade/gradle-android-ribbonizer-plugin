@@ -27,11 +27,17 @@ android {
     // ...
 
     buildTypes {
-        debug {}
+        debug {/*debuggable build, which will ribbonized automatically*/}
         beta {
+            //debuggable build which will automatically ribbonized.
             debuggable true
         }
-        release {}
+        canary {
+            //non-debuggable build which will no automatically ribbonized.
+            //But, we force one of its flavors. See `ribbonizer` for how-to
+            debuggable false
+        }
+        release {/*non-debuggable build. Will not be rebbonized automatically*/}
     }
 
     productFlavors {
@@ -55,6 +61,10 @@ ribbonizer {
             return greenRibbonFilter(variant, iconFile)
         }
     }
+
+    //Although `canary` build-type is marked as `non-debuggable`
+    //we can still force specific variants to be ribbonized:
+    forcedVariantsNames "localCanary"
 }
 
 ```

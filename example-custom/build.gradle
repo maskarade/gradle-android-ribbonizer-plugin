@@ -24,6 +24,9 @@ android {
         beta {
             debuggable true
         }
+        canary {
+            debuggable false
+        }
         release {}
     }
 
@@ -46,6 +49,8 @@ ribbonizer {
             return greenRibbonFilter(variant, iconFile)
         }
     }
+
+    forcedVariantsNames "localCanary"
 }
 
 dependencies {
