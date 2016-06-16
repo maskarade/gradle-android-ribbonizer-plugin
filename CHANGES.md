@@ -1,6 +1,10 @@
 # The revision history of android-ribbonizer-plugin
 
-## v0.5.0
+## v0.6.0 - 2016-06-16
+
+* Add `forcedVariantsNames` (#11)
+
+## v0.5.0 - 2015-11-19
 
 * Build with Android Gradle plugin v1.5.0
 
