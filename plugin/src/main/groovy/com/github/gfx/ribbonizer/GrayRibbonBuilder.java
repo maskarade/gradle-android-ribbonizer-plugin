@@ -16,4 +16,9 @@ public class GrayRibbonBuilder implements FilterBuilder {
     public Consumer<BufferedImage> apply(ApplicationVariant variant, File iconFile) {
         return new ColorRibbonFilter(variant.getBuildType().getName(), COLOR);
     }
+
+    @Override
+    public Consumer<BufferedImage> apply(String label, File iconFile) {
+        return new ColorRibbonFilter(label, COLOR);
+    }
 }
