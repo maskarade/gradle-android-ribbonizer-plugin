@@ -43,8 +43,8 @@ ribbonizer {
     builder { ApplicationVariant variant, File iconFile ->
         if (variant.flavorName == "local") {
             return grayRibbonFilter(variant, iconFile)
-        } else if (variant.flavorName == "staging") {
-            return yellowRibbonFilter(variant, iconFile)
+        } else if (variant.buildType.name == "debug") {
+            return customColorRibbonFilter(variant, iconFile, "#0000FF")
         } else {
             return greenRibbonFilter(variant, iconFile)
         }
