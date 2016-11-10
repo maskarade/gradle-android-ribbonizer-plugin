@@ -1,11 +1,23 @@
 machine:
-    services:
-        - docker
-
+  java:
+    version: oraclejdk8
+  environment:
+    GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx1560m -XX:+HeapDumpOnOutOfMemoryError" -Dorg.gradle.daemon=false'
+    JAVA_OPTS: '-Xmx1560m -XX:+HeapDumpOnOutOfMemoryError'
 dependencies:
-    override:
-        - docker build -t test .
-
+  pre:
+    - sudo service postgresql stop
+    - sudo service mongodb stop
+    - sudo service memcached stop
+    - sudo service mysql stop
+    - sudo service couchdb stop
+    - sudo service rabbitmq-server stop
+    - sudo service zookeeper stop
+    - echo y | android -s update sdk -u -a -t "tools"
+    - echo y | android -s update sdk -u -a -t "platform-tools"
+    - echo y | android -s update sdk -u -a -t "extra-android-m2repository"
+    - mkdir -p "$ANDROID_HOME"/licenses
+    - echo "8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME"/licenses/android-sdk-license
 test:
-    override:
-        - docker run test 
+  override:
+    - TERM=dumb ./gradlew check

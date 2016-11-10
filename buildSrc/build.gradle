@@ -1,7 +1,7 @@
 System.setProperty("java.awt.headless", "true")
 
 repositories {
-    mavenCentral()
+    jcenter()
 }
 
 dependencies {
