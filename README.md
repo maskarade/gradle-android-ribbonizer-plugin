@@ -14,7 +14,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.1.2'
-        classpath 'com.github.gfx.ribbonizer:plugin:0.6.0'
+        classpath 'com.github.gfx.ribbonizer:plugin:1.0.0'
     }
 }
 ```
@@ -60,6 +60,7 @@ ribbonizer {
         } else {
             return greenRibbonFilter(variant, iconFile)
         }
+        // or customColorRibbonFilter(variant, iconFile, "#0000FF")
     }
 
     //Although `canary` build-type is marked as `non-debuggable`

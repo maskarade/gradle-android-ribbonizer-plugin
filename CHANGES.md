@@ -1,5 +1,9 @@
 # The revision history of android-ribbonizer-plugin
 
+## v1.0.0 2016/11/16
+
+* Add `customColorRibbonFilter(variant, iconFile, color)` (#13)
+
 ## v0.6.0 - 2016-06-16
 
 * Add `forcedVariantsNames` (#11)
