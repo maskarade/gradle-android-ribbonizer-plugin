@@ -4,11 +4,15 @@ import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import groovy.util.XmlSlurper;
 import groovy.util.slurpersupport.GPathResult;
+
+import static java.util.Collections.unmodifiableList;
 
 public class Resources {
 
@@ -28,10 +32,23 @@ public class Resources {
         }
     }
 
-    public static String getLauncherIcon(File manifestFile)
+    public static List<String> getLauncherIcons(File manifestFile)
             throws SAXException, ParserConfigurationException, IOException {
         GPathResult manifestXml = new XmlSlurper().parse(manifestFile);
         GPathResult applicationNode = (GPathResult) manifestXml.getProperty("application");
-        return String.valueOf(applicationNode.getProperty("@android:icon"));
+
+        String icon = String.valueOf(applicationNode.getProperty("@android:icon"));
+        String roundIcon = String.valueOf(applicationNode.getProperty("@android:roundIcon"));
+
+        List<String> icons = new ArrayList<>(2);
+        if (!icon.isEmpty()) {
+            icons.add(icon);
+        }
+        if (!roundIcon.isEmpty()) {
+            icons.add(roundIcon);
+        }
+
+        return unmodifiableList(icons);
+
     }
 }
