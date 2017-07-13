@@ -86,7 +86,7 @@ class RibbonizerTask extends DefaultTask {
     Set<String> getLauncherIconNames() {
         def names = new HashSet<String>()
         androidManifestFiles.forEach { File manifestFile ->
-            names.add(Resources.getLauncherIcon(manifestFile))
+            names.addAll(Resources.getLauncherIcons(manifestFile))
         }
         return names
     }
