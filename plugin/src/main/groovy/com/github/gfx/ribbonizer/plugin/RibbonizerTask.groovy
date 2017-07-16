@@ -53,6 +53,7 @@ class RibbonizerTask extends DefaultTask {
                 project.fileTree(
                         dir: resDir,
                         include: Resources.resourceFilePattern(name),
+                        exclude: "**/*.xml",
                 ).forEach { File inputFile ->
                     info "process $inputFile"
 
