@@ -21,3 +21,4 @@ dependencies:
 test:
   override:
     - TERM=dumb ./gradlew check
+    - TERM=dumb ./gradlew ribbonize
