@@ -4,6 +4,7 @@
 
 https://github.com/gfx/gradle-android-ribbonizer-plugin/compare/v1.0.0...v1.1.0
 
+* Change the artifact id from `plugin` to `ribbonizer-plugin`
 * [#16](https://github.com/gfx/gradle-android-ribbonizer-plugin/pull/16) Support for android:roundIcon launcher images
 * [#19](https://github.com/gfx/gradle-android-ribbonizer-plugin/pull/19) Exclude XML resources
 

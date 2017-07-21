@@ -30,7 +30,7 @@ if (rootProject.hasProperty('versionName') && rootProject.hasProperty('bintrayUs
     apply plugin: 'com.novoda.bintray-release'
 
     publish {
-        artifactId = 'plugin'
+        artifactId = 'ribbonizer-plugin'
         desc = 'Gradle plugin to modifiy Android launcher icons'
 
         def metadata = rootProject.ext.metadata
