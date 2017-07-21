@@ -1,5 +1,9 @@
 # The revision history of android-ribbonizer-plugin
 
+## v2.0.0 2017/07/21
+
+No code change from v1.1.0; the reason of bumping the version is that v1.1.0 has breaking changes in the artifact id (`s/plugin/ribbonizer-plugin/`).
+
 ## v1.1.0 2017/07/21
 
 https://github.com/gfx/gradle-android-ribbonizer-plugin/compare/v1.0.0...v1.1.0
