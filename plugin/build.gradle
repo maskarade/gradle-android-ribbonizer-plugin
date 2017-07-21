@@ -1,25 +1,9 @@
-final REPOSITORY_URL = 'https://github.com/gfx/gradle-android-ribbonizer-plugin'
-
-final GROUP_ID = 'com.github.gfx.ribbonizer'
-final ARTIFACT_ID = 'plugin'
-final VERSION = '1.0.0'
-
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.bmuschko:gradle-nexus-plugin:2.3'
-    }
-}
 repositories {
     jcenter()
 }
 
 apply plugin: 'groovy'
 
-apply plugin: 'maven'
-apply plugin: 'com.bmuschko.nexus'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -34,72 +18,27 @@ dependencies {
     }
 }
 
-// artifact settings
-
-String git(String command) {
-    println "git $command"
-    def process = ["sh", "-c", "cd ${project.rootDir} ; git $command"].execute()
-    if (process.waitFor() != 0) {
-        throw new GradleException(process.err.text)
+if (rootProject.hasProperty('versionName') && rootProject.hasProperty('bintrayUser')) {
+    jar {
+        manifest {
+            attributes(
+                    "Implementation-Version": project.file("../VERSION").text.trim(),
+            )
+        }
     }
-    return process.in.text
 
-}
+    apply plugin: 'com.novoda.bintray-release'
 
-task('releng') {
-    doLast {
-        def gitStatus = git("status --porcelain")
-        if (gitStatus.trim()) {
-            throw new GradleException("Changes found:\n$gitStatus")
-        }
+    publish {
+        artifactId = 'plugin'
+        desc = 'Gradle plugin to modifiy Android launcher icons'
 
-        println git("tag v$VERSION")
-        println git("push origin v$VERSION")
-    }
-}
-
-configurations {
-    mavenDeployer
-}
-
-uploadArchives {
-    repositories.mavenDeployer {
-        pom.groupId = GROUP_ID
-        pom.artifactId = ARTIFACT_ID
-        pom.version = VERSION
-    }
-}
-
-extraArchive {
-    sources = true
-    javadoc = true
-}
-
-modifyPom {
-    project {
-        name 'Ribbonizer plugin for Android'
-        description 'Adds ribbons to launcher icons for Android applications'
-        url REPOSITORY_URL
-        inceptionYear '2015'
-
-        scm {
-            url REPOSITORY_URL
-        }
-
-        licenses {
-            license {
-                name 'The Apache Software License, Version 2.0'
-                url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                distribution 'repo'
-            }
-        }
-
-        developers {
-            developer {
-                id 'gfx'
-                name 'FUJI Goro'
-                email 'gfuji@cpan.org'
-            }
-        }
+        def metadata = rootProject.ext.metadata
+        userOrg = metadata.userOrg
+        groupId = metadata.groupId
+        publishVersion = metadata.version
+        website = metadata.website
+        repository = metadata.repository
+        licences = metadata.licences
     }
 }

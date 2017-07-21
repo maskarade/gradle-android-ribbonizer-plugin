@@ -1,9 +1,17 @@
+apply from: './versioning.gradle'
+apply from: './metadata.gradle'
+
+ext {
+    metadata.version = versionName
+}
+
 buildscript {
     repositories {
         jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath 'com.novoda:bintray-release:0.5.0' // https://github.com/novoda/bintray-release
     }
 }
 
@@ -11,7 +19,4 @@ allprojects {
     repositories {
         jcenter()
     }
-}
-
-task('uploadArchives') {
 }
