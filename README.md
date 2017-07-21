@@ -1,4 +1,4 @@
-# Ribbonizer plugin for Android [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.gfx.ribbonizer/plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.gfx.ribbonizer/plugin) [![Circle CI](https://circleci.com/gh/gfx/gradle-android-ribbonizer-plugin.svg?style=svg&branch=master)](https://circleci.com/gh/gfx/gradle-android-ribbonizer-plugin)
+# Ribbonizer plugin for Android [![Circle CI](https://circleci.com/gh/gfx/gradle-android-ribbonizer-plugin.svg?style=svg&branch=master)](https://circleci.com/gh/gfx/gradle-android-ribbonizer-plugin) [![Download](https://api.bintray.com/packages/gfx/maven/ribbonizer-plugin/images/download.svg)](https://bintray.com/gfx/maven/ribbonizer-plugin/_latestVersion)
 
 This is a ribbonizer as a Gradle plugin for Android, which adds a ribbon to launcher icons.
 
@@ -80,6 +80,14 @@ buildSrc/ - A helper module to use this plugin in example modules
 ```
 
 You can test this project with `./gradlew check`.
+
+## Release Engineering
+
+```console
+./gradlew bumpMinor # or bumpMajor, bumpPatch
+
+make publish # upload artifacts to bintray jcenter
+```
 
 ## Author And License
 
