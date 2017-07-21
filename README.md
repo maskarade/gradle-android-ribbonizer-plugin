@@ -14,7 +14,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.1.2'
-        classpath 'com.github.gfx.ribbonizer:plugin:1.0.0'
+        classpath 'com.github.gfx.ribbonizer:plugin:1.1.0'
     }
 }
 ```

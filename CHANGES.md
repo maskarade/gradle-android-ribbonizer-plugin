@@ -1,5 +1,12 @@
 # The revision history of android-ribbonizer-plugin
 
+## v1.1.0 2017/07/21
+
+https://github.com/gfx/gradle-android-ribbonizer-plugin/compare/v1.0.0...v1.1.0
+
+* [#16](https://github.com/gfx/gradle-android-ribbonizer-plugin/pull/16) Support for android:roundIcon launcher images
+* [#19](https://github.com/gfx/gradle-android-ribbonizer-plugin/pull/19) Exclude XML resources
+
 ## v1.0.0 2016/11/16
 
 * Add `customColorRibbonFilter(variant, iconFile, color)` (#13)
