@@ -49,7 +49,7 @@ ribbonizer {
             return grayRibbonFilter(variant, iconFile)
         } else if (variant.flavorName == "qa") {
             def filter = customColorRibbonFilter(variant, iconFile, "#00C89C")
-            filter.label = "QA" + variant.versionCode
+            filter.label = null//"QA" + variant.versionCode
             return filter
         } else if (variant.buildType.name == "debug") {
             return customColorRibbonFilter(variant, iconFile, "#0000FF")
