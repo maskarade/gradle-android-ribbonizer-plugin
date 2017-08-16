@@ -41,11 +41,13 @@ android {
 }
 
 ribbonizer {
-    iconNames "@drawable/abc_btn_check_to_on_mtrl_000", "@drawable/abc_btn_radio_to_on_mtrl_000"
+    iconNames "@drawable/abc_btn_check_to_on_mtrl_000", "@drawable/abc_btn_radio_to_on_mtrl_000", "@mipmap/ic_launcher_foreground"
 
     builder { ApplicationVariant variant, File iconFile ->
         if (variant.flavorName == "local") {
-            return grayRibbonFilter(variant, iconFile)
+            def filter = grayRibbonFilter(variant, iconFile)
+            filter.largeRibbon = (iconFile.name == "ic_launcher_foreground.png")
+            return filter
         } else if (variant.buildType.name == "debug") {
             return customColorRibbonFilter(variant, iconFile, "#0000FF")
         } else {
