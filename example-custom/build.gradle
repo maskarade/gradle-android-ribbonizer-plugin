@@ -47,6 +47,9 @@ ribbonizer {
         if (variant.flavorName == "local") {
             return grayRibbonFilter(variant, iconFile)
         } else if (variant.buildType.name == "debug") {
+            if (variant.flavorName == "production") {
+                return null
+            }
             return customColorRibbonFilter(variant, iconFile, "#0000FF")
         } else {
             return greenRibbonFilter(variant, iconFile)
