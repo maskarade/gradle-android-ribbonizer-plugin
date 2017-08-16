@@ -21,6 +21,8 @@ public class ColorRibbonFilter implements Consumer<BufferedImage> {
 
     int fontStyle = Font.PLAIN;
 
+    boolean largeRibbon = false;
+
     public ColorRibbonFilter(String label, Color ribbonColor, Color labelColor) {
         this.label = label;
         this.ribbonColor = ribbonColor;
@@ -56,7 +58,7 @@ public class ColorRibbonFilter implements Consumer<BufferedImage> {
 
         g.setTransform(AffineTransform.getRotateInstance(Math.toRadians(-45)));
 
-        int y = height / 4;
+        int y = height / (largeRibbon ? 2 : 4);
 
         // calculate the rectangle where the label is rendered
         FontRenderContext frc = new FontRenderContext(g.getTransform(), true, true);
