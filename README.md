@@ -42,6 +42,7 @@ android {
 
     productFlavors {
         local {}
+        qa {}
         staging {}
         production {}
     }
@@ -55,12 +56,18 @@ ribbonizer {
         // change ribbon colors by product flavors
         if (variant.flavorName == "local") {
             return grayRibbonFilter(variant, iconFile)
+        } else if (variant.flavorName == "qa") {
+            // customColorRibbonFilter allows setting any color code
+            def filter = customColorRibbonFilter(variant, iconFile, "#00C89C")
+            // Finer control of the label text can be achieved by setting it manually, or set to 
+            // null for an unlabelled ribbon. The default is to use the flavor name.
+            filter.label = "QA" + variant.versionCode
+            return filter
         } else if (variant.flavorName == "staging") {
             return yellowRibbonFilter(variant, iconFile)
         } else {
             return greenRibbonFilter(variant, iconFile)
         }
-        // or customColorRibbonFilter(variant, iconFile, "#0000FF")
     }
 
     //Although `canary` build-type is marked as `non-debuggable`
