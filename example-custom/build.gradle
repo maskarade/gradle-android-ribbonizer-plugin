@@ -35,17 +35,23 @@ android {
 
     productFlavors {
         local {}
+        qa {}
         staging {}
         production {}
     }
 }
 
 ribbonizer {
-    iconNames "@drawable/abc_btn_check_to_on_mtrl_000", "@drawable/abc_btn_radio_to_on_mtrl_000"
+    iconNames "@drawable/abc_btn_check_to_on_mtrl_000", "@drawable/abc_btn_radio_to_on_mtrl_000", "@mipmap/ic_launcher_foreground"
 
     builder { ApplicationVariant variant, File iconFile ->
         if (variant.flavorName == "local") {
             return grayRibbonFilter(variant, iconFile)
+        } else if (variant.flavorName == "qa") {
+            def filter = customColorRibbonFilter(variant, iconFile, "#00C89C")
+            filter.label = null//"QA" + variant.versionCode
+            filter.largeRibbon = (iconFile.name == "ic_launcher_foreground.png")
+            return filter
         } else if (variant.buildType.name == "debug") {
             if (variant.flavorName == "production") {
                 return null
