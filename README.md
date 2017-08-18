@@ -59,12 +59,21 @@ ribbonizer {
         } else if (variant.flavorName == "qa") {
             // customColorRibbonFilter allows setting any color code
             def filter = customColorRibbonFilter(variant, iconFile, "#00C89C")
-            // Finer control of the label text can be achieved by setting it manually, or set to 
+            // Finer control of the label text can be achieved by setting it manually, or set to
             // null for an unlabelled ribbon. The default is to use the flavor name.
             filter.label = "QA" + variant.versionCode
             return filter
         } else if (variant.flavorName == "staging") {
             return yellowRibbonFilter(variant, iconFile)
+        } else if (variant.buildType.name == "debug") {
+            if (variant.flavorName == "production") {
+                // Particular configurations can be skipped by returning no filters
+                return null
+            }
+            else {
+                // Other filters can be applied, as long as they implement Consumer<BufferedImage>
+                return grayScaleFilter(variant, iconFile)
+            }
         } else {
             return greenRibbonFilter(variant, iconFile)
         }

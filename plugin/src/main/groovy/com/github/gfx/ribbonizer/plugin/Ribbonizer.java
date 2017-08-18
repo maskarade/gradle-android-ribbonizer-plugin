@@ -32,7 +32,9 @@ public class Ribbonizer {
         filters.forEach(new Consumer<Consumer<BufferedImage>>() {
             @Override
             public void accept(Consumer<BufferedImage> filter) {
-                filter.accept(image);
+                if (filter != null) {
+                    filter.accept(image);
+                }
             }
         });
     }
