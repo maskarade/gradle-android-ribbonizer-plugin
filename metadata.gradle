@@ -1,6 +1,6 @@
 ext {
     metadata = [
-            userOrg   : 'gfx',
+            userOrg   : 'ribbonizer',
             groupId   : 'com.github.gfx.ribbonizer',
             website   : 'https://github.com/gfx/gradle-android-ribbonizer-plugin',
             repository: 'https://github.com/gfx/gradle-android-ribbonizer-plugin.git',
