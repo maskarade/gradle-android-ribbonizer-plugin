@@ -1,8 +1,4 @@
-# configuration for Maven Central and signing
+# configuration for bintray and signing
 
-nexusUsername=YOUR_USERNAME
-nexusPassword=YOUR_PASSWORD
-
-signing.keyId=PGP_KEY_ID
-signing.secretKeyRingFile=/path/to/.gnupg/secring.gpg
-signing.password=PGP_KEY_PASSWORD
+bintrayUser=YOUR_USERNAME
+bintrayKey=YOUR_KEY

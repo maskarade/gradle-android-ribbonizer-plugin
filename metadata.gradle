@@ -1,9 +1,9 @@
 ext {
     metadata = [
-            userOrg   : 'ribbonizer',
+            userOrg   : 'mensly',
             groupId   : 'com.github.gfx.ribbonizer',
-            website   : 'https://github.com/gfx/gradle-android-ribbonizer-plugin',
-            repository: 'https://github.com/gfx/gradle-android-ribbonizer-plugin.git',
+            website   : 'https://github.com/maskarade/gradle-android-ribbonizer-plugin',
+            repository: 'https://github.com/maskarade/gradle-android-ribbonizer-plugin.git',
             licences  : ['Apache-2.0']
     ]
 }
