@@ -1,5 +1,10 @@
 # The revision history of android-ribbonizer-plugin
 
+## v2.1.0 2017/08/19
+
+* Allow null values for filters and ribbon labels
+* Added `largeRibbon` option to increase visibility in launcher icon foreground assets
+
 ## v2.0.0 2017/07/21
 
 No code change from v1.1.0; the reason of bumping the version is that v1.1.0 has breaking changes in the artifact id (`s/plugin/ribbonizer-plugin/`).
