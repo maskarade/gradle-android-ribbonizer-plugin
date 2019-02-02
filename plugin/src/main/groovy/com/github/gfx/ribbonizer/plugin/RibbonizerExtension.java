@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
-class RibbonizerExtension {
+public class RibbonizerExtension {
 
     public static String NAME = "ribbonizer";
 
