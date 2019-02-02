@@ -15,13 +15,13 @@ public class ColorRibbonFilter implements Consumer<BufferedImage> {
 
     final Color labelColor;
 
-    String label;
+    public String label;
 
-    String fontName = "Default";
+    public String fontName = "Default";
 
-    int fontStyle = Font.PLAIN;
+    public int fontStyle = Font.PLAIN;
 
-    boolean largeRibbon = false;
+    public boolean largeRibbon = false;
 
     public ColorRibbonFilter(String label, Color ribbonColor, Color labelColor) {
         this.label = label;

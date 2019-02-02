@@ -7,6 +7,8 @@ import com.github.gfx.ribbonizer.GrayScaleBuilder;
 import com.github.gfx.ribbonizer.GrayRibbonBuilder;
 import com.github.gfx.ribbonizer.GreenRibbonBuilder;
 import com.github.gfx.ribbonizer.YellowRibbonBuilder;
+import com.github.gfx.ribbonizer.filter.ColorRibbonFilter;
+import com.github.gfx.ribbonizer.filter.GrayScaleFilter;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -87,23 +89,23 @@ public class RibbonizerExtension {
 
     // utilities
 
-    public Consumer<BufferedImage> grayScaleFilter(ApplicationVariant variant, File iconFile) {
-        return new GrayScaleBuilder().apply(variant, iconFile);
+    public GrayScaleFilter grayScaleFilter(ApplicationVariant variant, File iconFile) {
+        return (GrayScaleFilter) new GrayScaleBuilder().apply(variant, iconFile);
     }
 
-    public Consumer<BufferedImage> grayRibbonFilter(ApplicationVariant variant, File iconFile) {
-        return new GrayRibbonBuilder().apply(variant, iconFile);
+    public ColorRibbonFilter grayRibbonFilter(ApplicationVariant variant, File iconFile) {
+        return (ColorRibbonFilter) new GrayRibbonBuilder().apply(variant, iconFile);
     }
 
-    public Consumer<BufferedImage> yellowRibbonFilter(ApplicationVariant variant, File iconFile) {
-        return new YellowRibbonBuilder().apply(variant, iconFile);
+    public ColorRibbonFilter yellowRibbonFilter(ApplicationVariant variant, File iconFile) {
+        return (ColorRibbonFilter) new YellowRibbonBuilder().apply(variant, iconFile);
     }
 
-    public Consumer<BufferedImage> greenRibbonFilter(ApplicationVariant variant, File iconFile) {
-        return new GreenRibbonBuilder().apply(variant, iconFile);
+    public ColorRibbonFilter greenRibbonFilter(ApplicationVariant variant, File iconFile) {
+        return (ColorRibbonFilter) new GreenRibbonBuilder().apply(variant, iconFile);
     }
 
-    public Consumer<BufferedImage> customColorRibbonFilter(ApplicationVariant variant, File iconFile, String nm) {
-        return new CustomColorRibbonBuilder(nm).apply(variant, iconFile);
+    public ColorRibbonFilter customColorRibbonFilter(ApplicationVariant variant, File iconFile, String nm) {
+        return (ColorRibbonFilter) new CustomColorRibbonBuilder(nm).apply(variant, iconFile);
     }
 }
