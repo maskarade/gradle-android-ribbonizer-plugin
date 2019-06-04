@@ -6,3 +6,4 @@ build/
 reports/
 gradle.properties
 *.iml
+bin/
