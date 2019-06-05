@@ -10,21 +10,20 @@ import java.util.stream.Stream;
 
 import javax.imageio.ImageIO;
 
+@SuppressWarnings("WeakerAccess")
 public class Ribbonizer {
 
-    final File inputFile;
+    private final File outputFile;
 
-    final File outputFile;
-
-    ImageIcon icon;
+    private ImageIcon icon;
 
     public Ribbonizer(File inputFile, File outputFile) throws IOException {
-        this.inputFile = inputFile;
         this.outputFile = outputFile;
         icon = new ImageIcon(inputFile);
     }
 
     public void save() throws IOException {
+        //noinspection ResultOfMethodCallIgnored
         outputFile.getParentFile().mkdirs();
         ImageIO.write(icon.getImage(), "png", outputFile);
     }

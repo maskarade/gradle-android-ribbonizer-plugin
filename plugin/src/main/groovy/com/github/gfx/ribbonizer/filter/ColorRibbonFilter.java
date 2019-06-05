@@ -15,6 +15,7 @@ import java.util.function.Consumer;
 
 import javax.imageio.ImageIO;
 
+@SuppressWarnings("WeakerAccess")
 public class ColorRibbonFilter implements Consumer<Resource>, Filter {
 
     private static final boolean debug = Boolean.parseBoolean(System.getenv("RIBBONIZER_DEBUG"));
@@ -41,11 +42,11 @@ public class ColorRibbonFilter implements Consumer<Resource>, Filter {
         this(label, ribbonColor, Color.WHITE);
     }
 
-    static int calculateMaxLabelWidth(int y) {
+    private static int calculateMaxLabelWidth(int y) {
         return (int) Math.sqrt(Math.pow(y, 2) * 2);
     }
 
-    static void drawString(Graphics2D g, String str, int x, int y) {
+    private static void drawString(Graphics2D g, String str, int x, int y) {
         g.drawString(str, x, y);
 
         if (debug) {
@@ -98,7 +99,7 @@ public class ColorRibbonFilter implements Consumer<Resource>, Filter {
         g.dispose();
     }
 
-    Font getFont(int maxLabelWidth, FontRenderContext frc) {
+    private Font getFont(int maxLabelWidth, FontRenderContext frc) {
         int max = 32;
         if (label == null) {
             return new Font(fontName, fontStyle, max / 2);

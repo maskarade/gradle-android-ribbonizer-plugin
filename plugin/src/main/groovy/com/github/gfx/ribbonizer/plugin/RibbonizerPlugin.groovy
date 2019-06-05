@@ -11,6 +11,7 @@ import org.gradle.api.Task
 
 // see http://www.gradle.org/docs/current/userguide/custom_plugins.html
 
+@SuppressWarnings("GrUnnecessaryPublicModifier")
 @CompileStatic
 public class RibbonizerPlugin implements Plugin<Project> {
 

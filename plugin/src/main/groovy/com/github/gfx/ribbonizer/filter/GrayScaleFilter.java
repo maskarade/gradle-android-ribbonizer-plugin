@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 
 public class GrayScaleFilter implements Consumer<Resource>, Filter {
 
-    static int toGray(int color) {
+    private static int toGray(int color) {
         int a = (color & 0xFF000000);
         int r = (color & 0x00FF0000) >> 16;
         int g = (color & 0x0000FF00) >> 8;

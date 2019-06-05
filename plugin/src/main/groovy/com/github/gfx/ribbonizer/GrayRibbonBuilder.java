@@ -11,7 +11,7 @@ import java.util.function.Consumer;
 
 public class GrayRibbonBuilder implements FilterBuilder {
 
-    public static final Color COLOR = new Color(0x60, 0x60, 0x60, 0x99);
+    private static final Color COLOR = new Color(0x60, 0x60, 0x60, 0x99);
 
     @Override
     public Consumer<Resource> apply(ApplicationVariant variant, File iconFile) {
