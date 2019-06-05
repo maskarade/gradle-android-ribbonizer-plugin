@@ -14,8 +14,8 @@ jobs:
       - run:
           name: test
           command: |
-            ./gradlew check
-            ./gradlew ribbonize
+            ./gradlew check --stacktrace
+            ./gradlew ribbonize --stacktrace
       - save_cache:
           paths:
             - ~/.gradle
