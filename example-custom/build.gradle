@@ -49,7 +49,7 @@ ribbonizer {
         } else if (variant.flavorName == "qa") {
             def filter = customColorRibbonFilter(variant, iconFile, "#00C89C")
             filter.label = null//"QA" + variant.versionCode
-            filter.largeRibbon = (iconFile.name == "ic_launcher_foreground.png")
+            filter.largeRibbon = (iconFile.name == "ic_launcher.png")
             return filter
         } else if (variant.buildType.name == "debug") {
             if (variant.flavorName == "production") {
