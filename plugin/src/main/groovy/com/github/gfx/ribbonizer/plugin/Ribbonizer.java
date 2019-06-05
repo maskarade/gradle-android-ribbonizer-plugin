@@ -1,6 +1,8 @@
 package com.github.gfx.ribbonizer.plugin;
 
-import java.awt.image.BufferedImage;
+import com.github.gfx.ribbonizer.resource.ImageIcon;
+import com.github.gfx.ribbonizer.resource.Resource;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.function.Consumer;
@@ -14,27 +16,23 @@ public class Ribbonizer {
 
     final File outputFile;
 
-    final BufferedImage image;
+    ImageIcon icon;
 
     public Ribbonizer(File inputFile, File outputFile) throws IOException {
         this.inputFile = inputFile;
         this.outputFile = outputFile;
-
-        image = ImageIO.read(inputFile);
+        icon = new ImageIcon(inputFile);
     }
 
     public void save() throws IOException {
         outputFile.getParentFile().mkdirs();
-        ImageIO.write(image, "png", outputFile);
+        ImageIO.write(icon.getImage(), "png", outputFile);
     }
 
-    public void process(Stream<Consumer<BufferedImage>> filters) {
-        filters.forEach(new Consumer<Consumer<BufferedImage>>() {
-            @Override
-            public void accept(Consumer<BufferedImage> filter) {
-                if (filter != null) {
-                    filter.accept(image);
-                }
+    public void process(Stream<Consumer<Resource>> filters) {
+        filters.forEach(filter -> {
+            if (filter != null) {
+                filter.accept(icon);
             }
         });
     }

@@ -1,9 +1,13 @@
 package com.github.gfx.ribbonizer.filter;
 
+import com.github.gfx.ribbonizer.resource.Filter;
+import com.github.gfx.ribbonizer.resource.ImageIcon;
+import com.github.gfx.ribbonizer.resource.Resource;
+
 import java.awt.image.BufferedImage;
 import java.util.function.Consumer;
 
-public class GrayScaleFilter implements Consumer<BufferedImage> {
+public class GrayScaleFilter implements Consumer<Resource>, Filter {
 
     static int toGray(int color) {
         int a = (color & 0xFF000000);
@@ -16,7 +20,12 @@ public class GrayScaleFilter implements Consumer<BufferedImage> {
     }
 
     @Override
-    public void accept(BufferedImage image) {
+    public void accept(Resource rsc) {
+        rsc.apply(this);
+    }
+
+    public void apply(ImageIcon icon) {
+        BufferedImage image = icon.getImage();
         int width = image.getWidth();
         int height = image.getHeight();
 

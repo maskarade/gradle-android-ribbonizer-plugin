@@ -1,15 +1,23 @@
 package com.github.gfx.ribbonizer.filter;
 
+import com.github.gfx.ribbonizer.resource.Filter;
+import com.github.gfx.ribbonizer.resource.ImageIcon;
+import com.github.gfx.ribbonizer.resource.Resource;
+
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.function.Consumer;
 
-public class ColorRibbonFilter implements Consumer<BufferedImage> {
+import javax.imageio.ImageIO;
 
-    static final boolean debug = Boolean.parseBoolean(System.getenv("RIBBONIZER_DEBUG"));
+public class ColorRibbonFilter implements Consumer<Resource>, Filter {
+
+    private static final boolean debug = Boolean.parseBoolean(System.getenv("RIBBONIZER_DEBUG"));
 
     final Color ribbonColor;
 
@@ -50,7 +58,12 @@ public class ColorRibbonFilter implements Consumer<BufferedImage> {
     }
 
     @Override
-    public void accept(BufferedImage image) {
+    public void accept(Resource rsc) {
+        rsc.apply(this);
+    }
+
+    public void apply(ImageIcon icon) {
+        BufferedImage image = icon.getImage();
         int width = image.getWidth();
         int height = image.getHeight();
 
