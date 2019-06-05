@@ -3,27 +3,18 @@ package com.github.gfx.ribbonizer.example;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.view.View;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.OnClick;
-
-public class MainActivity extends Activity {
-
-    @InjectView(R.id.text)
-    TextView textView;
-
+public class MainActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        ButterKnife.inject(this);
+        findViewById(R.id.button).setOnClickListener(this);
     }
 
-    @OnClick(R.id.button)
-    void onButtonClick() {
+    @Override
+    public void onClick(View v)  {
         new AlertDialog.Builder(this)
                 .setTitle("Hello, Android!")
                 .setMessage("This is an example app.")

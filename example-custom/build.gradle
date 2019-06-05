@@ -1,25 +1,15 @@
-import com.android.build.gradle.api.ApplicationVariant
-
 apply plugin: 'com.android.application'
 apply plugin: 'com.github.gfx.ribbonizer'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '26.0.0'
-
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 26
+        applicationId "com.github.gfx.ribbonizer.example"
+        minSdkVersion 26
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
-    }
-    lintOptions {
-        abortOnError false
     }
 
     buildTypes {
@@ -33,18 +23,27 @@ android {
         release {}
     }
 
+    flavorDimensions 'flavor'
     productFlavors {
-        local {}
-        qa {}
-        staging {}
-        production {}
+        local {
+            dimension 'flavor'
+        }
+        qa {
+            dimension 'flavor'
+        }
+        staging {
+            dimension 'flavor'
+        }
+        production {
+            dimension 'flavor'
+        }
     }
 }
 
 ribbonizer {
     iconNames "@drawable/abc_btn_check_to_on_mtrl_000", "@drawable/abc_btn_radio_to_on_mtrl_000", "@mipmap/ic_launcher_foreground"
 
-    builder { ApplicationVariant variant, File iconFile ->
+    builder { variant, iconFile ->
         if (variant.flavorName == "local") {
             return grayRibbonFilter(variant, iconFile)
         } else if (variant.flavorName == "qa") {
@@ -66,6 +65,4 @@ ribbonizer {
 }
 
 dependencies {
-    compile 'com.jakewharton:butterknife:6.1.0'
-    compile 'com.android.support:appcompat-v7:25.0.0'
 }
