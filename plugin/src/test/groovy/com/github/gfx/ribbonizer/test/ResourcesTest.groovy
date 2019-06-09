@@ -1,9 +1,11 @@
 package com.github.gfx.ribbonizer.test
 
 import com.github.gfx.ribbonizer.plugin.Resources
+import groovy.transform.CompileDynamic
 import spock.lang.Specification
 
 public class ResourcesTest extends Specification {
+    @CompileDynamic
     def "resourceFilePattern"() {
         expect:
         Resources.resourceFilePattern(resName) == pattern

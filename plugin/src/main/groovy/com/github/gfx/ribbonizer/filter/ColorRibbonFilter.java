@@ -1,6 +1,7 @@
 package com.github.gfx.ribbonizer.filter;
 
 import com.github.gfx.ribbonizer.resource.Filter;
+import com.github.gfx.ribbonizer.resource.ImageAdaptiveIcon;
 import com.github.gfx.ribbonizer.resource.ImageIcon;
 import com.github.gfx.ribbonizer.resource.Resource;
 
@@ -64,6 +65,42 @@ public class ColorRibbonFilter implements Consumer<Resource>, Filter {
     }
 
     public void apply(ImageIcon icon) {
+        BufferedImage image = icon.getImage();
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        Graphics2D g = (Graphics2D) image.getGraphics();
+
+        g.setTransform(AffineTransform.getRotateInstance(Math.toRadians(-45)));
+
+        int y = height / (largeRibbon ? 2 : 4);
+
+        // calculate the rectangle where the label is rendered
+        FontRenderContext frc = new FontRenderContext(g.getTransform(), true, true);
+        int maxLabelWidth = calculateMaxLabelWidth(y);
+        g.setFont(getFont(maxLabelWidth, frc));
+        Rectangle2D labelBounds = g.getFont().getStringBounds(label == null ? "" : label, frc);
+
+        // draw the ribbon
+        g.setColor(ribbonColor);
+        g.fillRect(-width, y, width * 2, (int) (labelBounds.getHeight()));
+
+        if (label != null) {
+            // draw the label
+            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                    RenderingHints.VALUE_ANTIALIAS_ON);
+            g.setColor(labelColor);
+
+            FontMetrics fm = g.getFontMetrics();
+
+            drawString(g, label,
+                    (int) -labelBounds.getWidth() / 2,
+                    y + fm.getAscent());
+        }
+        g.dispose();
+    }
+
+    public void apply(ImageAdaptiveIcon icon) {
         BufferedImage image = icon.getImage();
         int width = image.getWidth();
         int height = image.getHeight();

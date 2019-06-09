@@ -1,6 +1,7 @@
 package com.github.gfx.ribbonizer.filter;
 
 import com.github.gfx.ribbonizer.resource.Filter;
+import com.github.gfx.ribbonizer.resource.ImageAdaptiveIcon;
 import com.github.gfx.ribbonizer.resource.ImageIcon;
 import com.github.gfx.ribbonizer.resource.Resource;
 
@@ -25,6 +26,19 @@ public class GrayScaleFilter implements Consumer<Resource>, Filter {
     }
 
     public void apply(ImageIcon icon) {
+        BufferedImage image = icon.getImage();
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                int color = image.getRGB(x, y);
+                image.setRGB(x, y, toGray(color));
+            }
+        }
+    }
+
+    public void apply(ImageAdaptiveIcon icon) {
         BufferedImage image = icon.getImage();
         int width = image.getWidth();
         int height = image.getHeight();

@@ -35,31 +35,29 @@ public class RibbonizerTask extends DefaultTask {
             if (resDir.equals(getOutputDir())) {
                 return;
             }
-            names.forEach(name -> {
-                getProject().fileTree(new LinkedHashMap<String, Object>() {
-                    {
-                        put("dir", resDir);
-                        put("include", Resources.resourceFilePattern(name));
-                        put("exclude", "**/*.xml");
-                    }
-                }).forEach(inputFile -> {
-                    info("process " + inputFile);
-                    final String basename = inputFile.getName();
-                    final String resType = inputFile.getParentFile().getName();
-                    File outputFile = new File(getOutputDir(), resType + "/" + basename);
-                    outputFile.getParentFile().mkdirs();
+            names.forEach(name -> getProject().fileTree(new LinkedHashMap<String, Object>() {
+                {
+                    put("dir", resDir);
+                    put("include", Resources.resourceFilePattern(name));
+                }
+            }).forEach(inputFile -> {
+                info("process " + inputFile);
+                final String basename = inputFile.getName();
+                final String resType = inputFile.getParentFile().getName();
+                File outputFile = new File(getOutputDir(), resType + "/" + basename);
+                //noinspection ResultOfMethodCallIgnored
+                outputFile.getParentFile().mkdirs();
 
-                    try {
-                        Ribbonizer ribbonizer = new Ribbonizer(inputFile, outputFile);
-                        ribbonizer.process(getFilterBuilders().stream().map(
-                                filterBuilder -> filterBuilder.apply(getVariant(), inputFile)
-                        ));
-                        ribbonizer.save();
-                    } catch (IOException e) {
-                        info("Exception: " + e);
-                    }
-                });
-            });
+                try {
+                    Ribbonizer ribbonizer = new Ribbonizer(inputFile, outputFile);
+                    ribbonizer.process(getFilterBuilders().stream().map(
+                            filterBuilder -> filterBuilder.apply(getVariant(), inputFile)
+                    ));
+                    ribbonizer.save();
+                } catch (Exception e) {
+                    info("Exception: " + e);
+                }
+            }));
         });
 
         info("task finished in " + (System.currentTimeMillis() - t0) + "ms");

@@ -1,5 +1,6 @@
 package com.github.gfx.ribbonizer.plugin;
 
+import com.github.gfx.ribbonizer.resource.AdaptiveIcon;
 import com.github.gfx.ribbonizer.resource.ImageIcon;
 import com.github.gfx.ribbonizer.resource.Resource;
 
@@ -15,20 +16,27 @@ public class Ribbonizer {
 
     private final File outputFile;
 
-    private ImageIcon icon;
+    private Resource icon;
 
-    public Ribbonizer(File inputFile, File outputFile) throws IOException {
+    public Ribbonizer(File inputFile, File outputFile) throws Exception {
         this.outputFile = outputFile;
-        icon = new ImageIcon(inputFile);
+        if (inputFile.getName().endsWith(".png")) {
+            icon = new ImageIcon(inputFile);
+        }
+        if (inputFile.getName().endsWith(".xml")) {
+            icon = new AdaptiveIcon(inputFile);
+        }
     }
 
     public void save() throws IOException {
+        if (icon == null) return;
         //noinspection ResultOfMethodCallIgnored
         outputFile.getParentFile().mkdirs();
-        ImageIO.write(icon.getImage(), "png", outputFile);
+        icon.save(outputFile);
     }
 
     public void process(Stream<Consumer<Resource>> filters) {
+        if (icon == null) return;
         filters.forEach(filter -> {
             if (filter != null) {
                 filter.accept(icon);

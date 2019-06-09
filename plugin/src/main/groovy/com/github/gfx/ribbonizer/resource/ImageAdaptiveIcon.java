@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class ImageIcon extends Resource {
+public class ImageAdaptiveIcon extends Resource {
     private File file;
     private BufferedImage image;
 
@@ -18,7 +18,7 @@ public class ImageIcon extends Resource {
         return image;
     }
 
-    public ImageIcon(File file) throws IOException {
+    public ImageAdaptiveIcon(File file) throws IOException {
         this.file = file;
         image = ImageIO.read(file);
     }
