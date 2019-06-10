@@ -1,15 +1,11 @@
-package com.github.gfx.ribbonizer.plugin;
+package com.shogo82148.ribbonizer.plugin;
 
-import com.github.gfx.ribbonizer.resource.AdaptiveIcon;
-import com.github.gfx.ribbonizer.resource.ImageIcon;
-import com.github.gfx.ribbonizer.resource.Resource;
+import com.shogo82148.ribbonizer.resource.Resource;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
-
-import javax.imageio.ImageIO;
 
 @SuppressWarnings("WeakerAccess")
 public class Ribbonizer {

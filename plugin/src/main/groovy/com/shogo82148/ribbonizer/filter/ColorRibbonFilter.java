@@ -1,20 +1,15 @@
-package com.github.gfx.ribbonizer.filter;
+package com.shogo82148.ribbonizer.filter;
 
-import com.github.gfx.ribbonizer.resource.Filter;
-import com.github.gfx.ribbonizer.resource.ImageAdaptiveIcon;
-import com.github.gfx.ribbonizer.resource.ImageIcon;
-import com.github.gfx.ribbonizer.resource.Resource;
+import com.shogo82148.ribbonizer.resource.Filter;
+import com.shogo82148.ribbonizer.resource.ImageAdaptiveIcon;
+import com.shogo82148.ribbonizer.resource.ImageIcon;
+import com.shogo82148.ribbonizer.resource.Resource;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.function.Consumer;
-
-import javax.imageio.ImageIO;
 
 @SuppressWarnings("WeakerAccess")
 public class ColorRibbonFilter implements Consumer<Resource>, Filter {

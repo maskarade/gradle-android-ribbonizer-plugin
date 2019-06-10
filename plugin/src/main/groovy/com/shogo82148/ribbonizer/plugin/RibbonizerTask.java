@@ -1,16 +1,15 @@
-package com.github.gfx.ribbonizer.plugin;
+package com.shogo82148.ribbonizer.plugin;
 
 import com.android.build.gradle.AppExtension;
 import com.android.build.gradle.api.AndroidSourceSet;
 import com.android.build.gradle.api.ApplicationVariant;
-import com.github.gfx.ribbonizer.FilterBuilder;
-import com.github.gfx.ribbonizer.resource.ImageAdaptiveIcon;
-import com.github.gfx.ribbonizer.resource.ImageIcon;
+import com.shogo82148.ribbonizer.FilterBuilder;
+import com.shogo82148.ribbonizer.resource.ImageAdaptiveIcon;
+import com.shogo82148.ribbonizer.resource.ImageIcon;
 
 import org.gradle.api.DefaultTask;
 import org.gradle.api.tasks.TaskAction;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;

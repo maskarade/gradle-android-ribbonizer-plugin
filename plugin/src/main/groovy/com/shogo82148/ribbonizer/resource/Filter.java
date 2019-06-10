@@ -1,4 +1,4 @@
-package com.github.gfx.ribbonizer.resource;
+package com.shogo82148.ribbonizer.resource;
 
 public interface Filter {
     void apply(ImageIcon icon);

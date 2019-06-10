@@ -1,6 +1,6 @@
-package com.github.gfx.ribbonizer.test
+package com.shogo82148.ribbonizer.test
 
-import com.github.gfx.ribbonizer.plugin.Resources
+import com.shogo82148.ribbonizer.plugin.Resources
 import groovy.transform.CompileDynamic
 import spock.lang.Specification
 
