@@ -1,6 +1,6 @@
 # Ribbonizer plugin for Android
 
-[![Circle CI](https://circleci.com/gh/gfx/gradle-android-ribbonizer-plugin.svg?style=svg&branch=master)](https://circleci.com/gh/gfx/gradle-android-ribbonizer-plugin) [![Download](https://api.bintray.com/packages/gfx/maven/ribbonizer-plugin/images/download.svg)](https://bintray.com/gfx/maven/ribbonizer-plugin/_latestVersion)
+[![CircleCI](https://circleci.com/gh/shogo82148/gradle-android-ribbonizer-plugin.svg?style=svg)](https://circleci.com/gh/shogo82148/gradle-android-ribbonizer-plugin) [![Download](https://api.bintray.com/packages/shogo82148/maven/ribbonizer-plugin/images/download.svg)](https://bintray.com/shogo82148/maven/ribbonizer-plugin/_latestVersion)
 
 This is a ribbonizer as a Gradle plugin for Android, which adds a ribbon to launcher icons.
 
