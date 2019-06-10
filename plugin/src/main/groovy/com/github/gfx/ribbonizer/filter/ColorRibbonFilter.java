@@ -71,7 +71,7 @@ public class ColorRibbonFilter implements Consumer<Resource>, Filter {
 
         Graphics2D g = (Graphics2D) image.getGraphics();
 
-        g.setTransform(AffineTransform.getRotateInstance(Math.toRadians(-45)));
+        g.rotate(Math.toRadians(-45));
 
         int y = height / (largeRibbon ? 2 : 4);
 
@@ -101,13 +101,20 @@ public class ColorRibbonFilter implements Consumer<Resource>, Filter {
     }
 
     public void apply(ImageAdaptiveIcon icon) {
+        // https://medium.com/google-design/designing-adaptive-icons-515af294c783
+        // Adaptive icons are 108dp*108dp in size but are masked to a maximum of 72dp*72dp.
+        final int maskSize = 72;
+        final int imageSize = 108;
+
         BufferedImage image = icon.getImage();
-        int width = image.getWidth();
-        int height = image.getHeight();
+        int width = image.getWidth() * maskSize / imageSize;
+        int height = image.getHeight() * maskSize / imageSize;
 
         Graphics2D g = (Graphics2D) image.getGraphics();
 
-        g.setTransform(AffineTransform.getRotateInstance(Math.toRadians(-45)));
+        g.rotate(Math.toRadians(-45));
+        final double offset = (1.0-(double)maskSize/(double)imageSize) / 2.0 * Math.sqrt(2.0);
+        g.translate(0, image.getHeight() * offset);
 
         int y = height / (largeRibbon ? 2 : 4);
 
