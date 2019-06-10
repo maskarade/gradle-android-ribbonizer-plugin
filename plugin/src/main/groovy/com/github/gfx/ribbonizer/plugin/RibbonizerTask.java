@@ -4,6 +4,9 @@ import com.android.build.gradle.AppExtension;
 import com.android.build.gradle.api.AndroidSourceSet;
 import com.android.build.gradle.api.ApplicationVariant;
 import com.github.gfx.ribbonizer.FilterBuilder;
+import com.github.gfx.ribbonizer.resource.ImageAdaptiveIcon;
+import com.github.gfx.ribbonizer.resource.ImageIcon;
+
 import org.gradle.api.DefaultTask;
 import org.gradle.api.tasks.TaskAction;
 import java.io.File;
@@ -42,25 +45,79 @@ public class RibbonizerTask extends DefaultTask {
                 }
             }).forEach(inputFile -> {
                 info("process " + inputFile);
-                final String basename = inputFile.getName();
-                final String resType = inputFile.getParentFile().getName();
-                File outputFile = new File(getOutputDir(), resType + "/" + basename);
-                //noinspection ResultOfMethodCallIgnored
-                outputFile.getParentFile().mkdirs();
-
-                try {
-                    Ribbonizer ribbonizer = new Ribbonizer(inputFile, outputFile);
-                    ribbonizer.process(getFilterBuilders().stream().map(
-                            filterBuilder -> filterBuilder.apply(getVariant(), inputFile)
-                    ));
-                    ribbonizer.save();
-                } catch (Exception e) {
-                    info("Exception: " + e);
+                if (inputFile.getName().endsWith(".xml")) {
+                    // assume it is an adaptive icon
+                    processAdaptiveIcon(inputFile);
+                } else {
+                    processImageIcon(inputFile);
                 }
             }));
         });
 
         info("task finished in " + (System.currentTimeMillis() - t0) + "ms");
+    }
+
+    private void processAdaptiveIcon(File inputFile) {
+        try {
+            final String icon = Resources.getAdaptiveIconResource(inputFile);
+            if (icon.isEmpty()) {
+                return;
+            }
+            variant.getSourceSets().stream().flatMap(
+                    sourceProvider -> sourceProvider.getResDirectories().stream()
+            ).forEach( resDir -> {
+                if (resDir.equals(getOutputDir())) {
+                    return;
+                }
+                getProject().fileTree(new LinkedHashMap<String, Object>() {
+                    {
+                        put("dir", resDir);
+                        put("include", Resources.resourceFilePattern(icon));
+                        put("exclude", "**/*.xml");
+                    }
+                }).forEach(this::processImageAdaptiveIcon);
+            });
+        } catch (Exception e) {
+            info("Exception: " + e);
+        }
+    }
+
+    private void processImageAdaptiveIcon(File inputFile) {
+        final String basename = inputFile.getName();
+        final String resType = inputFile.getParentFile().getName();
+        File outputFile = new File(getOutputDir(), resType + "/" + basename);
+        //noinspection ResultOfMethodCallIgnored
+        outputFile.getParentFile().mkdirs();
+
+        try {
+            ImageAdaptiveIcon icon = new ImageAdaptiveIcon(inputFile);
+            Ribbonizer ribbonizer = new Ribbonizer(icon, outputFile);
+            ribbonizer.process(getFilterBuilders().stream().map(
+                    filterBuilder -> filterBuilder.apply(getVariant(), inputFile)
+            ));
+            ribbonizer.save();
+        } catch (Exception e) {
+            info("Exception: " + e);
+        }
+    }
+
+    private void processImageIcon(File inputFile) {
+        final String basename = inputFile.getName();
+        final String resType = inputFile.getParentFile().getName();
+        File outputFile = new File(getOutputDir(), resType + "/" + basename);
+        //noinspection ResultOfMethodCallIgnored
+        outputFile.getParentFile().mkdirs();
+
+        try {
+            ImageIcon icon = new ImageIcon(inputFile);
+            Ribbonizer ribbonizer = new Ribbonizer(icon, outputFile);
+            ribbonizer.process(getFilterBuilders().stream().map(
+                    filterBuilder -> filterBuilder.apply(getVariant(), inputFile)
+            ));
+            ribbonizer.save();
+        } catch (Exception e) {
+            info("Exception: " + e);
+        }
     }
 
     public void info(String message) {

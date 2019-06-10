@@ -16,30 +16,25 @@ public class Ribbonizer {
 
     private final File outputFile;
 
-    private Resource icon;
+    private Resource resource;
 
-    public Ribbonizer(File inputFile, File outputFile) throws Exception {
+    public Ribbonizer(Resource resource, File outputFile) {
+        this.resource = resource;
         this.outputFile = outputFile;
-        if (inputFile.getName().endsWith(".png")) {
-            icon = new ImageIcon(inputFile);
-        }
-        if (inputFile.getName().endsWith(".xml")) {
-            icon = new AdaptiveIcon(inputFile);
-        }
     }
 
     public void save() throws IOException {
-        if (icon == null) return;
+        if (resource == null) return;
         //noinspection ResultOfMethodCallIgnored
         outputFile.getParentFile().mkdirs();
-        icon.save(outputFile);
+        resource.save(outputFile);
     }
 
     public void process(Stream<Consumer<Resource>> filters) {
-        if (icon == null) return;
+        if (resource == null) return;
         filters.forEach(filter -> {
             if (filter != null) {
-                filter.accept(icon);
+                filter.accept(resource);
             }
         });
     }
