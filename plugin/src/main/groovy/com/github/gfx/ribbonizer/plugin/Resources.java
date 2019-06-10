@@ -51,4 +51,23 @@ public class Resources {
         return unmodifiableList(icons);
 
     }
+
+    public static String getAdaptiveIconResource(File adaptiveIcon)
+            throws SAXException, ParserConfigurationException, IOException {
+        GPathResult iconXml = new XmlSlurper().parse(adaptiveIcon);
+
+        GPathResult foreground = (GPathResult) iconXml.getProperty("foreground");
+        String foregroundDrawable = String.valueOf(foreground.getProperty("@android:drawable"));
+        if (foregroundDrawable.startsWith("@mipmap/") || foregroundDrawable.startsWith("@drawable/")) {
+            return foregroundDrawable;
+        }
+
+        GPathResult background = (GPathResult) iconXml.getProperty("background");
+        String backgroundDrawable = String.valueOf(background.getProperty("@android:drawable"));
+        if (backgroundDrawable.startsWith("@mipmap/") || backgroundDrawable.startsWith("@drawable/")) {
+            return backgroundDrawable;
+        }
+
+        return "";
+    }
 }

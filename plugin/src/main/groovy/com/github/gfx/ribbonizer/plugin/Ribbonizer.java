@@ -1,6 +1,9 @@
 package com.github.gfx.ribbonizer.plugin;
 
-import java.awt.image.BufferedImage;
+import com.github.gfx.ribbonizer.resource.AdaptiveIcon;
+import com.github.gfx.ribbonizer.resource.ImageIcon;
+import com.github.gfx.ribbonizer.resource.Resource;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.function.Consumer;
@@ -8,33 +11,30 @@ import java.util.stream.Stream;
 
 import javax.imageio.ImageIO;
 
+@SuppressWarnings("WeakerAccess")
 public class Ribbonizer {
 
-    final File inputFile;
+    private final File outputFile;
 
-    final File outputFile;
+    private Resource resource;
 
-    final BufferedImage image;
-
-    public Ribbonizer(File inputFile, File outputFile) throws IOException {
-        this.inputFile = inputFile;
+    public Ribbonizer(Resource resource, File outputFile) {
+        this.resource = resource;
         this.outputFile = outputFile;
-
-        image = ImageIO.read(inputFile);
     }
 
     public void save() throws IOException {
+        if (resource == null) return;
+        //noinspection ResultOfMethodCallIgnored
         outputFile.getParentFile().mkdirs();
-        ImageIO.write(image, "png", outputFile);
+        resource.save(outputFile);
     }
 
-    public void process(Stream<Consumer<BufferedImage>> filters) {
-        filters.forEach(new Consumer<Consumer<BufferedImage>>() {
-            @Override
-            public void accept(Consumer<BufferedImage> filter) {
-                if (filter != null) {
-                    filter.accept(image);
-                }
+    public void process(Stream<Consumer<Resource>> filters) {
+        if (resource == null) return;
+        filters.forEach(filter -> {
+            if (filter != null) {
+                filter.accept(resource);
             }
         });
     }

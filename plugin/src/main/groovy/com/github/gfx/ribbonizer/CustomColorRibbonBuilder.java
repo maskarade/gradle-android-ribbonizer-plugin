@@ -2,6 +2,7 @@ package com.github.gfx.ribbonizer;
 
 import com.android.build.gradle.api.ApplicationVariant;
 import com.github.gfx.ribbonizer.filter.ColorRibbonFilter;
+import com.github.gfx.ribbonizer.resource.Resource;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -17,7 +18,7 @@ public class CustomColorRibbonBuilder implements FilterBuilder {
     }
 
     @Override
-    public Consumer<BufferedImage> apply(ApplicationVariant variant, File iconFile) {
+    public Consumer<Resource> apply(ApplicationVariant variant, File iconFile) {
         return new ColorRibbonFilter(variant.getBuildType().getName(), Color.decode(nm));
     }
 }
