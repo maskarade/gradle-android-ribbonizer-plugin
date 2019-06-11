@@ -43,7 +43,7 @@ android {
             //But, we force one of its flavors. See `ribbonizer` for how-to
             debuggable false
         }
-        release {/*non-debuggable build. Will not be rebbonized automatically*/}
+        release {/*non-debuggable build. Will not be ribbonized automatically*/}
     }
 
     productFlavors {
