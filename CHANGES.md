@@ -1,5 +1,9 @@
 # The revision history of android-ribbonizer-plugin
 
+## v3.0.0 2019/06/11
+
+* Support adaptive icons
+
 ## v2.1.0 2017/08/19
 
 * Allow null values for filters and ribbon labels
