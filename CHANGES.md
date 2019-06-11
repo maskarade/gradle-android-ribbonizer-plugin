@@ -1,5 +1,9 @@
 # The revision history of android-ribbonizer-plugin
 
+## v3.0.1 2019/06/11
+
+* Fix Java Compatibility
+
 ## v3.0.0 2019/06/11
 
 * Support adaptive icons
