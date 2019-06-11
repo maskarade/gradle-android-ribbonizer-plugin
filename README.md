@@ -15,7 +15,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.2'
+        classpath 'com.android.tools.build:gradle:3.4.1'
         classpath 'com.shogo82148.ribbonizer:ribbonizer-plugin:3.0.1'
     }
 }
