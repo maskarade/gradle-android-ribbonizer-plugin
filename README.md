@@ -16,14 +16,14 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.1.2'
-        classpath 'com.github.gfx.ribbonizer:ribbonizer-plugin:3.0.1'
+        classpath 'com.shogo82148.ribbonizer:ribbonizer-plugin:3.0.1'
     }
 }
 ```
 
 ```groovy
 // in app/build.gradle
-apply plugin: 'com.github.gfx.ribbonizer'
+apply plugin: 'com.shogo82148.ribbonizer'
 
 android {
     // ...
