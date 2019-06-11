@@ -47,7 +47,7 @@ task bumpMajor {
         versionFile.write(newVersion + "\n")
         updateReadme(oldVersion, newVersion)
         rootProject.ext.versionName = newVersion
-        tasks.version.execute()
+        println "v" + rootProject.ext.versionName
     }
 }
 
@@ -60,7 +60,7 @@ task bumpMinor {
         versionFile.write(newVersion + "\n")
         updateReadme(oldVersion, newVersion)
         rootProject.ext.versionName = newVersion
-        tasks.version.execute()
+        println "v" + rootProject.ext.versionName
     }
 }
 
@@ -73,12 +73,6 @@ task bumpPatch {
         versionFile.write(newVersion + "\n")
         updateReadme(oldVersion, newVersion)
         rootProject.ext.versionName = newVersion
-        tasks.version.execute()
-    }
-}
-
-task version {
-    doLast {
         println "v" + rootProject.ext.versionName
     }
 }
