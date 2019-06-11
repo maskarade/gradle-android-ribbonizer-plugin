@@ -1,10 +1,9 @@
-package com.github.gfx.ribbonizer;
+package com.shogo82148.ribbonizer;
 
 import com.android.build.gradle.api.ApplicationVariant;
-import com.github.gfx.ribbonizer.filter.GrayScaleFilter;
-import com.github.gfx.ribbonizer.resource.Resource;
+import com.shogo82148.ribbonizer.filter.GrayScaleFilter;
+import com.shogo82148.ribbonizer.resource.Resource;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.function.Consumer;
 

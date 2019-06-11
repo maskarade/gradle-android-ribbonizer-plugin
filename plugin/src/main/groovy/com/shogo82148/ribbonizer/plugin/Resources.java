@@ -1,4 +1,4 @@
-package com.github.gfx.ribbonizer.plugin;
+package com.shogo82148.ribbonizer.plugin;
 
 import org.xml.sax.SAXException;
 

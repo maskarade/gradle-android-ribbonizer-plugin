@@ -1,14 +1,14 @@
-package com.github.gfx.ribbonizer.plugin;
+package com.shogo82148.ribbonizer.plugin;
 
 import com.android.build.gradle.api.ApplicationVariant;
-import com.github.gfx.ribbonizer.CustomColorRibbonBuilder;
-import com.github.gfx.ribbonizer.FilterBuilder;
-import com.github.gfx.ribbonizer.GrayScaleBuilder;
-import com.github.gfx.ribbonizer.GrayRibbonBuilder;
-import com.github.gfx.ribbonizer.GreenRibbonBuilder;
-import com.github.gfx.ribbonizer.YellowRibbonBuilder;
-import com.github.gfx.ribbonizer.filter.ColorRibbonFilter;
-import com.github.gfx.ribbonizer.filter.GrayScaleFilter;
+import com.shogo82148.ribbonizer.CustomColorRibbonBuilder;
+import com.shogo82148.ribbonizer.FilterBuilder;
+import com.shogo82148.ribbonizer.GrayScaleBuilder;
+import com.shogo82148.ribbonizer.GrayRibbonBuilder;
+import com.shogo82148.ribbonizer.GreenRibbonBuilder;
+import com.shogo82148.ribbonizer.YellowRibbonBuilder;
+import com.shogo82148.ribbonizer.filter.ColorRibbonFilter;
+import com.shogo82148.ribbonizer.filter.GrayScaleFilter;
 
 import java.io.File;
 import java.util.ArrayList;
