@@ -4,6 +4,10 @@
 
 This is a ribbonizer as a Gradle plugin for Android, which adds a ribbon to launcher icons.
 
+[maskarade/gradle-android-ribbonizer-plugin](https://github.com/maskarade/gradle-android-ribbonizer-plugin) is original one,
+but it seems to be not maintained.
+So, I forked it and published as another plugin.
+
 ![](ic-beta.png) ![](ic-debug.png)
 
 ## Usage
