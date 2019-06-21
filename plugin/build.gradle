@@ -1,5 +1,6 @@
 repositories {
     jcenter()
+    google()
 }
 
 apply plugin: 'groovy'
@@ -11,7 +12,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 dependencies {
     compile gradleApi()
     compile localGroovy()
-    compile 'com.android.tools.build:gradle:2.3.3'
+    compile 'com.android.tools.build:gradle:3.4.1'
 
     testCompile('org.spockframework:spock-core:1.0-groovy-2.4') {
         exclude group:'org.codehaus.groovy'
