@@ -13,7 +13,7 @@ dependencies {
     implementation localGroovy()
     implementation 'com.android.tools.build:gradle:3.6.2'
 
-    testImplementation('org.spockframework:spock-core:1.0-groovy-2.4') {
+    testImplementation('org.spockframework:spock-core:2.0-M2-groovy-2.5') {
         exclude group:'org.codehaus.groovy'
     }
 }
