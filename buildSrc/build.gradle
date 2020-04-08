@@ -6,5 +6,5 @@ repositories {
 }
 
 dependencies {
-    compile project(':plugin')
+    implementation project(':plugin')
 }
