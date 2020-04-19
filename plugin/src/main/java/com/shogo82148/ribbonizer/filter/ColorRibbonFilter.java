@@ -5,7 +5,11 @@ import com.shogo82148.ribbonizer.resource.ImageAdaptiveIcon;
 import com.shogo82148.ribbonizer.resource.ImageIcon;
 import com.shogo82148.ribbonizer.resource.Resource;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -108,7 +112,7 @@ public class ColorRibbonFilter implements Consumer<Resource>, Filter {
         Graphics2D g = (Graphics2D) image.getGraphics();
 
         g.rotate(Math.toRadians(-45));
-        final double offset = (1.0-(double)maskSize/(double)imageSize) / 2.0 * Math.sqrt(2.0);
+        final double offset = (1.0 - (double) maskSize / (double) imageSize) / 2.0 * Math.sqrt(2.0);
         g.translate(0, image.getHeight() * offset);
 
         int y = height / (largeRibbon ? 2 : 4);

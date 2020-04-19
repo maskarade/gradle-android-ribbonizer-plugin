@@ -9,6 +9,7 @@ import com.shogo82148.ribbonizer.resource.ImageIcon;
 
 import org.gradle.api.DefaultTask;
 import org.gradle.api.tasks.TaskAction;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,14 +34,14 @@ public class RibbonizerTask extends DefaultTask {
 
         variant.getSourceSets().stream().flatMap(
                 sourceProvider -> sourceProvider.getResDirectories().stream()
-        ).forEach( resDir -> {
+        ).forEach(resDir -> {
             if (resDir.equals(getOutputDir())) {
                 return;
             }
             names.forEach(name -> getProject().fileTree(new LinkedHashMap<String, Object>() {
                 {
                     put("dir", resDir);
-                    put("include", Resources.resourceFilePattern(name));
+                    put("include", Resources.INSTANCE.resourceFilePattern(name));
                 }
             }).forEach(inputFile -> {
                 info("process " + inputFile);
@@ -58,20 +59,20 @@ public class RibbonizerTask extends DefaultTask {
 
     private void processAdaptiveIcon(File inputFile) {
         try {
-            final String icon = Resources.getAdaptiveIconResource(inputFile);
+            final String icon = Resources.INSTANCE.adaptiveIconResource(inputFile);
             if (icon.isEmpty()) {
                 return;
             }
             variant.getSourceSets().stream().flatMap(
                     sourceProvider -> sourceProvider.getResDirectories().stream()
-            ).forEach( resDir -> {
+            ).forEach(resDir -> {
                 if (resDir.equals(getOutputDir())) {
                     return;
                 }
                 getProject().fileTree(new LinkedHashMap<String, Object>() {
                     {
                         put("dir", resDir);
-                        put("include", Resources.resourceFilePattern(icon));
+                        put("include", Resources.INSTANCE.resourceFilePattern(icon));
                         put("exclude", "**/*.xml");
                     }
                 }).forEach(this::processImageAdaptiveIcon);
@@ -128,7 +129,7 @@ public class RibbonizerTask extends DefaultTask {
         final HashSet<String> names = new HashSet<>();
         getAndroidManifestFiles().forEach(manifestFile -> {
             try {
-                names.addAll(Resources.getLauncherIcons(manifestFile));
+                names.addAll(Resources.INSTANCE.launcherIcons(manifestFile));
             } catch (Exception e) {
                 info("Exception: " + e);
             }
@@ -143,12 +144,12 @@ public class RibbonizerTask extends DefaultTask {
                 Arrays.asList("main", variant.getName(), variant.getBuildType().getName(), variant.getFlavorName())
         ).stream().filter(
                 name -> !name.isEmpty()
-        ).distinct().map( name -> {
+        ).distinct().map(name -> {
             if (android == null) return null;
             AndroidSourceSet fileSet = android.getSourceSets().findByName(name);
             if (fileSet == null) return null;
             return getProject().file(fileSet.getManifest().getSrcFile());
-        }).filter( manifestFile -> manifestFile != null && manifestFile.exists() );
+        }).filter(manifestFile -> manifestFile != null && manifestFile.exists());
     }
 
     public static String getNAME() {
@@ -187,7 +188,7 @@ public class RibbonizerTask extends DefaultTask {
         this.filterBuilders = filterBuilders;
     }
 
-    private static final String NAME = "ribbonize";
+    static final String NAME = "ribbonize";
     private ApplicationVariant variant;
     private File outputDir;
     private Set<String> iconNames;
