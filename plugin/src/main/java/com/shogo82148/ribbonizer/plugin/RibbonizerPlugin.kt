@@ -8,6 +8,9 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
 import java.io.File
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashSet
 
 class RibbonizerPlugin : Plugin<Project> {
     override fun apply(project: Project) {
@@ -60,7 +63,7 @@ class RibbonizerPlugin : Plugin<Project> {
 }
 
 fun capitalize(string: String): String {
-    return string.substring(0, 1).toUpperCase() + string.substring(1)
+    return string.substring(0, 1).toUpperCase(Locale.ROOT) + string.substring(1)
 }
 
 fun getGeneratedResDir(project: Project, variant: ApplicationVariant): File {
