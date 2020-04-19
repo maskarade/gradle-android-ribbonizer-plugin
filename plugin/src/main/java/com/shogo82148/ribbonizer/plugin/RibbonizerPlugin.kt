@@ -2,6 +2,8 @@ package com.shogo82148.ribbonizer.plugin
 
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.api.ApplicationVariant
+import com.shogo82148.ribbonizer.FilterBuilder
+import com.shogo82148.ribbonizer.GreenRibbonBuilder
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
@@ -27,6 +29,9 @@ class RibbonizerPlugin : Plugin<Project> {
                 }
 
                 var filterBuilders = extension.filterBuilders
+                if (filterBuilders.isEmpty()) {
+                    filterBuilders = listOf(GreenRibbonBuilder() as FilterBuilder)
+                }
 
                 val generatedResDir = getGeneratedResDir(project, variant)
                 android.sourceSets.findByName(variant.name)!!.res.srcDir(generatedResDir)
