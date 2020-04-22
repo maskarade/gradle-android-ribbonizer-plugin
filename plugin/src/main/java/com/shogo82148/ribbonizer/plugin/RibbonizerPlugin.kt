@@ -14,7 +14,7 @@ import kotlin.collections.HashSet
 
 class RibbonizerPlugin : Plugin<Project> {
     override fun apply(project: Project) {
-        project.extensions.add(RibbonizerExtension.NAME, RibbonizerExtension)
+        project.extensions.add(RibbonizerExtension.NAME, RibbonizerExtension::class.java)
 
         project.afterEvaluate {
             val android = project.extensions.findByType(AppExtension::class.java)

@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-//apply plugin: 'com.shogo82148.ribbonizer'
+apply plugin: 'com.shogo82148.ribbonizer'
 
 android {
     compileSdkVersion 29

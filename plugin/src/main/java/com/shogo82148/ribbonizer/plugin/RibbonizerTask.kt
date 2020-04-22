@@ -16,7 +16,7 @@ import java.util.*
 import java.util.function.Consumer
 import java.util.stream.Stream
 
-class RibbonizerTask : DefaultTask() {
+open class RibbonizerTask : DefaultTask() {
     @TaskAction
     fun run() {
         if (filterBuilders.isEmpty()) {

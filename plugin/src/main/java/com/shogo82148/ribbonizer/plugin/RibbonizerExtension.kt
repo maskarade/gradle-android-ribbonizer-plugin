@@ -6,7 +6,7 @@ import com.shogo82148.ribbonizer.filter.ColorRibbonFilter
 import com.shogo82148.ribbonizer.filter.GrayScaleFilter
 import java.io.File
 
-class RibbonizerExtension {
+open class RibbonizerExtension {
     private var _iconNames: MutableSet<String> = HashSet()
 
     val iconNames: Set<String>
