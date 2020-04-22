@@ -1,4 +1,4 @@
 include ':plugin'
-include ':example-simple'
-include ':example-custom'
-include ':example-adaptive'
+// include ':example-simple'
+// include ':example-custom'
+// include ':example-adaptive'
