@@ -1,0 +1,68 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.shogo82148.ribbonizer'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion '29.0.3'
+    defaultConfig {
+        applicationId "com.github.gfx.ribbonizer.example"
+        minSdkVersion 26
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        debug {}
+        beta {
+            debuggable true
+        }
+        canary {
+            debuggable false
+        }
+        release {}
+    }
+
+    flavorDimensions 'flavor'
+    productFlavors {
+        local {
+            dimension 'flavor'
+        }
+        qa {
+            dimension 'flavor'
+        }
+        staging {
+            dimension 'flavor'
+        }
+        production {
+            dimension 'flavor'
+        }
+    }
+}
+
+//ribbonizer {
+//    iconNames "@drawable/abc_btn_check_to_on_mtrl_000", "@drawable/abc_btn_radio_to_on_mtrl_000", "@mipmap/ic_launcher_foreground"
+//
+//    builder { variant, iconFile ->
+//        if (variant.flavorName == "local") {
+//            return grayRibbonFilter(variant, iconFile)
+//        } else if (variant.flavorName == "qa") {
+//            def filter = customColorRibbonFilter(variant, iconFile, "#00C89C")
+//            filter.label = null//"QA" + variant.versionCode
+//            filter.largeRibbon = (iconFile.name == "ic_launcher.png")
+//            return filter
+//        } else if (variant.buildType.name == "debug") {
+//            if (variant.flavorName == "production") {
+//                return null
+//            }
+//            return customColorRibbonFilter(variant, iconFile, "#0000FF")
+//        } else {
+//            return greenRibbonFilter(variant, iconFile)
+//        }
+//    }
+//
+//    forcedVariantsNames "localCanary"
+//}
+
+dependencies {
+}

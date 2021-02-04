@@ -1,32 +1,36 @@
-repositories {
-    jcenter()
-    google()
+apply plugin: 'groovy'
+apply plugin: 'org.jetbrains.kotlin.jvm'
+apply plugin: 'java-gradle-plugin'
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.novoda:bintray-release:0.9.1' // https://github.com/novoda/bintray-release
+    }
 }
 
-apply plugin: 'groovy'
-
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
-
 dependencies {
-    implementation gradleApi()
+    compileOnly gradleApi()
     implementation localGroovy()
-    implementation 'com.android.tools.build:gradle:3.6.2'
+    implementation 'com.android.tools.build:gradle:3.6.3'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+}
 
-    testImplementation('org.spockframework:spock-core:2.0-M2-groovy-2.5') {
-        exclude group:'org.codehaus.groovy'
+sourceCompatibility = "8"
+targetCompatibility = "8"
+
+jar {
+    manifest {
+        attributes(
+            "Implementation-Version": project.file("../VERSION").text.trim(),
+        )
     }
 }
 
 if (rootProject.hasProperty('versionName') && rootProject.hasProperty('bintrayUser')) {
-    jar {
-        manifest {
-            attributes(
-                    "Implementation-Version": project.file("../VERSION").text.trim(),
-            )
-        }
-    }
-
     apply plugin: 'com.novoda.bintray-release'
 
     publish {

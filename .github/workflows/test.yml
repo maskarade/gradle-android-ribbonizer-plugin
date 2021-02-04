@@ -25,5 +25,4 @@ jobs:
 
       - name: Build with Gradle
         run: |
-          ./gradlew check --stacktrace
-          ./gradlew ribbonize --stacktrace
+          make test
