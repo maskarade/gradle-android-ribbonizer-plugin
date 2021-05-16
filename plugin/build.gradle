@@ -5,44 +5,21 @@ apply plugin: 'java-gradle-plugin'
 buildscript {
     repositories {
         google()
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.novoda:bintray-release:0.9.1' // https://github.com/novoda/bintray-release
+        mavenCentral()
     }
 }
 
 dependencies {
     compileOnly gradleApi()
     implementation localGroovy()
-    implementation 'com.android.tools.build:gradle:3.6.3'
+    implementation 'com.android.tools.build:gradle:4.2.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
-
-sourceCompatibility = "8"
-targetCompatibility = "8"
 
 jar {
     manifest {
         attributes(
             "Implementation-Version": project.file("../VERSION").text.trim(),
         )
-    }
-}
-
-if (rootProject.hasProperty('versionName') && rootProject.hasProperty('bintrayUser')) {
-    apply plugin: 'com.novoda.bintray-release'
-
-    publish {
-        artifactId = 'ribbonizer-plugin'
-        desc = 'Gradle plugin to modifiy Android launcher icons'
-
-        def metadata = rootProject.ext.metadata
-        userOrg = metadata.userOrg
-        groupId = metadata.groupId
-        publishVersion = metadata.version
-        website = metadata.website
-        repository = metadata.repository
-        licences = metadata.licences
     }
 }
