@@ -173,17 +173,17 @@ open class RibbonizerTask : DefaultTask() {
             }.map { it!! }
         }
 
-    @Input
-    internal lateinit var variant: ApplicationVariant
-
-    @OutputDirectory
-    internal lateinit var outputDir: File
-
-    @Input
-    internal lateinit var iconNames: Set<String>
+    @Internal
+    lateinit var variant: ApplicationVariant
 
     @Internal
-    internal lateinit var filterBuilders: List<FilterBuilder>
+    lateinit var outputDir: File
+
+    @Input
+    lateinit var iconNames: Set<String>
+
+    @Internal
+    lateinit var filterBuilders: List<FilterBuilder>
 
     companion object {
         const val NAME = "ribbonize"

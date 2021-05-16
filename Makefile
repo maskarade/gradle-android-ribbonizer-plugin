@@ -1,6 +1,6 @@
 test:
 	./gradlew jar
-	cd examples && ./gradlew check --info
+	cd examples && ./gradlew check --info --stacktrace
 
 check:
 	./gradlew clean check bintrayUpload
