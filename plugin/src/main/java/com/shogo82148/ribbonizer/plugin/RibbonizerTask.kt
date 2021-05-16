@@ -10,6 +10,9 @@ import com.shogo82148.ribbonizer.plugin.Resources.resourceFilePattern
 import com.shogo82148.ribbonizer.resource.ImageAdaptiveIcon
 import com.shogo82148.ribbonizer.resource.ImageIcon
 import org.gradle.api.DefaultTask
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.Internal
+import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import java.io.File
 import java.util.*
@@ -170,9 +173,16 @@ open class RibbonizerTask : DefaultTask() {
             }.map { it!! }
         }
 
+    @Input
     internal lateinit var variant: ApplicationVariant
+
+    @OutputDirectory
     internal lateinit var outputDir: File
+
+    @Input
     internal lateinit var iconNames: Set<String>
+
+    @Internal
     internal lateinit var filterBuilders: List<FilterBuilder>
 
     companion object {
