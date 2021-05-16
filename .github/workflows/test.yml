@@ -9,6 +9,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        distribution:
+          - zulu
+          - adopt
         java:
           - "8"
           - "11"
@@ -30,6 +33,7 @@ jobs:
       - name: set up JDK ${{ matrix.java }}
         uses: actions/setup-java@v2
         with:
+          distribution: ${{ matrix.distribution }}
           java-version: ${{ matrix.java }}
 
       - name: Build with Gradle
