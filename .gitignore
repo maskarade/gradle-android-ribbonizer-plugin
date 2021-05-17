@@ -7,3 +7,6 @@ reports/
 gradle.properties
 *.iml
 bin/
+
+# Ignore Gradle build output directory
+build
