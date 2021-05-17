@@ -12,6 +12,10 @@ plugins {
 
     // Apply the Kotlin JVM plugin to add support for Kotlin.
     id("org.jetbrains.kotlin.jvm") version "1.4.31"
+
+    // for publishing to Maven Central
+    id("signing")
+    id("maven-publish")
 }
 
 repositories {
@@ -60,4 +64,59 @@ val functionalTest by tasks.registering(Test::class) {
 tasks.check {
     // Run the functional tests as part of `check`
     dependsOn(functionalTest)
+}
+
+val group = "com.shogo82148.ribbonizer"
+val version = "3.0.3"
+
+publishing {
+    publications {
+        create<MavenPublication>("pluginMaven") {
+            groupId = group
+            artifactId = "ribbonizer-plugin"
+            version = version
+            pom {
+                name.set("ribbonizer-plugin")
+                description.set("Modifies launcher icons of Android apps on debug build")
+                url.set("https://github.com/shogo82148/gradle-android-ribbonizer-plugin")
+                licenses {
+                    license {
+                        name.set("The Apache License, Version 2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("shogo82148")
+                        name.set("Ichinose Shogo")
+                        email.set("shogo82148@gmail.com")
+                    }
+                }
+                scm {
+                    connection.set("git@github.com:shogo82148/gradle-android-ribbonizer-plugin.git")
+                    developerConnection.set("git@github.com:shogo82148/gradle-android-ribbonizer-plugin.git")
+                    url.set("https://github.com/shogo82148/gradle-android-ribbonizer-plugin")
+                }
+            }
+        }
+        repositories {
+            maven {
+                val releasesRepoUrl = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+                val snapshotsRepoUrl = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+                url = if (version.endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
+                credentials {
+                    if (hasProperty("sonatypeUsername")) {
+                        username = findProperty("sonatypeUsername") as String
+                    }
+                    if (hasProperty("sonatypePassword")) {
+                        password = findProperty("sonatypePassword") as String
+                    }
+                }
+            }
+        }
+    }
+}
+
+signing {
+    sign(publishing.publications["pluginMaven"])
 }
