@@ -5,6 +5,7 @@ import com.shogo82148.ribbonizer.FilterBuilder
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
+import java.io.File
 
 open class RibbonizerTask : DefaultTask() {
     @TaskAction
@@ -13,6 +14,12 @@ open class RibbonizerTask : DefaultTask() {
 
     @Internal
     lateinit var variant: ApplicationVariant
+
+    @Internal
+    lateinit var outputDir: File
+
+    @Internal
+    lateinit var iconNames: Set<String>
 
     @Internal
     lateinit var filterBuilders: List<FilterBuilder>
