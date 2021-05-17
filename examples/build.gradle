@@ -4,7 +4,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath fileTree(dir: '../plugin/build/libs', include: ['*.jar'])
+        classpath fileTree(dir: '../ribbonizer-plugin/build/libs', include: ['*.jar'])
         classpath 'com.android.tools.build:gradle:4.2.0'
     }
 }
