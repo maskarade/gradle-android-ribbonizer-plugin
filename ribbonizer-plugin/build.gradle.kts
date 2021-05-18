@@ -40,6 +40,81 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 }
 
+
+group = "com.shogo82148.ribbonizer"
+version = "3.0.3"
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("pluginMaven") {
+            artifactId = "ribbonizer-plugin"
+            version = version
+            pom.configureForRibbonizer("ribbonizer-plugin")
+        }
+        repositories {
+            maven {
+                val releasesRepoUrl = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+                val snapshotsRepoUrl = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+                val v = version as String
+                url = if (v.endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
+                credentials {
+                    if (hasProperty("sonatypeUsername")) {
+                        username = findProperty("sonatypeUsername") as String
+                    }
+                    if (hasProperty("sonatypePassword")) {
+                        password = findProperty("sonatypePassword") as String
+                    }
+                }
+            }
+        }
+    }
+
+    // sign Plugin Marker Artifacts
+    // https://docs.gradle.org/current/userguide/plugins.html#sec:plugin_markers
+    publications {
+        afterEvaluate {
+            named<MavenPublication>("ribbonizer-pluginPluginMarkerMaven") {
+                signing.sign(this)
+                pom.configureForRibbonizer("ribbonizer-plugin")
+            }
+        }
+    }
+}
+
+// comes from https://github.com/runningcode/gradle-doctor/blob/0e78bc8f304007bb0def37f72d6416947e58379a/doctor-plugin/build.gradle.kts#L115-L136
+fun org.gradle.api.publish.maven.MavenPom.configureForRibbonizer(pluginName: String) {
+    name.set(pluginName)
+    description.set("Modifies launcher icons of Android apps on debug build")
+    url.set("https://github.com/shogo82148/gradle-android-ribbonizer-plugin")
+    licenses {
+        license {
+            name.set("The Apache License, Version 2.0")
+            url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+        }
+    }
+    developers {
+        developer {
+            id.set("shogo82148")
+            name.set("Ichinose Shogo")
+            email.set("shogo82148@gmail.com")
+        }
+    }
+    scm {
+        connection.set("git@github.com:shogo82148/gradle-android-ribbonizer-plugin.git")
+        developerConnection.set("git@github.com:shogo82148/gradle-android-ribbonizer-plugin.git")
+        url.set("https://github.com/shogo82148/gradle-android-ribbonizer-plugin")
+    }
+}
+
+signing {
+    sign(publishing.publications["pluginMaven"])
+}
+
 gradlePlugin {
    plugins {
        // Define the plugin
@@ -66,59 +141,4 @@ val functionalTest by tasks.registering(Test::class) {
 tasks.check {
     // Run the functional tests as part of `check`
     dependsOn(functionalTest)
-}
-
-val ribbonizerGroup = "com.shogo82148.ribbonizer"
-val ribbonizerVersion = "3.0.3"
-
-publishing {
-    publications {
-        create<MavenPublication>("pluginMaven") {
-            groupId = ribbonizerGroup
-            artifactId = "ribbonizer-plugin"
-            version = ribbonizerVersion
-            pom {
-                name.set("ribbonizer-plugin")
-                description.set("Modifies launcher icons of Android apps on debug build")
-                url.set("https://github.com/shogo82148/gradle-android-ribbonizer-plugin")
-                licenses {
-                    license {
-                        name.set("The Apache License, Version 2.0")
-                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-                    }
-                }
-                developers {
-                    developer {
-                        id.set("shogo82148")
-                        name.set("Ichinose Shogo")
-                        email.set("shogo82148@gmail.com")
-                    }
-                }
-                scm {
-                    connection.set("git@github.com:shogo82148/gradle-android-ribbonizer-plugin.git")
-                    developerConnection.set("git@github.com:shogo82148/gradle-android-ribbonizer-plugin.git")
-                    url.set("https://github.com/shogo82148/gradle-android-ribbonizer-plugin")
-                }
-            }
-        }
-        repositories {
-            maven {
-                val releasesRepoUrl = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-                val snapshotsRepoUrl = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-                url = if (ribbonizerVersion.endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
-                credentials {
-                    if (hasProperty("sonatypeUsername")) {
-                        username = findProperty("sonatypeUsername") as String
-                    }
-                    if (hasProperty("sonatypePassword")) {
-                        password = findProperty("sonatypePassword") as String
-                    }
-                }
-            }
-        }
-    }
-}
-
-signing {
-    sign(publishing.publications["pluginMaven"])
 }
