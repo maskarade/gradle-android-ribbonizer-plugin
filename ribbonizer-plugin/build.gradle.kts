@@ -41,11 +41,13 @@ dependencies {
 }
 
 gradlePlugin {
-    // Define the plugin
-    val greeting by plugins.creating {
-        id = "com.shogo82148.ribbonizer"
-        implementationClass = "com.shogo82148.ribbonizer.plugin.RibbonizerPlugin"
-    }
+   plugins {
+       // Define the plugin
+       create("ribbonizer-plugin") {
+           id = "com.shogo82148.ribbonizer"
+           implementationClass = "com.shogo82148.ribbonizer.plugin.RibbonizerPlugin"
+       }
+   }
 }
 
 // Add a source set for the functional test suite
@@ -66,15 +68,15 @@ tasks.check {
     dependsOn(functionalTest)
 }
 
-val group = "com.shogo82148.ribbonizer"
-val version = "3.0.3"
+val ribbonizerGroup = "com.shogo82148.ribbonizer"
+val ribbonizerVersion = "3.0.3"
 
 publishing {
     publications {
         create<MavenPublication>("pluginMaven") {
-            groupId = group
+            groupId = ribbonizerGroup
             artifactId = "ribbonizer-plugin"
-            version = version
+            version = ribbonizerVersion
             pom {
                 name.set("ribbonizer-plugin")
                 description.set("Modifies launcher icons of Android apps on debug build")
@@ -103,7 +105,7 @@ publishing {
             maven {
                 val releasesRepoUrl = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
                 val snapshotsRepoUrl = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-                url = if (version.endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
+                url = if (ribbonizerVersion.endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
                 credentials {
                     if (hasProperty("sonatypeUsername")) {
                         username = findProperty("sonatypeUsername") as String
