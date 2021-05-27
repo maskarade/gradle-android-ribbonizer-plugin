@@ -8,6 +8,17 @@ import javax.xml.xpath.XPathConstants
 import javax.xml.xpath.XPathFactory
 
 object Resources {
+    fun resourceFilePattern(name: String): String {
+        return if (name.startsWith("@")) {
+            val pair = name.substring(1).split("/", limit = 2)
+            val baseResType = pair[0]
+            val filename = pair[1]
+            "$baseResType*/$filename.*"
+        } else {
+            name
+        }
+    }
+
     fun launcherIcons(manifestFile: File): List<String> {
         val documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
         val document = documentBuilder.parse(manifestFile)
