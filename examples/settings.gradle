@@ -1,2 +1,3 @@
 rootProject.name = "App Icon Demo"
 include ':simple'
+include ':custom'
