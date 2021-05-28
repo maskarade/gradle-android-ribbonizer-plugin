@@ -51,7 +51,8 @@ android {
 }
 
 ribbonizer {
-    iconNames "@mipmap/dog", "@mipmap/ic_launcher"
+    iconNames "@drawable/dog", "@drawable/thinking"
+    forcedVariantsNames "localCanary"
 }
 
 dependencies {

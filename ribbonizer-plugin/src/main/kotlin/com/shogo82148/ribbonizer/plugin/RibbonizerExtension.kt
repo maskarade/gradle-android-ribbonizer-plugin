@@ -24,7 +24,23 @@ open class RibbonizerExtension {
         _iconNames.add(resName)
     }
 
-    var forcedVariantsNames: Set<String> = HashSet()
+    private var _forcedVariantsNames: MutableSet<String> = HashSet()
+
+    val forcedVariantsNames: Set<String>
+        get() = _forcedVariantsNames
+
+    fun setForcedVariantsNames(variantNames: Collection<String>) {
+        _forcedVariantsNames = HashSet(variantNames)
+    }
+
+    fun forcedVariantsNames(variantNames: Collection<String>) {
+        _forcedVariantsNames = HashSet(variantNames)
+    }
+
+    fun forcedVariantsNames(vararg variantNames: String) {
+        _forcedVariantsNames = HashSet(listOf(*variantNames))
+    }
+
     var filterBuilders: List<FilterBuilder> = ArrayList()
 
     companion object {
