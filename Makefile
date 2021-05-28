@@ -1,15 +1,11 @@
+.PHONY: test
 test:
 	./gradlew jar
-	cd examples && ./gradlew check --info --stacktrace
+	cd examples && ./gradlew check --info
 
-check:
-	./gradlew clean check bintrayUpload
-
-publish: check
-	./gradlew releng
-	./gradlew -PdryRun=false --info plugin:bintrayUpload
-
+.PHONY: update-examples
 update-examples:
-	./gradlew ribbonize
-	cp ./example-simple/build/generated/ribbonizer/res/debug/mipmap-xxhdpi/ic_launcher.png ic-debug.png
-	cp ./example-custom/build/generated/ribbonizer/res/localBeta/mipmap-xxhdpi/ic_launcher.png ic-beta.png
+	./gradlew jar
+	cd examples && ./gradlew ribbonize
+	cp examples/simple/build/generated/ribbonizer/res/debug/mipmap-xxxhdpi/ic_launcher.png ic-debug.png
+	cp examples/custom/build/generated/ribbonizer/res/localBeta/mipmap-xxxhdpi/ic_launcher.png ic-beta.png
