@@ -6,6 +6,8 @@ import java.awt.Font
 import java.awt.Graphics2D
 import java.awt.RenderingHints
 import java.awt.font.FontRenderContext
+import java.awt.geom.PathIterator
+import java.awt.image.BufferedImage
 import java.util.function.Consumer
 import kotlin.math.pow
 import kotlin.math.sqrt
@@ -35,8 +37,7 @@ class ColorRibbonFilter(
         val frc = FontRenderContext(g.transform, true, true)
         val maxLabelWidth = calculateMaxLabelWidth(y)
         g.font = getFont(maxLabelWidth, frc)
-        val labelBounds =
-            g.font.getStringBounds(label, frc)
+        val labelBounds = g.font.getStringBounds(label, frc)
 
         // draw the ribbon
         g.color = ribbonColor
@@ -49,7 +50,8 @@ class ColorRibbonFilter(
         g.color = labelColor
         val fm = g.fontMetrics
         drawString(
-            g, label,
+            g,
+            label,
             (-labelBounds.width).toInt() / 2,
             y + fm.ascent
         )
@@ -66,8 +68,7 @@ class ColorRibbonFilter(
         val height = image.height * maskSize / imageSize
         val g = image.graphics as Graphics2D
         g.rotate(Math.toRadians(-45.0))
-        val offset =
-            (1.0 - maskSize.toDouble() / imageSize.toDouble()) / 2.0 * sqrt(2.0)
+        val offset = (1.0 - maskSize.toDouble() / imageSize.toDouble()) / 2.0 * sqrt(2.0)
         g.translate(0.0, image.height * offset)
         val y = height / if (largeRibbon) 2 else 4
 
@@ -75,8 +76,7 @@ class ColorRibbonFilter(
         val frc = FontRenderContext(g.transform, true, true)
         val maxLabelWidth = calculateMaxLabelWidth(y)
         g.font = getFont(maxLabelWidth, frc)
-        val labelBounds =
-            g.font.getStringBounds(label, frc)
+        val labelBounds = g.font.getStringBounds(label, frc)
 
         // draw the ribbon
         g.color = ribbonColor
@@ -97,7 +97,86 @@ class ColorRibbonFilter(
     }
 
     override fun apply(icon: VectorAdaptiveIcon) {
-        // TODO: implement me!
+        val document = icon.document
+        val root = document.firstChild
+
+        // https://medium.com/google-design/designing-adaptive-icons-515af294c783
+        // Adaptive icons are 108dp*108dp in size but are masked to a maximum of 72dp*72dp.
+        val maskSize = 72
+        val imageSize = 108
+        val viewportWidth = root.attributes.getNamedItem("android:viewportWidth").nodeValue.toString().toInt()
+        val viewportHeight = root.attributes.getNamedItem("android:viewportHeight").nodeValue.toString().toInt()
+        val width = viewportWidth * maskSize / imageSize
+        val height = viewportHeight * maskSize / imageSize
+        val offset = (1.0 - maskSize.toDouble() / imageSize.toDouble()) / 2.0 * viewportHeight
+        val y = height / if (largeRibbon) 2 else 4
+
+        // rotate the ribbon
+        val group = document.createElement("group")
+        group.setAttribute("android:rotation", "-45")
+        group.setAttribute("android:translateX", "%.1f".format(offset))
+        group.setAttribute("android:translateY", "%.1f".format(offset))
+
+        // calculate font size
+        val g = BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB).createGraphics()
+        val frc = g.fontRenderContext
+        val maxLabelWidth = calculateMaxLabelWidth(y)
+        val font = getFont(maxLabelWidth, frc)
+        val labelBounds = font.getStringBounds(label, frc)
+        g.font = font
+
+        // create the ribbon
+        val ribbon = document.createElement("path")
+        ribbon.setAttribute(
+            "android:fillColor",
+            "#%02x%02x%02x".format(ribbonColor.red, ribbonColor.green, ribbonColor.blue)
+        )
+        ribbon.setAttribute("android:fillAlpha", (ribbonColor.alpha/255.0).toString())
+        ribbon.setAttribute(
+            "android:pathData",
+            "M${-width} $y H${width*2} v${labelBounds.height} H${-width} Z"
+        )
+        group.appendChild(ribbon)
+
+        // get the outline of the label text
+        // ref. https://wcs.hatenablog.com/entry/2014/08/02/184622
+        val labelGroup = document.createElement("group")
+        labelGroup.setAttribute("android:translateX", "%.1f".format(-labelBounds.width / 2.0))
+        labelGroup.setAttribute("android:translateY", "%d".format(y+g.fontMetrics.ascent))
+        val iter = font.createGlyphVector(frc, label).outline.getPathIterator(null)
+        val coords = FloatArray(6)
+        var pathData = ""
+        while (!iter.isDone) {
+            when (iter.currentSegment(coords)) {
+                PathIterator.SEG_MOVETO -> {
+                    pathData += "M%.2f %.2f ".format(coords[0], coords[1])
+                }
+                PathIterator.SEG_LINETO -> {
+                    pathData += "L%.2f %.2f ".format(coords[0], coords[1])
+                }
+                PathIterator.SEG_CLOSE -> {
+                    pathData += "Z "
+                }
+                PathIterator.SEG_QUADTO -> {
+                    pathData += "Q %.2f %.2f, %.2f %.2f ".format(coords[0], coords[1], coords[2], coords[3])
+                }
+                PathIterator.SEG_CUBICTO -> {
+                    pathData += "C %.2f %.2f, %.2f %.2f, %.2f %.2f ".format(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5])
+                }
+            }
+            iter.next()
+        }
+        val path = document.createElement("path")
+        path.setAttribute(
+            "android:fillColor",
+            "#%02x%02x%02x".format(labelColor.red, labelColor.green, labelColor.blue)
+        )
+        path.setAttribute("android:fillAlpha", (labelColor.alpha/255.0).toString())
+        path.setAttribute("android:pathData", pathData)
+        labelGroup.appendChild(path)
+
+        group.appendChild(labelGroup)
+        root.appendChild(group)
     }
 
     private fun getFont(maxLabelWidth: Int, frc: FontRenderContext): Font {
