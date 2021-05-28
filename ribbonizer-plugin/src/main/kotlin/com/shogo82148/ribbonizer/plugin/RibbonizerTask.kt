@@ -4,7 +4,9 @@ import com.android.build.gradle.AppExtension
 import com.android.builder.model.SourceProvider
 import com.android.build.gradle.api.ApplicationVariant
 import com.shogo82148.ribbonizer.FilterBuilder
+import com.shogo82148.ribbonizer.plugin.Resources.adaptiveIconResource
 import com.shogo82148.ribbonizer.plugin.Resources.resourceFilePattern
+import com.shogo82148.ribbonizer.resource.ImageAdaptiveIcon
 import com.shogo82148.ribbonizer.resource.ImageIcon
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Internal
@@ -40,7 +42,7 @@ open class RibbonizerTask : DefaultTask() {
                     info("process $inputFile")
                     if (inputFile.name.endsWith(".xml")) {
                         // assume it is an adaptive icon
-                        // TODO: processAdaptiveIcon(inputFile)
+                        processAdaptiveIcon(inputFile)
                     } else {
                         processImageIcon(inputFile)
                     }
@@ -48,6 +50,59 @@ open class RibbonizerTask : DefaultTask() {
             })
         }
         info("task finished in " + (System.currentTimeMillis() - t0) + "ms")
+    }
+
+    private fun processAdaptiveIcon(inputFile: File) {
+        try {
+            val icon = adaptiveIconResource(inputFile)
+            if (icon.isEmpty()) {
+                return
+            }
+            variant.sourceSets.stream().flatMap { sourceProvider: SourceProvider ->
+                sourceProvider.resDirectories.stream()
+            }.forEach { resDir: File ->
+                if (resDir == outputDir) {
+                    return@forEach
+                }
+                project.fileTree(object :
+                    LinkedHashMap<String?, Any?>() {
+                    init {
+                        put("dir", resDir)
+                        put(
+                            "include",
+                            resourceFilePattern(icon)
+                        )
+                        put("exclude", "**/*.xml")
+                    }
+                }).forEach(Consumer { inputFile: File ->
+                    processImageAdaptiveIcon(inputFile)
+                })
+            }
+        } catch (e: Exception) {
+            info("Exception: $e")
+        }
+    }
+
+    private fun processImageAdaptiveIcon(inputFile: File) {
+        val basename = inputFile.name
+        val resType = inputFile.parentFile.name
+        val outputFile = File(outputDir, "$resType/$basename")
+        outputFile.parentFile.mkdirs()
+        try {
+            val icon = ImageAdaptiveIcon(inputFile)
+            val ribbonizer = Ribbonizer(icon, outputFile)
+            ribbonizer.process(
+                filterBuilders.stream().map { filterBuilder: FilterBuilder ->
+                    filterBuilder.apply(
+                        variant,
+                        inputFile
+                    )
+                }
+            )
+            ribbonizer.save()
+        } catch (e: Exception) {
+            info("Exception: $e")
+        }
     }
 
     private fun processImageIcon(inputFile: File) {

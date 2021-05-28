@@ -1,6 +1,7 @@
 package com.shogo82148.ribbonizer.filter
 
 import com.shogo82148.ribbonizer.resource.Filter
+import com.shogo82148.ribbonizer.resource.ImageAdaptiveIcon
 import com.shogo82148.ribbonizer.resource.Resource
 import com.shogo82148.ribbonizer.resource.ImageIcon
 import java.awt.Color
@@ -31,6 +32,46 @@ class ColorRibbonFilter(
         val height = image.height
         val g = image.graphics as Graphics2D
         g.rotate(Math.toRadians(-45.0))
+        val y = height / if (largeRibbon) 2 else 4
+
+        // calculate the rectangle where the label is rendered
+        val frc = FontRenderContext(g.transform, true, true)
+        val maxLabelWidth = calculateMaxLabelWidth(y)
+        g.font = getFont(maxLabelWidth, frc)
+        val labelBounds =
+            g.font.getStringBounds(label, frc)
+
+        // draw the ribbon
+        g.color = ribbonColor
+        g.fillRect(-width, y, width * 2, labelBounds.height.toInt())
+        // draw the label
+        g.setRenderingHint(
+            RenderingHints.KEY_ANTIALIASING,
+            RenderingHints.VALUE_ANTIALIAS_ON
+        )
+        g.color = labelColor
+        val fm = g.fontMetrics
+        drawString(
+            g, label,
+            (-labelBounds.width).toInt() / 2,
+            y + fm.ascent
+        )
+        g.dispose()
+    }
+
+    override fun apply(icon: ImageAdaptiveIcon) {
+        // https://medium.com/google-design/designing-adaptive-icons-515af294c783
+        // Adaptive icons are 108dp*108dp in size but are masked to a maximum of 72dp*72dp.
+        val maskSize = 72
+        val imageSize = 108
+        val image = icon.image
+        val width = image.width * maskSize / imageSize
+        val height = image.height * maskSize / imageSize
+        val g = image.graphics as Graphics2D
+        g.rotate(Math.toRadians(-45.0))
+        val offset =
+            (1.0 - maskSize.toDouble() / imageSize.toDouble()) / 2.0 * sqrt(2.0)
+        g.translate(0.0, image.height * offset)
         val y = height / if (largeRibbon) 2 else 4
 
         // calculate the rectangle where the label is rendered

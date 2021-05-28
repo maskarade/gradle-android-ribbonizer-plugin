@@ -1,6 +1,7 @@
 package com.shogo82148.ribbonizer.filter
 
 import com.shogo82148.ribbonizer.resource.Filter
+import com.shogo82148.ribbonizer.resource.ImageAdaptiveIcon
 import com.shogo82148.ribbonizer.resource.ImageIcon
 import com.shogo82148.ribbonizer.resource.Resource
 import java.util.function.Consumer
@@ -11,6 +12,18 @@ class GrayScaleFilter : Consumer<Resource>, Filter {
     }
 
     override fun apply(icon: ImageIcon) {
+        val image = icon.image
+        val width = image.width
+        val height = image.height
+        for (y in 0 until height) {
+            for (x in 0 until width) {
+                val color = image.getRGB(x, y)
+                image.setRGB(x, y, toGray(color))
+            }
+        }
+    }
+
+    override fun apply(icon: ImageAdaptiveIcon) {
         val image = icon.image
         val width = image.width
         val height = image.height
