@@ -1,9 +1,6 @@
 package com.shogo82148.ribbonizer.filter
 
-import com.shogo82148.ribbonizer.resource.Filter
-import com.shogo82148.ribbonizer.resource.ImageAdaptiveIcon
-import com.shogo82148.ribbonizer.resource.ImageIcon
-import com.shogo82148.ribbonizer.resource.Resource
+import com.shogo82148.ribbonizer.resource.*
 import java.util.function.Consumer
 
 class GrayScaleFilter : Consumer<Resource>, Filter {
@@ -33,6 +30,10 @@ class GrayScaleFilter : Consumer<Resource>, Filter {
                 image.setRGB(x, y, toGray(color))
             }
         }
+    }
+
+    override fun apply(icon: VectorAdaptiveIcon) {
+        // TODO: implement me!
     }
 
 }
