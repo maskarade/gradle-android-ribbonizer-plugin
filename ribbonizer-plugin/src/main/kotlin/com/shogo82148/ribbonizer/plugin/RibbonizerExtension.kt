@@ -41,7 +41,19 @@ open class RibbonizerExtension {
         _forcedVariantsNames = HashSet(listOf(*variantNames))
     }
 
-    var filterBuilders: List<FilterBuilder> = ArrayList()
+    private var _filterBuilders: MutableList<FilterBuilder> = ArrayList()
+
+    val filterBuilders: List<FilterBuilder>
+        get() = _filterBuilders
+
+    fun setFilterBuilders(filterBuilders: Collection<FilterBuilder>) {
+        _filterBuilders = ArrayList(filterBuilders)
+    }
+
+    fun builder(filterBuilder: FilterBuilder) {
+        _filterBuilders.clear()
+        _filterBuilders.add(filterBuilder)
+    }
 
     companion object {
         const val NAME = "ribbonizer"
