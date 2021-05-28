@@ -1,9 +1,6 @@
 package com.shogo82148.ribbonizer.filter
 
-import com.shogo82148.ribbonizer.resource.Filter
-import com.shogo82148.ribbonizer.resource.ImageAdaptiveIcon
-import com.shogo82148.ribbonizer.resource.Resource
-import com.shogo82148.ribbonizer.resource.ImageIcon
+import com.shogo82148.ribbonizer.resource.*
 import java.awt.Color
 import java.awt.Font
 import java.awt.Graphics2D
@@ -97,6 +94,10 @@ class ColorRibbonFilter(
             y + fm.ascent
         )
         g.dispose()
+    }
+
+    override fun apply(icon: VectorAdaptiveIcon) {
+        // TODO: implement me!
     }
 
     private fun getFont(maxLabelWidth: Int, frc: FontRenderContext): Font {

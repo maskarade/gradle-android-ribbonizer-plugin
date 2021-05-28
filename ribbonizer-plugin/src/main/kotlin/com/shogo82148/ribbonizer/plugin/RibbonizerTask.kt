@@ -8,6 +8,8 @@ import com.shogo82148.ribbonizer.plugin.Resources.adaptiveIconResource
 import com.shogo82148.ribbonizer.plugin.Resources.resourceFilePattern
 import com.shogo82148.ribbonizer.resource.ImageAdaptiveIcon
 import com.shogo82148.ribbonizer.resource.ImageIcon
+import com.shogo82148.ribbonizer.resource.Resource
+import com.shogo82148.ribbonizer.resource.VectorAdaptiveIcon
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
@@ -44,7 +46,7 @@ open class RibbonizerTask : DefaultTask() {
                         // assume it is an adaptive icon
                         processAdaptiveIcon(inputFile)
                     } else {
-                        processImageIcon(inputFile)
+                        processIcon(inputFile, ImageIcon(inputFile))
                     }
                 })
             })
@@ -68,14 +70,15 @@ open class RibbonizerTask : DefaultTask() {
                     LinkedHashMap<String?, Any?>() {
                     init {
                         put("dir", resDir)
-                        put(
-                            "include",
-                            resourceFilePattern(icon)
-                        )
-                        put("exclude", "**/*.xml")
+                        put("include", resourceFilePattern(icon))
                     }
                 }).forEach(Consumer { inputFile: File ->
-                    processImageAdaptiveIcon(inputFile)
+                    if (inputFile.name.endsWith(".xml")) {
+                        // assume it is a vector drawable
+                        processIcon(inputFile, VectorAdaptiveIcon(inputFile))
+                    } else {
+                        processIcon(inputFile, ImageAdaptiveIcon(inputFile))
+                    }
                 })
             }
         } catch (e: Exception) {
@@ -83,35 +86,11 @@ open class RibbonizerTask : DefaultTask() {
         }
     }
 
-    private fun processImageAdaptiveIcon(inputFile: File) {
+    private fun <T: Resource> processIcon(inputFile: File, icon: T) {
         val basename = inputFile.name
         val resType = inputFile.parentFile.name
         val outputFile = File(outputDir, "$resType/$basename")
-        outputFile.parentFile.mkdirs()
         try {
-            val icon = ImageAdaptiveIcon(inputFile)
-            val ribbonizer = Ribbonizer(icon, outputFile)
-            ribbonizer.process(
-                filterBuilders.stream().map { filterBuilder: FilterBuilder ->
-                    filterBuilder.apply(
-                        variant,
-                        inputFile
-                    )
-                }
-            )
-            ribbonizer.save()
-        } catch (e: Exception) {
-            info("Exception: $e")
-        }
-    }
-
-    private fun processImageIcon(inputFile: File) {
-        val basename = inputFile.name
-        val resType = inputFile.parentFile.name
-        val outputFile = File(outputDir, "$resType/$basename")
-        outputFile.parentFile.mkdirs()
-        try {
-            val icon = ImageIcon(inputFile)
             val ribbonizer = Ribbonizer(icon, outputFile)
             ribbonizer.process(
                 filterBuilders.stream().map { filterBuilder: FilterBuilder ->

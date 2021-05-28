@@ -4,5 +4,5 @@ import java.io.File
 
 abstract class Resource {
     abstract fun apply(filter: Filter)
-    abstract fun save(dir: File)
+    abstract fun save(file: File)
 }

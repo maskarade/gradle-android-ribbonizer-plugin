@@ -11,7 +11,7 @@ class ImageIcon(private val file: File) : Resource() {
         filter.apply(this)
     }
 
-    override fun save(dir: File) {
-        ImageIO.write(image, "png", dir)
+    override fun save(file: File) {
+        ImageIO.write(image, "png", file)
     }
 }
