@@ -4,7 +4,10 @@ import com.android.build.gradle.api.ApplicationVariant
 import com.shogo82148.ribbonizer.*
 import com.shogo82148.ribbonizer.filter.ColorRibbonFilter
 import com.shogo82148.ribbonizer.filter.GrayScaleFilter
+import com.shogo82148.ribbonizer.resource.Resource
 import java.io.File
+import java.util.function.BiFunction
+import java.util.function.Consumer
 
 open class RibbonizerExtension {
     private var _iconNames: MutableSet<String> = HashSet()
@@ -54,9 +57,14 @@ open class RibbonizerExtension {
         _filterBuilders = ArrayList(filterBuilders)
     }
 
-    fun builder(filterBuilder: FilterBuilder) {
+    fun builder(filterBuilder: (ApplicationVariant, File) -> Consumer<Resource>?) {
+        val fb = object: FilterBuilder{
+            override fun apply(variant: ApplicationVariant, file: File): Consumer<Resource>? {
+                return filterBuilder(variant, file)
+            }
+        }
         _filterBuilders.clear()
-        _filterBuilders.add(filterBuilder)
+        _filterBuilders.add(fb)
     }
 
     // utilities
