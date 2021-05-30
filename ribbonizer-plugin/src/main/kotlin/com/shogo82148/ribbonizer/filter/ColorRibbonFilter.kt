@@ -58,6 +58,14 @@ class ColorRibbonFilter(
         g.dispose()
     }
 
+    override fun apply(icon: AdaptiveIcon) {
+        if (icon.foreground.startsWith("@mipmap/") || icon.foreground.startsWith("@drawable")) {
+            icon.processForeground()
+        } else if (icon.background.startsWith("@mipmap/") || icon.background.startsWith("@drawable")) {
+            icon.processBackground()
+        }
+    }
+
     override fun apply(icon: ImageAdaptiveIcon) {
         // https://medium.com/google-design/designing-adaptive-icons-515af294c783
         // Adaptive icons are 108dp*108dp in size but are masked to a maximum of 72dp*72dp.
@@ -102,13 +110,13 @@ class ColorRibbonFilter(
 
         // https://medium.com/google-design/designing-adaptive-icons-515af294c783
         // Adaptive icons are 108dp*108dp in size but are masked to a maximum of 72dp*72dp.
-        val maskSize = 72
-        val imageSize = 108
-        val viewportWidth = root.attributes.getNamedItem("android:viewportWidth").nodeValue.toString().toInt()
-        val viewportHeight = root.attributes.getNamedItem("android:viewportHeight").nodeValue.toString().toInt()
+        val maskSize = 72.0
+        val imageSize = 108.0
+        val viewportWidth = root.attributes.getNamedItem("android:viewportWidth").nodeValue.toString().toDouble()
+        val viewportHeight = root.attributes.getNamedItem("android:viewportHeight").nodeValue.toString().toDouble()
         val width = viewportWidth * maskSize / imageSize
         val height = viewportHeight * maskSize / imageSize
-        val offset = (1.0 - maskSize.toDouble() / imageSize.toDouble()) / 2.0 * viewportHeight
+        val offset = (1.0 - maskSize / imageSize) / 2.0 * viewportHeight
         val y = height / if (largeRibbon) 2 else 4
 
         // rotate the ribbon
@@ -120,7 +128,7 @@ class ColorRibbonFilter(
         // calculate font size
         val g = BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB).createGraphics()
         val frc = g.fontRenderContext
-        val maxLabelWidth = calculateMaxLabelWidth(y)
+        val maxLabelWidth = calculateMaxLabelWidth(y.toInt())
         val font = getFont(maxLabelWidth, frc)
         val labelBounds = font.getStringBounds(label, frc)
         g.font = font

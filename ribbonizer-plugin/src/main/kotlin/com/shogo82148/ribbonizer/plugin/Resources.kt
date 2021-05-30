@@ -35,26 +35,4 @@ object Resources {
         }
         return icons.toImmutableList()
     }
-
-    fun adaptiveIconResource(adaptiveIcon: File): String {
-        val documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-        val document = documentBuilder.parse(adaptiveIcon)
-
-        val xpath = XPathFactory.newInstance().newXPath()
-        val foregroundNode = xpath.evaluate("/adaptive-icon/foreground", document, XPathConstants.NODE) as Node?
-        foregroundNode?.attributes?.getNamedItem("android:drawable")?.nodeValue?.let {
-            if (it.startsWith("@mipmap/") || it.startsWith("@drawable/")) {
-                return it
-            }
-        }
-
-        val backgroundNode = xpath.evaluate("/adaptive-icon/background", document, XPathConstants.NODE) as Node?
-        backgroundNode?.attributes?.getNamedItem("android:drawable")?.nodeValue?.let {
-            if (it.startsWith("@mipmap/") || it.startsWith("@drawable/")) {
-                return it
-            }
-        }
-
-        return ""
-    }
 }
