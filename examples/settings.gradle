@@ -2,3 +2,4 @@ rootProject.name = "App Icon Demo"
 include ':simple'
 include ':custom'
 include ':custom-kts'
+include ':grayscale'
