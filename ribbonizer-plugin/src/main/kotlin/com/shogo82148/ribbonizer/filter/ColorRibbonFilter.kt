@@ -150,7 +150,7 @@ class ColorRibbonFilter(
         // ref. https://wcs.hatenablog.com/entry/2014/08/02/184622
         val labelGroup = document.createElement("group")
         labelGroup.setAttribute("android:translateX", "%.1f".format(-labelBounds.width / 2.0))
-        labelGroup.setAttribute("android:translateY", "%d".format(y+g.fontMetrics.ascent))
+        labelGroup.setAttribute("android:translateY", "%.1f".format(y+g.fontMetrics.ascent.toDouble()))
         val iter = font.createGlyphVector(frc, label).outline.getPathIterator(null)
         val coords = FloatArray(6)
         var pathData = ""
@@ -179,7 +179,7 @@ class ColorRibbonFilter(
             "android:fillColor",
             "#%02x%02x%02x".format(labelColor.red, labelColor.green, labelColor.blue)
         )
-        path.setAttribute("android:fillAlpha", (labelColor.alpha/255.0).toString())
+        path.setAttribute("android:fillAlpha", (labelColor.alpha.toDouble()/255.0).toString())
         path.setAttribute("android:pathData", pathData)
         labelGroup.appendChild(path)
 

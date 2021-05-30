@@ -56,7 +56,7 @@ class Ribbonizer (
         return files
     }
 
-    private fun info(message: String) {
+    fun info(message: String) {
         project.logger.info("[$name] $message")
     }
 }
