@@ -24,7 +24,7 @@ class Ribbonizer (
             val resType = file.parentFile.name
             val outputFile = File(outputDir, "$resType/$basename")
             outputFile.parentFile.mkdirs()
-            filterBuilders.stream().map { filterBuilder: FilterBuilder ->
+            filterBuilders.forEach { filterBuilder: FilterBuilder ->
                 val filter = filterBuilder.apply(variant, file)
                 filter?.accept(resource)
             }
@@ -56,7 +56,7 @@ class Ribbonizer (
         return files
     }
 
-    private fun info(message: String) {
+    fun info(message: String) {
         project.logger.info("[$name] $message")
     }
 }
