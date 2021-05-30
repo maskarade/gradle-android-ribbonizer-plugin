@@ -5,7 +5,6 @@ import com.android.builder.model.SourceProvider
 import com.android.build.gradle.api.ApplicationVariant
 import com.shogo82148.ribbonizer.FilterBuilder
 import com.shogo82148.ribbonizer.plugin.Resources.adaptiveIconResource
-import com.shogo82148.ribbonizer.plugin.Resources.resourceFilePattern
 import com.shogo82148.ribbonizer.resource.ImageAdaptiveIcon
 import com.shogo82148.ribbonizer.resource.ImageIcon
 import com.shogo82148.ribbonizer.resource.Resource
@@ -27,31 +26,39 @@ open class RibbonizerTask : DefaultTask() {
         val names = HashSet(iconNames)
         names.addAll(launcherIconNames)
         info(names.toString())
+        names.forEach { name: String ->
+            findResourceFiles(name).forEach {
+                info("process $it")
+                if (it.name.endsWith(".xml")) {
+                    // assume it is an adaptive icon
+                    processAdaptiveIcon(it)
+                } else {
+                    processIcon(it, ImageIcon(it))
+                }
+            }
+        }
+        info("task finished in " + (System.currentTimeMillis() - t0) + "ms")
+    }
+
+    private fun findResourceFiles(name: String): List<File> {
+        val files = ArrayList<File>()
         variant.sourceSets.stream().flatMap { sourceProvider: SourceProvider ->
             sourceProvider.resDirectories.stream()
         }.forEach { resDir: File ->
             if (resDir == outputDir) {
                 return@forEach
             }
-            names.forEach(Consumer { name: String? ->
-                project.fileTree(object :
-                    LinkedHashMap<String?, Any?>() {
-                    init {
-                        put("dir", resDir)
-                        put("include", resourceFilePattern(name!!))
-                    }
-                }).forEach(Consumer { inputFile: File ->
-                    info("process $inputFile")
-                    if (inputFile.name.endsWith(".xml")) {
-                        // assume it is an adaptive icon
-                        processAdaptiveIcon(inputFile)
-                    } else {
-                        processIcon(inputFile, ImageIcon(inputFile))
-                    }
-                })
+            project.fileTree(object :
+                LinkedHashMap<String?, Any?>() {
+                init {
+                    put("dir", resDir)
+                    put("include", Resources.resourceFilePattern(name))
+                }
+            }).forEach(Consumer { inputFile: File ->
+                files.add(inputFile)
             })
         }
-        info("task finished in " + (System.currentTimeMillis() - t0) + "ms")
+        return files
     }
 
     private fun processAdaptiveIcon(inputFile: File) {
@@ -60,26 +67,13 @@ open class RibbonizerTask : DefaultTask() {
             if (icon.isEmpty()) {
                 return
             }
-            variant.sourceSets.stream().flatMap { sourceProvider: SourceProvider ->
-                sourceProvider.resDirectories.stream()
-            }.forEach { resDir: File ->
-                if (resDir == outputDir) {
-                    return@forEach
+            findResourceFiles(icon).forEach {
+                if (it.name.endsWith(".xml")) {
+                    // assume it is a vector drawable
+                    processIcon(it, VectorAdaptiveIcon(it))
+                } else {
+                    processIcon(it, ImageAdaptiveIcon(it))
                 }
-                project.fileTree(object :
-                    LinkedHashMap<String?, Any?>() {
-                    init {
-                        put("dir", resDir)
-                        put("include", resourceFilePattern(icon))
-                    }
-                }).forEach(Consumer { inputFile: File ->
-                    if (inputFile.name.endsWith(".xml")) {
-                        // assume it is a vector drawable
-                        processIcon(inputFile, VectorAdaptiveIcon(inputFile))
-                    } else {
-                        processIcon(inputFile, ImageAdaptiveIcon(inputFile))
-                    }
-                })
             }
         } catch (e: Exception) {
             info("Exception: $e")
@@ -140,7 +134,7 @@ open class RibbonizerTask : DefaultTask() {
                 val fileSet = android?.sourceSets?.findByName(it) ?: return@map null
                 project.file(fileSet.manifest.srcFile)
             }.filter {
-                it != null && it.exists()
+                it?.exists() ?: false
             }.map { it!! }
         }
 

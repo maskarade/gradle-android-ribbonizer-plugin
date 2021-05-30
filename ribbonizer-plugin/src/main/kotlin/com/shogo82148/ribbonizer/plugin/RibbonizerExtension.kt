@@ -6,7 +6,6 @@ import com.shogo82148.ribbonizer.filter.ColorRibbonFilter
 import com.shogo82148.ribbonizer.filter.GrayScaleFilter
 import com.shogo82148.ribbonizer.resource.Resource
 import java.io.File
-import java.util.function.BiFunction
 import java.util.function.Consumer
 
 open class RibbonizerExtension {
