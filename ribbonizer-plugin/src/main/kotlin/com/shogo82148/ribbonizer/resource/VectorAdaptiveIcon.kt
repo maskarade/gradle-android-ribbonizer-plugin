@@ -1,5 +1,6 @@
 package com.shogo82148.ribbonizer.resource
 
+import com.shogo82148.ribbonizer.plugin.Ribbonizer
 import org.w3c.dom.Document
 import java.io.File
 import javax.xml.parsers.DocumentBuilderFactory
@@ -7,7 +8,8 @@ import javax.xml.transform.TransformerFactory
 import javax.xml.transform.dom.DOMSource
 import javax.xml.transform.stream.StreamResult
 
-class VectorAdaptiveIcon(private val file: File) : Resource() {
+// VectorAdaptiveIcon is a raster type layer of an adaptive icon.
+class VectorAdaptiveIcon(ribbonizer: Ribbonizer, file: File) : Resource(ribbonizer, file) {
     val document: Document
     init {
         val documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder()

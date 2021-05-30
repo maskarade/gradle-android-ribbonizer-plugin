@@ -58,6 +58,14 @@ class ColorRibbonFilter(
         g.dispose()
     }
 
+    override fun apply(icon: AdaptiveIcon) {
+        if (icon.foreground.startsWith("@mipmap/") || icon.foreground.startsWith("@drawable")) {
+            icon.processForeground()
+        } else if (icon.background.startsWith("@mipmap/") || icon.background.startsWith("@drawable")) {
+            icon.processBackground()
+        }
+    }
+
     override fun apply(icon: ImageAdaptiveIcon) {
         // https://medium.com/google-design/designing-adaptive-icons-515af294c783
         // Adaptive icons are 108dp*108dp in size but are masked to a maximum of 72dp*72dp.
