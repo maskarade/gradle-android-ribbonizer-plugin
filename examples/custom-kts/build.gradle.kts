@@ -27,10 +27,21 @@ android {
     }
 
     buildTypes {
-        getByName("debug") {}
-        create("beta") { debuggable(true) }
-        create("canary") { debuggable(true) }
-        getByName("release") {}
+        getByName("debug") {
+            // debuggable build, which will ribbonized automatically.
+        }
+        create("beta") {
+            // debuggable build which will automatically ribbonized.
+            debuggable(true)
+        }
+        create("canary") {
+            // non-debuggable build which will no automatically ribbonized.
+            // But, we force one of its flavors. See `ribbonizer` for how-to
+            debuggable(false)
+        }
+        getByName("release") {
+            // non-debuggable build. Will not be ribbonized automatically.
+        }
     }
 
     flavorDimensions("flavor")
@@ -51,31 +62,44 @@ android {
 }
 
 ribbonizer {
+    // additional icons for ribbinizing
+    // "manifest application[android:icon]" and "manifest application[android:round_icon]" are automatically added to the list
     iconNames("@drawable/dog", "@drawable/thinking")
-    forcedVariantsNames("localCanary")
+
     builder { variant, iconFile ->
         when {
             variant.flavorName == "local" -> {
+                // change ribbon colors by product flavors
                 grayRibbonFilter(variant, iconFile)
             }
             variant.flavorName == "qa" -> {
+                // customColorRibbonFilter allows setting any color code
                 val filter = customColorRibbonFilter(variant, iconFile, "#00C89C")
+                // Finer control of the label text can be achieved by setting it manually, or set to
+                // null for an unlabelled ribbon. The default is to use the flavor name.
                 filter.label = "QA" + variant.versionCode
                 filter.largeRibbon = (iconFile.name == "ic_launcher.png")
                 filter
             }
             variant.buildType.name == "debug" -> {
                 if (variant.flavorName == "production") {
+                    // Particular configurations can be skipped by returning no filters
                     null
                 } else {
-                    customColorRibbonFilter(variant, iconFile, "#0000FF")
+                    // Other filters can be applied, as long as they implement Consumer<BufferedImage>
+                    grayScaleFilter(variant, iconFile)
                 }
             }
             else -> {
+                // the default configure of ribbons
                 greenRibbonFilter(variant, iconFile)
             }
         }
     }
+
+    // Although `canary` build-type is marked as `non-debuggable`
+    // we can still force specific variants to be ribbonized:
+    forcedVariantsNames("localCanary")
 }
 
 val kotlinVersion = properties["kotlin_version"] as String

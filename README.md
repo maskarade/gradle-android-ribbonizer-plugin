@@ -12,14 +12,20 @@ So, I forked it and published as another plugin.
 
 ## Usage
 
+### Groovy Script
+
 ```groovy
 // in build.gradle
 buildscript {
     repositories {
-        jcenter()
+        // for the Android Gradle plugin
+        google()
+
+        // for the ribbonizer plugin
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.1'
+        classpath 'com.android.tools.build:gradle:4.2.0'
         classpath 'com.shogo82148.ribbonizer:ribbonizer-plugin:3.0.1'
     }
 }
@@ -27,40 +33,58 @@ buildscript {
 
 ```groovy
 // in app/build.gradle
-apply plugin: 'com.shogo82148.ribbonizer'
+// the full example of build.gradle is in example/custom
+plugins {
+    id 'com.android.application'
+    id 'com.shogo82148.ribbonizer'
+}
 
 android {
-    // ...
+    // ...(snip)...
 
     buildTypes {
-        debug {/*debuggable build, which will ribbonized automatically*/}
+        debug {
+            // debuggable build, which will ribbonized automatically.
+        }
         beta {
-            //debuggable build which will automatically ribbonized.
+            // debuggable build which will automatically ribbonized.
             debuggable true
         }
         canary {
-            //non-debuggable build which will no automatically ribbonized.
-            //But, we force one of its flavors. See `ribbonizer` for how-to
+            // non-debuggable build which will no automatically ribbonized.
+            // But, we force one of its flavors. See `ribbonizer` for how-to
             debuggable false
         }
-        release {/*non-debuggable build. Will not be ribbonized automatically*/}
+        release {
+            // non-debuggable build. Will not be ribbonized automatically.
+        }
     }
 
+    flavorDimensions 'flavor'
     productFlavors {
-        local {}
-        qa {}
-        staging {}
-        production {}
+        local {
+            dimension 'flavor'
+        }
+        qa {
+            dimension 'flavor'
+        }
+        staging {
+            dimension 'flavor'
+        }
+        production {
+            dimension 'flavor'
+        }
     }
 }
 
 ribbonizer {
-    // "manifest application[android:icon]" is automatically added to the list
-    iconNames "@drawable/ic_notification", "@drawable/widget_preview"
+    // additional icons for ribbinizing
+    // "manifest application[android:icon]" and "manifest application[android:round_icon]" are automatically added to the list
+    iconNames "@drawable/dog", "@drawable/thinking"
 
     builder { variant, iconFile ->
-        // change ribbon colors by product flavors
         if (variant.flavorName == "local") {
+            // change ribbon colors by product flavors
             return grayRibbonFilter(variant, iconFile)
         } else if (variant.flavorName == "qa") {
             // customColorRibbonFilter allows setting any color code
@@ -68,52 +92,163 @@ ribbonizer {
             // Finer control of the label text can be achieved by setting it manually, or set to
             // null for an unlabelled ribbon. The default is to use the flavor name.
             filter.label = "QA" + variant.versionCode
+            filter.largeRibbon = (iconFile.name == "ic_launcher.png")
             return filter
-        } else if (variant.flavorName == "staging") {
-            return yellowRibbonFilter(variant, iconFile)
         } else if (variant.buildType.name == "debug") {
             if (variant.flavorName == "production") {
                 // Particular configurations can be skipped by returning no filters
                 return null
-            }
-            else {
+            } else {
                 // Other filters can be applied, as long as they implement Consumer<BufferedImage>
                 return grayScaleFilter(variant, iconFile)
             }
         } else {
+            // the default configure of ribbons
             return greenRibbonFilter(variant, iconFile)
         }
     }
 
-    //Although `canary` build-type is marked as `non-debuggable`
-    //we can still force specific variants to be ribbonized:
+    // Although `canary` build-type is marked as `non-debuggable`
+    // we can still force specific variants to be ribbonized:
     forcedVariantsNames "localCanary"
 }
-
 ```
 
+### Kotlin Script
+
+```kotlin
+// in build.gradle.kts
+buildscript {
+    repositories {
+        // for the Android Gradle plugin
+        google()
+
+        // for the ribbonizer plugin
+        mavenCentral()
+    }
+    dependencies {
+        classpath("com.android.tools.build:gradle:4.2.0")
+        classpath("com.shogo82148.ribbonizer:ribbonizer-plugin:3.0.1")
+    }
+}
+```
+
+```kotlin
+// in app/build.gradle.kts
+// the full example of build.gradle.kts is in example/custom-kts
+plugins {
+    id("com.android.application")
+    id("com.shogo82148.ribbonizer")
+}
+
+android {
+    // ...(snip)...
+
+    buildTypes {
+        getByName("debug") {
+            // debuggable build, which will ribbonized automatically.
+        }
+        create("beta") {
+            // debuggable build which will automatically ribbonized.
+            debuggable(true)
+        }
+        create("canary") {
+            // non-debuggable build which will no automatically ribbonized.
+            // But, we force one of its flavors. See `ribbonizer` for how-to
+            debuggable(false)
+        }
+        getByName("release") {
+            // non-debuggable build. Will not be ribbonized automatically.
+        }
+    }
+
+    flavorDimensions("flavor")
+    productFlavors {
+        create("local") {
+            dimension = "flavor"
+        }
+        create("qa") {
+            dimension = "flavor"
+        }
+        create("staging") {
+            dimension = "flavor"
+        }
+        create("production") {
+            dimension = "flavor"
+        }
+    }
+}
+
+ribbonizer {
+    // additional icons for ribbinizing
+    // "manifest application[android:icon]" and "manifest application[android:round_icon]" are automatically added to the list
+    iconNames("@drawable/dog", "@drawable/thinking")
+
+    builder { variant, iconFile ->
+        when {
+            variant.flavorName == "local" -> {
+                // change ribbon colors by product flavors
+                grayRibbonFilter(variant, iconFile)
+            }
+            variant.flavorName == "qa" -> {
+                // customColorRibbonFilter allows setting any color code
+                val filter = customColorRibbonFilter(variant, iconFile, "#00C89C")
+                // Finer control of the label text can be achieved by setting it manually, or set to
+                // null for an unlabelled ribbon. The default is to use the flavor name.
+                filter.label = "QA" + variant.versionCode
+                filter.largeRibbon = (iconFile.name == "ic_launcher.png")
+                filter
+            }
+            variant.buildType.name == "debug" -> {
+                if (variant.flavorName == "production") {
+                    // Particular configurations can be skipped by returning no filters
+                    null
+                } else {
+                    // Other filters can be applied, as long as they implement Consumer<BufferedImage>
+                    grayScaleFilter(variant, iconFile)
+                }
+            }
+            else -> {
+                // the default configure of ribbons
+                greenRibbonFilter(variant, iconFile)
+            }
+        }
+    }
+
+    // Although `canary` build-type is marked as `non-debuggable`
+    // we can still force specific variants to be ribbonized:
+    forcedVariantsNames("localCanary")
+}
+```
 
 ## Project Structure
 
 ```
-plugin/   - The main module of a Gradle plugin
-example/  - An example android application that uses this plugin
-buildSrc/ - A helper module to use this plugin in example modules
+ribbonizer-plugin/ - The main module of a Gradle plugin
+examples/ - Examples of android applications that use this plugin
 ```
 
-You can test this project with `./gradlew check`.
+You can test this project with `make test`.
 
 ## Release Engineering
 
-```console
-./gradlew bumpMinor # or bumpMajor, bumpPatch
+Edit the version number in `ribbonizer-plugin/build.gradle.kts`.
 
-make publish # upload artifacts to bintray jcenter
+```kotlin
+group = "com.shogo82148.ribbonizer"
+version = "x.y.z"
+```
+
+and run `make publish`.
+
+```console
+make publish # upload artifacts to Maven Central
 ```
 
 ## Author And License
 
 Copyright (c) 2015 FUJI Goro (gfx).
+
 Copyright (c) 2019 Ichinose Shogo (shogo82148).
 
 Licensed under the Apache License, Version 2.0 (the "License");

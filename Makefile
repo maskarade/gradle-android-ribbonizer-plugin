@@ -3,6 +3,10 @@ test:
 	./gradlew jar
 	cd examples && ./gradlew check --info
 
+.PHONY: publish
+publish:
+	./gradlew publish
+
 .PHONY: update-examples
 update-examples:
 	./gradlew jar
