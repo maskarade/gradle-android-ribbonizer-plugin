@@ -1,5 +1,14 @@
 # The revision history of android-ribbonizer-plugin
 
+## v3.1.0 2021/05/31
+
+* Support vector drawable
+
+## v3.0.2 2021/05/17
+
+* drop dependency to jcenter
+* publish to Maven Central
+
 ## v3.0.1 2019/06/11
 
 * Fix Java Compatibility

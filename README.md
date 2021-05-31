@@ -26,7 +26,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.2.0'
-        classpath 'com.shogo82148.ribbonizer:ribbonizer-plugin:3.0.1'
+        classpath 'com.shogo82148.ribbonizer:ribbonizer-plugin:3.1.0'
     }
 }
 ```
@@ -128,7 +128,7 @@ buildscript {
     }
     dependencies {
         classpath("com.android.tools.build:gradle:4.2.0")
-        classpath("com.shogo82148.ribbonizer:ribbonizer-plugin:3.0.1")
+        classpath("com.shogo82148.ribbonizer:ribbonizer-plugin:3.1.0")
     }
 }
 ```
