@@ -49,6 +49,10 @@ java {
     withSourcesJar()
 }
 
+tasks.compileJava {
+    options.release.set(8)
+}
+
 publishing {
     publications {
         create<MavenPublication>("pluginMaven") {
