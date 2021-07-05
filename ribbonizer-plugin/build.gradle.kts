@@ -42,11 +42,15 @@ dependencies {
 
 
 group = "com.shogo82148.ribbonizer"
-version = "3.1.0"
+version = "3.1.1"
 
 java {
     withJavadocJar()
     withSourcesJar()
+}
+
+tasks.compileJava {
+    options.release.set(8)
 }
 
 publishing {
