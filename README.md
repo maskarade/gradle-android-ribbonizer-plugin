@@ -155,7 +155,7 @@ android {
         create("canary") {
             // non-debuggable build which will no automatically ribbonized.
             // But, we force one of its flavors. See `ribbonizer` for how-to
-            isDebuggable = true
+            isDebuggable = false
         }
         getByName("release") {
             // non-debuggable build. Will not be ribbonized automatically.
