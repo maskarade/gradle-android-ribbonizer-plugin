@@ -1,6 +1,5 @@
 package com.shogo82148.ribbonizer.plugin
 
-import com.android.build.gradle.internal.utils.toImmutableList
 import org.w3c.dom.Node
 import java.io.File
 import javax.xml.parsers.DocumentBuilderFactory
@@ -33,6 +32,6 @@ object Resources {
         applicationNode.attributes.getNamedItem("android:roundIcon")?.nodeValue?.let {
             icons.add(it)
         }
-        return icons.toImmutableList()
+        return icons
     }
 }
