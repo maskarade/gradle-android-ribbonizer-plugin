@@ -162,7 +162,7 @@ android {
         }
     }
 
-    flavorDimensions("flavor")
+    flavorDimensions.add("flavor")
     productFlavors {
         create("local") {
             dimension = "flavor"
