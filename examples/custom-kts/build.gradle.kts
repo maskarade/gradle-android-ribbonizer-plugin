@@ -32,12 +32,12 @@ android {
         }
         create("beta") {
             // debuggable build which will automatically ribbonized.
-            debuggable(true)
+            isDebuggable = true
         }
         create("canary") {
             // non-debuggable build which will no automatically ribbonized.
             // But, we force one of its flavors. See `ribbonizer` for how-to
-            debuggable(false)
+            isDebuggable = true
         }
         getByName("release") {
             // non-debuggable build. Will not be ribbonized automatically.

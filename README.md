@@ -25,7 +25,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.0'
+        classpath 'com.android.tools.build:gradle:7.0.3'
         classpath 'com.shogo82148.ribbonizer:ribbonizer-plugin:3.1.0'
     }
 }
@@ -127,7 +127,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:4.2.0")
+        classpath("com.android.tools.build:gradle:7.0.3")
         classpath("com.shogo82148.ribbonizer:ribbonizer-plugin:3.1.0")
     }
 }
@@ -150,12 +150,12 @@ android {
         }
         create("beta") {
             // debuggable build which will automatically ribbonized.
-            debuggable(true)
+            isDebuggable = true
         }
         create("canary") {
             // non-debuggable build which will no automatically ribbonized.
             // But, we force one of its flavors. See `ribbonizer` for how-to
-            debuggable(false)
+            isDebuggable = true
         }
         getByName("release") {
             // non-debuggable build. Will not be ribbonized automatically.
