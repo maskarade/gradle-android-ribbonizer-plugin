@@ -10,12 +10,13 @@ jobs:
       fail-fast: false
       matrix:
         distribution:
+          - temurin
           - zulu
           - adopt
         java:
           - "8"
           - "11"
-          - "15"
+          - "17"
     steps:
 
       - name: Checkout
