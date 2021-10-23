@@ -18,7 +18,7 @@ class RibbonizerPlugin: Plugin<Project> {
         // add RibbonizerExtension
         project.extensions.add(RibbonizerExtension.NAME, RibbonizerExtension::class.java)
 
-        // add Ribbinze Tasks
+        // add Robbonize Tasks
         project.afterEvaluate {
             val android = project.extensions.findByType(AppExtension::class.java)
                 ?: throw Exception("Not an Android application; you forget `apply plugin: 'com.android.application`?")
@@ -66,7 +66,7 @@ class RibbonizerPlugin: Plugin<Project> {
 }
 
 fun capitalize(string: String): String {
-    return string.substring(0, 1).toUpperCase(Locale.ROOT) + string.substring(1)
+    return string.substring(0, 1).uppercase(Locale.ROOT) + string.substring(1)
 }
 
 fun getGeneratedResDir(project: Project, variant: ApplicationVariant): File {
