@@ -1,3 +1,6 @@
+# DEPRECATED
+No longer actively maintained, I recommend [Mikel's easylauncher-gradle-plugin](https://github.com/akaita/easylauncher-gradle-plugin) which might not have seen much love lately either, but seems to still work since the JFrog shutdown.
+
 # Ribbonizer plugin for Android
 
 [![Circle CI](https://circleci.com/gh/gfx/gradle-android-ribbonizer-plugin.svg?style=svg&branch=master)](https://circleci.com/gh/gfx/gradle-android-ribbonizer-plugin) [![Download](https://api.bintray.com/packages/gfx/maven/ribbonizer-plugin/images/download.svg)](https://bintray.com/gfx/maven/ribbonizer-plugin/_latestVersion)
