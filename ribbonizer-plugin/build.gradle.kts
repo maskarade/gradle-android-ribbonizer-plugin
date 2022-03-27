@@ -31,7 +31,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
     // Use Android Gradle plugin
-    implementation("com.android.tools.build:gradle:7.0.3")
+    implementation("com.android.tools.build:gradle:7.1.2")
 
     // Use the Kotlin test library.
     testImplementation("org.jetbrains.kotlin:kotlin-test")
