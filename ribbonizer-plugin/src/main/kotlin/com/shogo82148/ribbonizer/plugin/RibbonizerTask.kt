@@ -20,7 +20,7 @@ abstract class RibbonizerTask : DefaultTask() {
 //        if (filterBuilders.isEmpty()) {
 //            return
 //        }
-//        val t0 = System.currentTimeMillis()
+        val t0 = System.currentTimeMillis()
 //        val names = HashSet(iconNames)
 //        names.addAll(launcherIconNames)
 //        info(names.toString())
@@ -39,11 +39,15 @@ abstract class RibbonizerTask : DefaultTask() {
 //                }
 //            }
 //        }
-//        info("task finished in " + (System.currentTimeMillis() - t0) + "ms")
+        outputDir.get().asFile.mkdirs()
+        File(outputDir.get().asFile, "custom_asset.txt")
+            .writeText("some real asset file")
+        info(outputDir.get().asFile.path)
+        info("task finished in " + (System.currentTimeMillis() - t0) + "ms")
     }
 
     private fun info(message: String) {
-        project.logger.info("[$name] $message")
+        project.logger.info("[$name] \uD83C\uDF80 $message")
     }
 
 //    private val launcherIconNames: Set<String>
