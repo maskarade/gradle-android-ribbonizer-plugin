@@ -2,6 +2,7 @@
 test:
 	./gradlew jar
 	cd examples && ./gradlew check --info
+	cd examples && ./gradlew ribbonize --info
 
 .PHONY: publish
 publish:
