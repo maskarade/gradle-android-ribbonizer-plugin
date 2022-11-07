@@ -81,7 +81,7 @@ ribbonizer {
                 filter.largeRibbon = (iconFile.name == "ic_launcher.png")
                 filter
             }
-            variant.buildType.name == "debug" -> {
+            variant.buildType == "debug" -> {
                 if (variant.flavorName == "production") {
                     // Particular configurations can be skipped by returning no filters
                     null

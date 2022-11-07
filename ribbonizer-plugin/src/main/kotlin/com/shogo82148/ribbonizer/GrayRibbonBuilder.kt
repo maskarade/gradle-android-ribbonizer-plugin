@@ -3,6 +3,7 @@ package com.shogo82148.ribbonizer
 import com.android.build.gradle.api.ApplicationVariant
 import com.shogo82148.ribbonizer.filter.ColorRibbonFilter
 import com.shogo82148.ribbonizer.resource.Resource
+import com.shogo82148.ribbonizer.resource.Variant
 import java.awt.Color
 import java.io.File
 import java.util.function.Consumer
@@ -12,7 +13,7 @@ class GrayRibbonBuilder : FilterBuilder {
         val COLOR: Color = Color(0x60, 0x60, 0x60, 0x99)
     }
 
-    override fun apply(variant: ApplicationVariant, iconFile: File): Consumer<Resource> {
-        return ColorRibbonFilter(variant.buildType.name, COLOR)
+    override fun apply(variant: Variant, iconFile: File): Consumer<Resource> {
+        return ColorRibbonFilter(variant.buildType, COLOR)
     }
 }
