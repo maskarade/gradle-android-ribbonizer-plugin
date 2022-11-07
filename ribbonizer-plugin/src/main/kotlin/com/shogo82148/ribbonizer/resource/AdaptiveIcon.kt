@@ -42,38 +42,38 @@ class AdaptiveIcon(ribbonizer: Ribbonizer, file: File) : Resource(ribbonizer, fi
     }
 
     fun processForeground() {
-        if (foreground == "") {
-            return
-        }
-        ribbonizer.findResourceFiles(foreground).forEach {
-            when (it.extension) {
-                "xml" -> {
-                    val icon = VectorAdaptiveIcon(ribbonizer, it)
-                    ribbonizer.process(icon)
-                }
-                "png" -> {
-                    val icon = ImageAdaptiveIcon(ribbonizer, it)
-                    ribbonizer.process(icon)
-                }
-            }
-        }
+//        if (foreground == "") {
+//            return
+//        }
+//        ribbonizer.findResourceFiles(foreground).forEach {
+//            when (it.extension) {
+//                "xml" -> {
+//                    val icon = VectorAdaptiveIcon(ribbonizer, it)
+//                    ribbonizer.process(icon)
+//                }
+//                "png" -> {
+//                    val icon = ImageAdaptiveIcon(ribbonizer, it)
+//                    ribbonizer.process(icon)
+//                }
+//            }
+//        }
     }
 
     fun processBackground() {
-        if (background == "") {
-            return
-        }
-        ribbonizer.findResourceFiles(background).forEach {
-            when (it.extension) {
-                "xml" -> {
-                    val icon = VectorAdaptiveIcon(ribbonizer, it)
-                    ribbonizer.process(icon)
-                }
-                "png" -> {
-                    val icon = ImageAdaptiveIcon(ribbonizer, it)
-                    ribbonizer.process(icon)
-                }
-            }
-        }
+//        if (background == "") {
+//            return
+//        }
+//        ribbonizer.findResourceFiles(background).forEach {
+//            when (it.extension) {
+//                "xml" -> {
+//                    val icon = VectorAdaptiveIcon(ribbonizer, it)
+//                    ribbonizer.process(icon)
+//                }
+//                "png" -> {
+//                    val icon = ImageAdaptiveIcon(ribbonizer, it)
+//                    ribbonizer.process(icon)
+//                }
+//            }
+//        }
     }
 }
