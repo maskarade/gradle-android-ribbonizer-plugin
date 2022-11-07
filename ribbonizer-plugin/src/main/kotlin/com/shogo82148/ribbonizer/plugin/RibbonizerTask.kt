@@ -1,17 +1,12 @@
 package com.shogo82148.ribbonizer.plugin
 
-import com.android.build.gradle.AppExtension
-import com.android.build.gradle.api.ApplicationVariant
-import com.shogo82148.ribbonizer.FilterBuilder
-import com.shogo82148.ribbonizer.resource.AdaptiveIcon
-import com.shogo82148.ribbonizer.resource.ImageIcon
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.tasks.Internal
-import org.gradle.api.tasks.OutputFile
+import org.gradle.api.provider.ListProperty
+import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import java.io.File
-import java.util.stream.Stream
 
 abstract class RibbonizerTask : DefaultTask() {
     @ExperimentalStdlibApi
@@ -39,6 +34,9 @@ abstract class RibbonizerTask : DefaultTask() {
 //                }
 //            }
 //        }
+        iconFiles.get().forEach {
+            info(it.path)
+        }
         outputDir.get().asFile.mkdirs()
         File(outputDir.get().asFile, "custom_asset.txt")
             .writeText("some real asset file")
@@ -50,41 +48,10 @@ abstract class RibbonizerTask : DefaultTask() {
         project.logger.info("[$name] \uD83C\uDF80 $message")
     }
 
-//    private val launcherIconNames: Set<String>
-//        get() {
-//            val names = HashSet<String>()
-//            androidManifestFiles.forEach { manifestFile: File ->
-//                try {
-//                    info("manifestFile: " + manifestFile.name)
-//                    names.addAll(Resources.launcherIcons(manifestFile))
-//                } catch (e: Exception) {
-//                    info("Exception: $e")
-//                }
-//            }
-//            return names
-//        }
+    @get:InputFiles
+    abstract val iconFiles: ListProperty<File>
 
-//    private val androidManifestFiles: Stream<File>
-//        get() {
-//            val android = project.extensions.findByType(
-//                AppExtension::class.java
-//            )
-//            return listOf<String>(
-//                "main",
-//                variant.name,
-//                variant.buildType.name,
-//                variant.flavorName
-//            ).stream().filter {
-//                it.isNotEmpty()
-//            }.distinct().map {
-//                val fileSet = android?.sourceSets?.findByName(it) ?: return@map null
-//                project.file(fileSet.manifest.srcFile)
-//            }.filter {
-//                it?.exists() ?: false
-//            }.map { it!! }
-//        }
-
-    @get:OutputFile
+    @get:OutputDirectory
     abstract val outputDir: DirectoryProperty
 
     companion object {
