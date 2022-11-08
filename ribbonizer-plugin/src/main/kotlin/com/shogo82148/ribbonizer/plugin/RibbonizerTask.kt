@@ -22,23 +22,9 @@ abstract class RibbonizerTask : DefaultTask() {
             return
         }
         val t0 = System.currentTimeMillis()
-        val ribbonizer = Ribbonizer(name, project, outputDir.get().asFile, variant.get(), filterBuilders.get())
-        iconFiles.get().forEach {
-                when (it.extension) {
-                    "xml" -> {
-                        val icon = AdaptiveIcon(ribbonizer, it)
-                        ribbonizer.process(icon)
-                    }
-                    "png" -> {
-                        val icon = ImageIcon(ribbonizer, it)
-                        ribbonizer.process(icon)
-                    }
-                }
-        }
         outputDir.get().asFile.mkdirs()
-        File(outputDir.get().asFile, "custom_asset.txt")
-            .writeText("some real asset file")
-        info(outputDir.get().asFile.path)
+        val ribbonizer = Ribbonizer(name, project, outputDir.get().asFile, iconFiles.get(), variant.get(), filterBuilders.get())
+        ribbonizer.process()
         info("task finished in " + (System.currentTimeMillis() - t0) + "ms")
     }
 

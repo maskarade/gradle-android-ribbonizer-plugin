@@ -30,6 +30,7 @@ class RibbonizerPlugin: Plugin<Project> {
 
             // find icon files
             val iconFiles = Resources.findResourceFiles(project.projectDir, icons)
+            project.logger.info(iconFiles.toString())
 
             var filterBuilders = extension.filterBuilders
             if (filterBuilders.isEmpty()) {

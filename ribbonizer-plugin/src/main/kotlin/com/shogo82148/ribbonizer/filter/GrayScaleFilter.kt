@@ -24,12 +24,8 @@ class GrayScaleFilter : Consumer<Resource>, Filter {
     }
 
     override fun apply(icon: AdaptiveIcon) {
-        if (icon.foreground.startsWith("@mipmap/") || icon.foreground.startsWith("@drawable")) {
-            icon.processForeground()
-        }
-        if (icon.background.startsWith("@mipmap/") || icon.background.startsWith("@drawable")) {
-            icon.processBackground()
-        }
+        icon.processForeground()
+        icon.processBackground()
     }
 
     override fun apply(icon: ImageAdaptiveIcon) {

@@ -59,9 +59,9 @@ class ColorRibbonFilter(
     }
 
     override fun apply(icon: AdaptiveIcon) {
-        if (icon.foreground.startsWith("@mipmap/") || icon.foreground.startsWith("@drawable")) {
+        if (icon.foreground != null) {
             icon.processForeground()
-        } else if (icon.background.startsWith("@mipmap/") || icon.background.startsWith("@drawable")) {
+        } else if (icon.background != null) {
             icon.processBackground()
         }
     }
