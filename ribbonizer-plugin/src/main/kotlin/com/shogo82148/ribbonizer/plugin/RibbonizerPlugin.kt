@@ -22,21 +22,21 @@ class RibbonizerPlugin: Plugin<Project> {
             ?: throw Exception("Not an Android application; you forget `apply plugin: 'com.android.application`?")
         val extension = project.extensions.findByType(RibbonizerExtension::class.java)!!
 
+        // parse AndroidManifest
+        val manifest = File(project.projectDir, "src/main/AndroidManifest.xml")
+        val icons = Resources.launcherIcons(manifest)
+
+        // find icon files
+        val iconFiles = Resources.findResourceFiles(File(project.projectDir, "src"), icons)
+        project.logger.info(iconFiles.toString())
+
+        var filterBuilders = extension.filterBuilders
+        if (filterBuilders.isEmpty()) {
+            filterBuilders = listOf(GreenRibbonBuilder() as FilterBuilder)
+        }
+
         val tasks = mutableListOf<TaskProvider<RibbonizerTask>>()
         androidComponents.onVariants { variant ->
-            // parse AndroidManifest
-            val manifest = File(project.projectDir, "src/main/AndroidManifest.xml")
-            val icons = Resources.launcherIcons(manifest)
-
-            // find icon files
-            val iconFiles = Resources.findResourceFiles(project.projectDir, icons)
-            project.logger.info(iconFiles.toString())
-
-            var filterBuilders = extension.filterBuilders
-            if (filterBuilders.isEmpty()) {
-                filterBuilders = listOf(GreenRibbonBuilder() as FilterBuilder)
-            }
-
             val myVariant = Variant(
                 debuggable = true, // TODO: fix me
                 name = variant.name,
