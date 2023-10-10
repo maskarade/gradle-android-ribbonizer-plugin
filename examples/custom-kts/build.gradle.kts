@@ -59,6 +59,7 @@ android {
             dimension = "flavor"
         }
     }
+    namespace = "com.shogo82148.ribbonizer.example"
 }
 
 ribbonizer {

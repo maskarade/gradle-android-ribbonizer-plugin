@@ -31,7 +31,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
     // Use Android Gradle plugin
-    implementation("com.android.tools.build:gradle:7.4.2")
+    implementation("com.android.tools.build:gradle:8.0.2")
 
     // Use the Kotlin test library.
     testImplementation("org.jetbrains.kotlin:kotlin-test")
@@ -50,7 +50,7 @@ java {
 }
 
 tasks.compileJava {
-    options.release.set(11)
+    options.release.set(17)
 }
 
 publishing {

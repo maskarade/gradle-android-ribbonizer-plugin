@@ -25,6 +25,12 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    namespace 'com.shogo82148.ribbonizer.example'
+    buildTypes {
+        release {
+            signingConfig signingConfigs.debug
+        }
+    }
 }
 
 dependencies {
